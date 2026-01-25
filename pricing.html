@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Primary Meta Tags -->
+    <title>Pricing - Permit Path | $3.99/month Oversize Permit Routing App</title>
+    <meta name="title" content="Pricing - Permit Path | $3.99/month Oversize Permit Routing App" />
+    <meta name="description" content="Permit Path pricing: Only $3.99/month for unlimited routes, unlimited waypoints, and cross-platform iOS and Android support. Lowest cost oversize permit routing app." />
+    <meta name="keywords" content="permit path pricing, oversize permit app cost, truck routing app price, permit routing software pricing, oversize load app subscription" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://permitpathnav.com/pricing.html" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://permitpathnav.com/pricing.html" />
+    <meta property="og:title" content="Pricing - Permit Path | $3.99/month" />
+    <meta property="og:description" content="Only $3.99/month for unlimited routes and waypoints. Lowest cost oversize permit routing app." />
+    
+    <!-- Link to CSS -->
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- iOS styling -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+</head>
+
+<body>
+
+    <header>
+        <img src="images/logo.png" alt="Permit Path - Oversize and Overweight Permit Routing App Logo" class="logo" />
+        <div class="menu-container">
+            <button class="menu-toggle" aria-label="Toggle menu" id="menuToggle">
+                <span>Menu</span>
+                <span class="menu-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+            </button>
+            <nav class="dropdown-menu" id="dropdownMenu">
+                <a href="index.html">Home</a>
+                <a href="features.html">Features</a>
+                <a href="pricing.html">Pricing</a>
+                <a href="contact.html">Contact</a>
+                <a href="legal.html">Legal</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h2>Affordable <span class="highlight">Pricing</span></h2>
+        <div class="price-display">
+            <span class="price-amount">$3.99</span>
+            <span class="price-period">/month</span>
+        </div>
+    </section>
+
+    <section class="info">
+        <p>
+            As much as we would love to offer Permit Path for free, map SDK and API fees are costly. 
+            At $3.99 per month, we are able to offer this app at an unbeatable price—lower than any 
+            similar routing app—while still allowing you to load unlimited routes and maps, and set 
+            an unlimited number of waypoints.
+        </p>
+    </section>
+
+    <footer>
+        <p>© 2026 Permit Path. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+
+        menuToggle.addEventListener('click', function() {
+            dropdownMenu.classList.toggle('active');
+            menuToggle.classList.toggle('active');
+        });
+
+        document.addEventListener('click', function(event) {
+            const isClickInsideMenu = dropdownMenu.contains(event.target);
+            const isClickOnToggle = menuToggle.contains(event.target);
+            
+            if (!isClickInsideMenu && !isClickOnToggle && dropdownMenu.classList.contains('active')) {
+                dropdownMenu.classList.remove('active');
+                menuToggle.classList.remove('active');
+            }
+        });
+    </script>
+
+</body>
+</html>
+

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Primary Meta Tags -->
+    <title>Contact - Permit Path | Support for Oversize Permit Routing App</title>
+    <meta name="title" content="Contact - Permit Path | Support for Oversize Permit Routing App" />
+    <meta name="description" content="Contact Permit Path for support, questions, or feedback about our oversize and overweight permit routing app. We're here to help truck drivers with permit routing." />
+    <meta name="keywords" content="permit path contact, oversize permit app support, truck routing app help, permit path customer service" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://permitpathnav.com/contact.html" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://permitpathnav.com/contact.html" />
+    <meta property="og:title" content="Contact Permit Path" />
+    
+    <!-- Link to CSS -->
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- iOS styling -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+</head>
+
+<body>
+
+    <header>
+        <img src="images/logo.png" alt="Permit Path - Oversize and Overweight Permit Routing App Logo" class="logo" />
+        <div class="menu-container">
+            <button class="menu-toggle" aria-label="Toggle menu" id="menuToggle">
+                <span>Menu</span>
+                <span class="menu-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+            </button>
+            <nav class="dropdown-menu" id="dropdownMenu">
+                <a href="index.html">Home</a>
+                <a href="features.html">Features</a>
+                <a href="pricing.html">Pricing</a>
+                <a href="contact.html">Contact</a>
+                <a href="legal.html">Legal</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h2>Contact <span class="highlight">Us</span></h2>
+        <p>Get in touch with the Permit Path team.</p>
+    </section>
+
+    <section class="info">
+        <h2>We'd Love to <span class="highlight">Hear from You</span></h2>
+        <p>
+            Have questions, feedback, or suggestions? We're always looking to improve
+            Permit Path based on input from drivers like you. Reach out and let us know
+            how we can help.
+        </p>
+    </section>
+
+    <section class="info">
+        <h2>Send Us a <span class="highlight">Message</span></h2>
+        <p>
+            Fill out the form below and we'll get back to you as soon as possible.
+        </p>
+        <form class="contact-form" action="https://formspree.io/f/xykwznok" method="POST" id="contactForm">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="subject">Subject</label>
+                <input type="text" id="subject" name="subject" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="6" required></textarea>
+            </div>
+            <button type="submit" class="button">Send Message</button>
+            <div class="form-message" id="formMessage"></div>
+        </form>
+    </section>
+
+    <section class="info">
+        <h2>Response <span class="highlight">Time</span></h2>
+        <p>
+            We aim to respond to all inquiries within 24 hours during business days.
+            For urgent matters, please use the in-app support feature for faster
+            assistance.
+        </p>
+    </section>
+
+    <footer>
+        <p>© 2026 Permit Path. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+
+        menuToggle.addEventListener('click', function() {
+            dropdownMenu.classList.toggle('active');
+            menuToggle.classList.toggle('active');
+        });
+
+        document.addEventListener('click', function(event) {
+            const isClickInsideMenu = dropdownMenu.contains(event.target);
+            const isClickOnToggle = menuToggle.contains(event.target);
+            
+            if (!isClickInsideMenu && !isClickOnToggle && dropdownMenu.classList.contains('active')) {
+                dropdownMenu.classList.remove('active');
+                menuToggle.classList.remove('active');
+            }
+        });
+
+        // Form submission handler
+        const contactForm = document.getElementById('contactForm');
+        const formMessage = document.getElementById('formMessage');
+
+        contactForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(contactForm);
+            
+            fetch(contactForm.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    formMessage.textContent = 'Thank you! Your message has been sent. We\'ll get back to you soon.';
+                    formMessage.className = 'form-message success';
+                    contactForm.reset();
+                } else {
+                    formMessage.textContent = 'Oops! There was a problem sending your message. Please try again.';
+                    formMessage.className = 'form-message error';
+                }
+            })
+            .catch(error => {
+                formMessage.textContent = 'Oops! There was a problem sending your message. Please try again.';
+                formMessage.className = 'form-message error';
+            });
+        });
+    </script>
+
+</body>
+</html>
+

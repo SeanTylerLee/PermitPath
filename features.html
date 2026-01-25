@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Primary Meta Tags -->
+    <title>Features - Permit Path | Oversize Permit Routing App Features</title>
+    <meta name="title" content="Features - Permit Path | Oversize Permit Routing App Features" />
+    <meta name="description" content="Permit Path features: Unlimited waypoints, cross-platform iOS and Android route sharing, lowest cost at $3.99/month, and specialized tools for oversize and overweight permit routing." />
+    <meta name="keywords" content="permit path features, oversize permit routing features, truck routing app features, unlimited waypoints, cross-platform routing, oversize load app features" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://permitpathnav.com/features.html" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://permitpathnav.com/features.html" />
+    <meta property="og:title" content="Features - Permit Path Oversize Permit Routing App" />
+    <meta property="og:description" content="Unlimited waypoints, cross-platform sharing, and specialized tools for oversize permit routing." />
+    
+    <!-- Link to CSS -->
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- iOS styling -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+</head>
+
+<body>
+
+    <header>
+        <img src="images/logo.png" alt="Permit Path - Oversize and Overweight Permit Routing App Logo" class="logo" />
+        <div class="menu-container">
+            <button class="menu-toggle" aria-label="Toggle menu" id="menuToggle">
+                <span>Menu</span>
+                <span class="menu-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+            </button>
+            <nav class="dropdown-menu" id="dropdownMenu">
+                <a href="index.html">Home</a>
+                <a href="features.html">Features</a>
+                <a href="pricing.html">Pricing</a>
+                <a href="contact.html">Contact</a>
+                <a href="legal.html">Legal</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>Powerful <span class="highlight">Features</span></h1>
+        <p>Everything you need for successful oversize load routing and permit compliance. Permit Path is the premier oversize permit routing app for truck drivers.</p>
+    </section>
+
+    <section class="info">
+        <h2>What Permit Path <span class="highlight">Offers</span></h2>
+        <p>
+            Permit Path provides specialized tools for oversize and overweight permit routing. 
+            Build custom routes with pin drops, navigate in real-time, and manage your routes 
+            with unlimited waypoints—all designed specifically for heavy-haul drivers. Our oversize 
+            permit routing app helps truck drivers plan routes that comply with permit requirements 
+            and avoid costly violations.
+        </p>
+    </section>
+
+    <section class="info">
+        <h2>Unlimited <span class="highlight">Waypoints</span></h2>
+        <p>
+            Unlike other routing apps that limit your waypoints, Permit Path allows you to set 
+            an unlimited number of waypoints on every route. Plan complex multi-stop journeys 
+            without restrictions, giving you complete flexibility for your oversize load routing needs.
+        </p>
+    </section>
+
+    <section class="info">
+        <h2>Lowest <span class="highlight">Cost</span></h2>
+        <p>
+            At just $3.99 per month, Permit Path offers the lowest pricing in the oversize routing 
+            app market. Get professional-grade oversize permit routing tools at an unbeatable price 
+            without sacrificing features or functionality. Compare our pricing to other truck routing 
+            apps and see why Permit Path is the best value for oversize load routing.
+        </p>
+    </section>
+
+    <section class="info">
+        <h2>Cross-Platform <span class="highlight">Sharing</span></h2>
+        <p>
+            Build and share routes seamlessly between iOS and Android devices. Unlike other oversize 
+            permit routing apps that are limited to iOS only, Permit Path works across both platforms, 
+            allowing you to plan on one device and navigate on another, regardless of the operating 
+            system. This cross-platform functionality makes Permit Path the most versatile truck 
+            routing app for oversize permit compliance.
+        </p>
+    </section>
+
+    <footer>
+        <p>© 2026 Permit Path. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+
+        menuToggle.addEventListener('click', function() {
+            dropdownMenu.classList.toggle('active');
+            menuToggle.classList.toggle('active');
+        });
+
+        document.addEventListener('click', function(event) {
+            const isClickInsideMenu = dropdownMenu.contains(event.target);
+            const isClickOnToggle = menuToggle.contains(event.target);
+            
+            if (!isClickInsideMenu && !isClickOnToggle && dropdownMenu.classList.contains('active')) {
+                dropdownMenu.classList.remove('active');
+                menuToggle.classList.remove('active');
+            }
+        });
+    </script>
+
+</body>
+</html>
+
