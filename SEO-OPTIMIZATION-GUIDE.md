@@ -159,3 +159,4 @@ The main thing Google needs is:
 
 **Note**: Just like haulpath, once Google indexes your site and you get a few backlinks (especially from app stores), "Permit Path" should start ranking. The SEO foundation is solid - now it's just about getting indexed and building authority!
 
+

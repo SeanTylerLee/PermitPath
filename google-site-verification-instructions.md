@@ -77,3 +77,4 @@ To get your website to show up when people search "Permit Path" on Google, follo
 
 The website is now optimized with "Permit Path" prominently featured throughout, which will help Google understand this is the official Permit Path website.
 
+
