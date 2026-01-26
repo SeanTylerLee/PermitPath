@@ -369,10 +369,11 @@ header p {
 /* Download Buttons Container */
 .download-buttons {
     display: flex;
-    gap: 1rem;
+    flex-direction: row;
+    gap: 2rem;
     justify-content: center;
     align-items: center;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     position: relative;
     z-index: 1;
     margin-top: 1rem;
@@ -401,6 +402,64 @@ header p {
 .button-android:hover {
     background: linear-gradient(135deg, #2AB759 0%, #3DDC84 100%);
     box-shadow: 0 10px 30px rgba(61, 220, 132, 0.6), 0 0 0 4px rgba(61, 220, 132, 0.1);
+}
+
+/* App Store Button Image */
+.app-store-button {
+    display: inline-block;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.app-store-button img {
+    height: 280px;
+    width: auto;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.app-store-button:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+.app-store-button:hover img {
+    transform: scale(1.02);
+}
+
+.app-store-button:active {
+    transform: translateY(0);
+}
+
+/* Google Play Button Image */
+.google-play-button {
+    display: inline-block;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.google-play-button img {
+    height: 280px;
+    width: auto;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.google-play-button:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+.google-play-button:hover img {
+    transform: scale(1.02);
+}
+
+.google-play-button:active {
+    transform: translateY(0);
 }
 
 /* Contact Form Styles */
@@ -528,6 +587,97 @@ header p {
 
 .info p:last-child {
     margin-bottom: 0;
+}
+
+.info-footer {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.8;
+    text-align: center;
+    max-width: 900px;
+    margin: 2.5rem auto 0 auto;
+    font-weight: 400;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(0, 180, 255, 0.2);
+}
+
+/* Features Grid */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin: 3rem 0 2rem 0;
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.feature-card {
+    background: linear-gradient(135deg, rgba(0, 180, 255, 0.12) 0%, rgba(0, 180, 255, 0.05) 100%);
+    border: 1px solid rgba(0, 180, 255, 0.3);
+    border-radius: 16px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #00B4FF, transparent);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(0, 180, 255, 0.5);
+    box-shadow: 0 12px 40px rgba(0, 180, 255, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    background: linear-gradient(135deg, rgba(0, 180, 255, 0.18) 0%, rgba(0, 180, 255, 0.08) 100%);
+}
+
+.feature-card:hover::before {
+    opacity: 1;
+}
+
+.feature-icon {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    display: block;
+    filter: drop-shadow(0 4px 8px rgba(0, 180, 255, 0.3));
+    transition: transform 0.4s ease;
+}
+
+.feature-card:hover .feature-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.feature-card h3 {
+    font-size: 1.5rem;
+    color: white;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+}
+
+.feature-card h3 .highlight {
+    color: #00B4FF;
+}
+
+.feature-card p {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.88);
+    line-height: 1.7;
+    text-align: center;
+    margin: 0;
+    max-width: 100%;
 }
 
 /* Legal Page Specific Styles */
@@ -720,6 +870,18 @@ footer p {
         min-width: auto;
     }
     
+    .app-store-button img,
+    .google-play-button img {
+        height: 220px;
+        max-width: 100%;
+    }
+    
+    .download-buttons {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: 1.5rem;
+    }
+    
     .price-amount {
         font-size: 3rem;
     }
@@ -744,6 +906,34 @@ footer p {
     
     .info p {
         font-size: 1rem;
+    }
+    
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        margin: 2rem 0 1.5rem 0;
+    }
+    
+    .feature-card {
+        padding: 1.75rem 1.25rem;
+    }
+    
+    .feature-icon {
+        font-size: 3rem;
+    }
+    
+    .feature-card h3 {
+        font-size: 1.35rem;
+    }
+    
+    .feature-card p {
+        font-size: 0.95rem;
+    }
+    
+    .info-footer {
+        font-size: 1rem;
+        padding-top: 1.5rem;
+        margin-top: 1.5rem;
     }
     
     .legal-section {
@@ -875,6 +1065,18 @@ footer p {
         min-width: auto;
     }
     
+    .app-store-button img,
+    .google-play-button img {
+        height: 180px;
+        max-width: 100%;
+    }
+    
+    .download-buttons {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: 1rem;
+    }
+    
     .price-amount {
         font-size: 2.5rem;
     }
@@ -885,6 +1087,37 @@ footer p {
     
     .info h2 {
         font-size: 1.5rem;
+    }
+    
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+        margin: 1.5rem 0 1rem 0;
+    }
+    
+    .feature-card {
+        padding: 1.5rem 1rem;
+    }
+    
+    .feature-icon {
+        font-size: 2.5rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .feature-card h3 {
+        font-size: 1.25rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .feature-card p {
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+    
+    .info-footer {
+        font-size: 0.95rem;
+        padding-top: 1.25rem;
+        margin-top: 1.25rem;
     }
     
     .legal-section {
