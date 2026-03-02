@@ -297,6 +297,27 @@ header p {
     font-weight: 400;
 }
 
+.hero .coming-soon {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #00B4FF;
+    margin-bottom: 1rem;
+    margin-top: 0;
+    letter-spacing: 0.15em;
+    text-shadow: 0 0 20px rgba(0, 180, 255, 0.5);
+}
+
+.hero .launch-message {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.9);
+    max-width: 700px;
+    margin: 0 auto 1.5rem auto;
+    line-height: 1.7;
+    font-weight: 400;
+    position: relative;
+    z-index: 1;
+}
+
 /* Price Display */
 .price-display {
     display: flex;
@@ -860,6 +881,16 @@ footer p {
         font-size: 1.15rem;
     }
     
+    .hero .coming-soon {
+        font-size: 1.6rem;
+        letter-spacing: 0.1em;
+    }
+    
+    .hero .launch-message {
+        font-size: 0.95rem;
+        margin-bottom: 1.25rem;
+    }
+    
     .info {
         padding: 3rem 1.5rem;
         margin: 2rem 1rem;
@@ -1052,6 +1083,16 @@ footer p {
     
     .hero p {
         font-size: 1.05rem;
+    }
+    
+    .hero .coming-soon {
+        font-size: 1.35rem;
+        letter-spacing: 0.08em;
+    }
+    
+    .hero .launch-message {
+        font-size: 0.875rem;
+        margin-bottom: 1rem;
     }
     
     .info {
