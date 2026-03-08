@@ -673,6 +673,54 @@ header p {
     margin-top: 0.75rem;
 }
 
+.button-wrap {
+    text-align: center;
+    margin: 1.5rem 0 0;
+}
+
+/* Link page – terms / info box (smaller text) */
+.link-terms-box {
+    margin-top: 2rem;
+}
+
+.link-terms-content {
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.92);
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+.link-terms-content p {
+    margin: 0 0 1rem 0;
+    font-size: inherit;
+}
+
+.link-terms-content p:last-child {
+    margin-bottom: 0;
+}
+
+.link-terms-heading {
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+    margin: 1.5rem 0 0.5rem 0;
+}
+
+.link-terms-heading:first-of-type {
+    margin-top: 0;
+}
+
+.link-terms-list {
+    margin: 0.5rem 0 1rem 1.25rem;
+    padding: 0;
+    list-style: disc;
+}
+
+.link-terms-list li {
+    margin-bottom: 0.35rem;
+}
+
 .requirements-heading {
     font-size: 1.5rem;
     color: white;
