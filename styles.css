@@ -310,6 +310,15 @@ header p {
     letter-spacing: 0.05em;
 }
 
+.testers-hero .testers-note-full {
+    font-size: 0.95rem;
+    margin-top: 0.75rem;
+    color: #ff6b6b;
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .hero p {
     font-size: 1.3rem;
     margin-bottom: 2.5rem;
