@@ -27,8 +27,9 @@ body::before {
     width: 100%;
     height: 100vh;
     background-image: url('images/background-path.png');
-    background-size: cover;
-    background-position: center;
+    /* Fixed width so scale looks the same on mobile and desktop (no zoom on small screens) */
+    background-size: 1920px auto;
+    background-position: center center;
     background-repeat: no-repeat;
     background-attachment: fixed;
     opacity: 0.5;
@@ -37,6 +38,64 @@ body::before {
     /* Fallback for mobile */
     background-color: #0d1b2a;
     will-change: transform;
+}
+
+/* Index page: no background image overlay */
+body.index-page::before {
+    display: none;
+}
+
+/* Index page: divider above menu, menu below divider; no extra space around logo; background only behind logo/menu, not stretching down */
+header.index-header {
+    border-bottom: none;
+    padding-top: 0;
+    padding-bottom: 0;
+    background: none;
+    box-shadow: none;
+    backdrop-filter: none;
+}
+header.index-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 14rem;
+    background: linear-gradient(180deg, rgba(30, 58, 95, 0.95) 0%, rgba(13, 27, 42, 0.98) 100%);
+    backdrop-filter: blur(20px);
+    z-index: -1;
+    pointer-events: none;
+}
+header.index-header .logo {
+    margin-bottom: 0;
+    margin-top: -3.5rem;
+    display: block;
+}
+header.index-header .menu-container {
+    border-top: 1px solid rgba(0, 180, 255, 0.25);
+    margin-top: -5rem;
+    padding-top: 0.5rem;
+}
+
+body.index-page .hero {
+    margin-top: 5rem;
+}
+
+.hero.contact-hero {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.contact-email {
+    color: #00B4FF;
+    text-decoration: none;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(0, 180, 255, 0.5);
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+.contact-email:hover {
+    color: #33c4ff;
+    border-bottom-color: #00B4FF;
 }
 
 /* Header Styles */
@@ -90,38 +149,39 @@ header .logo {
 
 /* Menu Toggle Button */
 .menu-toggle {
-    background: linear-gradient(135deg, rgba(0, 180, 255, 0.15) 0%, rgba(0, 180, 255, 0.08) 100%);
-    border: 1.5px solid rgba(0, 180, 255, 0.4);
-    border-radius: 10px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 12px;
     cursor: pointer;
-    padding: 0.875rem 1.5rem;
+    padding: 0.75rem 1.35rem;
     display: flex;
     align-items: center;
-    gap: 0.875rem;
-    color: white;
-    font-size: 0.95rem;
+    gap: 0.75rem;
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 0.8125rem;
     font-weight: 600;
-    letter-spacing: 0.5px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: 0.1em;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     z-index: 1002;
-    backdrop-filter: blur(12px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15), 0 0 0 0 rgba(0, 180, 255, 0);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.06);
     text-transform: uppercase;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
 .menu-toggle:hover {
-    background: linear-gradient(135deg, rgba(0, 180, 255, 0.25) 0%, rgba(0, 180, 255, 0.15) 100%);
-    border-color: rgba(0, 180, 255, 0.7);
-    color: #00B4FF;
-    box-shadow: 0 4px 16px rgba(0, 180, 255, 0.3), 0 0 0 1px rgba(0, 180, 255, 0.2);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.04) 100%);
+    border-color: rgba(0, 180, 255, 0.45);
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.28), 0 0 0 1px rgba(0, 180, 255, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.08);
     transform: translateY(-1px);
 }
 
 .menu-toggle:active {
     transform: translateY(0);
-    box-shadow: 0 2px 8px rgba(0, 180, 255, 0.2);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 .menu-toggle span:first-child {
@@ -132,30 +192,29 @@ header .logo {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width: 18px;
-    height: 14px;
-    gap: 3.5px;
+    width: 16px;
+    height: 12px;
+    gap: 3px;
     position: relative;
 }
 
 .menu-icon span {
     display: block;
-    height: 2.5px;
+    height: 2px;
     width: 100%;
     background-color: currentColor;
-    border-radius: 2px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    border-radius: 1px;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
 }
 
 .menu-toggle.active {
-    background: linear-gradient(135deg, rgba(0, 180, 255, 0.3) 0%, rgba(0, 180, 255, 0.2) 100%);
-    border-color: rgba(0, 180, 255, 0.8);
-    box-shadow: 0 4px 16px rgba(0, 180, 255, 0.4), 0 0 0 1px rgba(0, 180, 255, 0.3);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.03) 100%);
+    border-color: rgba(0, 180, 255, 0.5);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.28), 0 0 0 1px rgba(0, 180, 255, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .menu-toggle.active .menu-icon span:nth-child(1) {
-    transform: rotate(45deg) translate(5px, 5px);
+    transform: rotate(45deg) translate(4px, 4px);
 }
 
 .menu-toggle.active .menu-icon span:nth-child(2) {
@@ -164,27 +223,29 @@ header .logo {
 }
 
 .menu-toggle.active .menu-icon span:nth-child(3) {
-    transform: rotate(-45deg) translate(5px, -5px);
+    transform: rotate(-45deg) translate(4px, -4px);
 }
 
 /* Dropdown Menu */
 .dropdown-menu {
     position: absolute;
-    top: calc(100% + 0.5rem);
+    top: calc(100% + 0.6rem);
     left: 50%;
-    transform: translateX(-50%) translateY(-10px);
-    background: radial-gradient(ellipse at center, #1e3a5f 0%, #0d1b2a 100%);
-    border: 1px solid rgba(0, 180, 255, 0.3);
+    transform: translateX(-50%) translateY(-8px);
+    background: linear-gradient(180deg, rgba(28, 45, 68, 0.98) 0%, rgba(13, 27, 42, 0.98) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     min-width: 200px;
     max-width: 90vw;
     opacity: 0;
     visibility: hidden;
-    transition: all 0.3s ease;
+    transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.25s;
     z-index: 1003;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    border-radius: 8px;
-    padding: 0.5rem 0;
-    backdrop-filter: blur(10px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    border-radius: 12px;
+    padding: 0.5rem 0.25rem;
+    overflow: hidden;
 }
 
 .dropdown-menu.active {
@@ -195,19 +256,23 @@ header .logo {
 
 .dropdown-menu a {
     display: block;
-    padding: 0.5rem 0.75rem;
-    color: white;
+    padding: 0.6rem 1rem;
+    color: rgba(255, 255, 255, 0.92);
     text-decoration: none;
     font-size: 0.9rem;
-    transition: all 0.3s ease;
-    border-left: 2px solid transparent;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    transition: background 0.2s ease, color 0.2s ease, padding-left 0.2s ease;
+    border-left: 3px solid transparent;
+    margin: 0 0.2rem;
+    border-radius: 8px;
 }
 
 .dropdown-menu a:hover {
-    background-color: rgba(0, 180, 255, 0.1);
-    border-left-color: #00B4FF;
-    color: #00B4FF;
-    padding-left: 1rem;
+    background: rgba(255, 255, 255, 0.06);
+    border-left-color: rgba(0, 180, 255, 0.75);
+    color: #fff;
+    padding-left: 1.1rem;
 }
 
 header h1 {
@@ -239,9 +304,9 @@ header p {
     max-width: 1200px;
     border-radius: 20px;
     backdrop-filter: blur(20px);
-    box-shadow: 0 8px 32px rgba(0, 180, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    box-shadow: none;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .hero::before {
@@ -426,13 +491,29 @@ header p {
 .download-buttons {
     display: flex;
     flex-direction: row;
-    gap: 0.75rem;
+    gap: 7rem;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     flex-wrap: nowrap;
     position: relative;
     z-index: 1;
-    margin-top: 1rem;
+    margin-top: 3rem;
+}
+
+.download-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.download-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .download-buttons .button {
@@ -465,24 +546,40 @@ header p {
     display: inline-block;
     transition: all 0.3s ease;
     text-decoration: none;
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.app-store-button img {
-    height: 280px;
-    width: auto;
-    display: block;
-    transition: transform 0.3s ease;
+    border-radius: 14px;
+    overflow: visible;
+    padding: 0.75rem 1.25rem;
+    background: linear-gradient(135deg, rgba(0, 180, 255, 0.12) 0%, rgba(0, 180, 255, 0.04) 100%);
+    border: 2px solid rgba(0, 180, 255, 0.4);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    cursor: pointer;
 }
 
 .app-store-button:hover {
-    transform: translateY(-2px);
-    filter: brightness(1.1);
+    transform: translateY(-3px);
+    border-color: rgba(0, 180, 255, 0.7);
+    background: linear-gradient(135deg, rgba(0, 180, 255, 0.18) 0%, rgba(0, 180, 255, 0.08) 100%);
+    box-shadow: 0 8px 28px rgba(0, 180, 255, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.app-store-button img {
+    height: 100px;
+    width: auto;
+    display: block;
+    transition: transform 0.3s ease, filter 0.3s ease;
+    filter: drop-shadow(0 6px 20px rgba(0, 180, 255, 0.6)) drop-shadow(0 0 30px rgba(0, 180, 255, 0.35));
+}
+
+.app-store-button:hover img {
+    filter: brightness(1.1) drop-shadow(0 8px 28px rgba(0, 180, 255, 0.65)) drop-shadow(0 0 40px rgba(0, 180, 255, 0.4));
 }
 
 .app-store-button:hover img {
     transform: scale(1.02);
+}
+
+.app-store-button:active img {
+    filter: brightness(1.05) drop-shadow(0 6px 20px rgba(0, 180, 255, 0.6)) drop-shadow(0 0 30px rgba(0, 180, 255, 0.35));
 }
 
 .app-store-button:active {
@@ -494,24 +591,40 @@ header p {
     display: inline-block;
     transition: all 0.3s ease;
     text-decoration: none;
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.google-play-button img {
-    height: 280px;
-    width: auto;
-    display: block;
-    transition: transform 0.3s ease;
+    border-radius: 14px;
+    overflow: visible;
+    padding: 0.75rem 1.25rem;
+    background: linear-gradient(135deg, rgba(0, 180, 255, 0.12) 0%, rgba(0, 180, 255, 0.04) 100%);
+    border: 2px solid rgba(0, 180, 255, 0.4);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    cursor: pointer;
 }
 
 .google-play-button:hover {
-    transform: translateY(-2px);
-    filter: brightness(1.1);
+    transform: translateY(-3px);
+    border-color: rgba(0, 180, 255, 0.7);
+    background: linear-gradient(135deg, rgba(0, 180, 255, 0.18) 0%, rgba(0, 180, 255, 0.08) 100%);
+    box-shadow: 0 8px 28px rgba(0, 180, 255, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.google-play-button img {
+    height: 100px;
+    width: auto;
+    display: block;
+    transition: transform 0.3s ease, filter 0.3s ease;
+    filter: drop-shadow(0 6px 20px rgba(0, 180, 255, 0.6)) drop-shadow(0 0 30px rgba(0, 180, 255, 0.35));
+}
+
+.google-play-button:hover img {
+    filter: brightness(1.1) drop-shadow(0 8px 28px rgba(0, 180, 255, 0.65)) drop-shadow(0 0 40px rgba(0, 180, 255, 0.4));
 }
 
 .google-play-button:hover img {
     transform: scale(1.02);
+}
+
+.google-play-button:active img {
+    filter: brightness(1.05) drop-shadow(0 6px 20px rgba(0, 180, 255, 0.6)) drop-shadow(0 0 30px rgba(0, 180, 255, 0.35));
 }
 
 .google-play-button:active {
@@ -1009,6 +1122,20 @@ footer p {
         margin-bottom: 0.75rem;
     }
     
+    header.index-header {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+    header.index-header .logo {
+        margin-bottom: 0;
+        margin-top: -3.5rem;
+    }
+    header.index-header .menu-container {
+        margin-top: -5rem;
+        padding-top: 0.5rem;
+        border-top: 1px solid rgba(0, 180, 255, 0.25);
+    }
+    
     header h1 {
         font-size: 2rem;
     }
@@ -1021,6 +1148,10 @@ footer p {
         padding: 4rem 1.5rem;
         margin: 2rem 1rem;
         border-radius: 16px;
+    }
+    
+    body.index-page .hero {
+        margin-top: 5rem;
     }
     
     .hero h1,
@@ -1072,16 +1203,16 @@ footer p {
     
     .app-store-button img,
     .google-play-button img {
-        height: 220px;
+        height: 90px;
         max-width: 100%;
     }
-    
+
     .download-buttons {
         flex-direction: row;
         flex-wrap: nowrap;
-        gap: 1.5rem;
+        gap: 6rem;
     }
-    
+
     .price-amount {
         font-size: 3rem;
     }
@@ -1221,6 +1352,20 @@ footer p {
         margin-bottom: 0.5rem;
     }
     
+    header.index-header {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+    header.index-header .logo {
+        margin-bottom: 0;
+        margin-top: -3.5rem;
+    }
+    header.index-header .menu-container {
+        margin-top: -5rem;
+        padding-top: 0.5rem;
+        border-top: 1px solid rgba(0, 180, 255, 0.25);
+    }
+    
     header h1 {
         font-size: 1.75rem;
     }
@@ -1229,6 +1374,10 @@ footer p {
         padding: 3rem 1rem;
         margin: 1.5rem 0.5rem;
         border-radius: 16px;
+    }
+    
+    body.index-page .hero {
+        margin-top: 4rem;
     }
     
     .hero h1,
@@ -1285,16 +1434,16 @@ footer p {
     
     .app-store-button img,
     .google-play-button img {
-        height: 180px;
+        height: 80px;
         max-width: 100%;
     }
-    
+
     .download-buttons {
         flex-direction: row;
         flex-wrap: nowrap;
-        gap: 0.5rem;
+        gap: 4rem;
     }
-    
+
     .price-amount {
         font-size: 2.5rem;
     }
