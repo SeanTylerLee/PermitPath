@@ -605,15 +605,15 @@ header p {
 }
 
 .app-store-button img {
-    height: 100px;
+    height: 120px;
     width: auto;
     display: block;
     transition: transform 0.3s ease, filter 0.3s ease;
-    filter: drop-shadow(0 6px 20px rgba(0, 180, 255, 0.6)) drop-shadow(0 0 30px rgba(0, 180, 255, 0.35));
+    filter: none;
 }
 
 .app-store-button:hover img {
-    filter: brightness(1.1) drop-shadow(0 8px 28px rgba(0, 180, 255, 0.65)) drop-shadow(0 0 40px rgba(0, 180, 255, 0.4));
+    filter: brightness(1.1);
 }
 
 .app-store-button:hover img {
@@ -621,7 +621,7 @@ header p {
 }
 
 .app-store-button:active img {
-    filter: brightness(1.05) drop-shadow(0 6px 20px rgba(0, 180, 255, 0.6)) drop-shadow(0 0 30px rgba(0, 180, 255, 0.35));
+    filter: brightness(1.05);
 }
 
 .app-store-button:active {
@@ -645,15 +645,15 @@ header p {
 }
 
 .google-play-button img {
-    height: 100px;
+    height: 120px;
     width: auto;
     display: block;
     transition: transform 0.3s ease, filter 0.3s ease;
-    filter: drop-shadow(0 6px 20px rgba(0, 180, 255, 0.6)) drop-shadow(0 0 30px rgba(0, 180, 255, 0.35));
+    filter: none;
 }
 
 .google-play-button:hover img {
-    filter: brightness(1.1) drop-shadow(0 8px 28px rgba(0, 180, 255, 0.65)) drop-shadow(0 0 40px rgba(0, 180, 255, 0.4));
+    filter: brightness(1.1);
 }
 
 .google-play-button:hover img {
@@ -661,7 +661,7 @@ header p {
 }
 
 .google-play-button:active img {
-    filter: brightness(1.05) drop-shadow(0 6px 20px rgba(0, 180, 255, 0.6)) drop-shadow(0 0 30px rgba(0, 180, 255, 0.35));
+    filter: brightness(1.05);
 }
 
 .google-play-button:active {
@@ -1218,7 +1218,7 @@ footer p {
 
     .app-store-button img,
     .google-play-button img {
-        height: 90px;
+        height: 100px;
         max-width: 100%;
     }
 
@@ -1419,7 +1419,7 @@ footer p {
 
     .app-store-button img,
     .google-play-button img {
-        height: 80px;
+        height: 90px;
         max-width: 100%;
     }
 
