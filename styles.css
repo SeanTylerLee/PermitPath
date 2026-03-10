@@ -14,7 +14,7 @@ body {
     line-height: 1.7;
     color: white;
     background: radial-gradient(ellipse at center, #1e3a5f 0%, #0d1b2a 100%);
-    background-attachment: fixed;
+    background-attachment: scroll;
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -50,7 +50,7 @@ body.index-page::before {
     top: 0;
     left: 0;
     right: 0;
-    height: 98vh;
+    height: 120vh;
     background-image:
         linear-gradient(to bottom, transparent 50%, rgba(13, 27, 42, 0.3) 75%, rgba(13, 27, 42, 1) 100%),
         linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
@@ -68,22 +68,12 @@ body.pricing-page,
 body.contact-page,
 body.oversize-page {
     background:
-        url('images/background.png') no-repeat center top fixed,
+        url('images/background.png') no-repeat center top,
         radial-gradient(ellipse at center, #1e3a5f 0%, #0d1b2a 60%);
     background-size: cover, auto;
 }
 
-/* Extra dark overlay on non-index main pages for readability */
-body.features-page::after,
-body.pricing-page::after,
-body.contact-page::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.55);
-    z-index: -1;
-    pointer-events: none;
-}
+/* (Removed extra dark overlay on non-index pages so they match oversize routing look) */
 
 /* Index page: same single-row header (logo left, menu right), no divider; header/footer match page background */
 header.index-header {
@@ -158,7 +148,7 @@ body.index-page footer {
 /* Comparison image above pricing (index only) – narrower so background shows on sides */
 .pricing-comparison {
     width: 100%;
-    margin: -1in 0 0;
+    margin: 2rem 0 0;
     padding: 0;
     position: relative;
     z-index: 1;
@@ -248,7 +238,7 @@ body.index-page footer {
 /* Why PermitPath – feature row below video (index only) */
 .why-permitpath {
     position: relative;
-    padding: calc(2rem + 2in) 1.5rem 3rem;
+    padding: 2rem 1.5rem 3rem;
     max-width: 100%;
     margin: 0;
 }
@@ -331,16 +321,16 @@ body.index-page footer {
 }
 .why-permitpath__screen {
     display: block;
-    max-width: 100%;
+    max-width: min(480px, 100%);
     width: auto;
     height: auto;
-    margin: calc(1.5rem + 1in) auto 0;
+    margin: calc(1.5rem + 1in) auto 2.5rem;
     filter: brightness(0.82);
 }
 .why-permitpath__driver-wrap {
     position: relative;
     max-width: 100%;
-    margin: 1.5rem auto 0;
+    margin: 2rem auto 0;
 }
 .why-permitpath__driver {
     display: block;
@@ -526,7 +516,6 @@ body.contact-page .hero {
     box-shadow: none;
     backdrop-filter: none;
     margin: 3rem auto 2rem;
-    max-width: 720px;
 }
 body.features-page .hero::before,
 body.pricing-page .hero::before,
@@ -534,12 +523,24 @@ body.contact-page .hero::before {
     display: none;
 }
 
-/* Oversize routing page: darker blocks for readability on image background */
+/* Main interior pages: darker blocks for readability on image background, matching oversize routing page */
+body.features-page .hero,
+body.features-page .info,
+body.pricing-page .hero,
+body.pricing-page .info,
+body.contact-page .hero,
+body.contact-page .info,
 body.oversize-page .hero,
 body.oversize-page .info {
     background: rgba(3, 12, 24, 0.88);
     border: 1px solid rgba(0, 180, 255, 0.35);
+    border-radius: 20px;
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
+}
+/* Slightly narrower cards on Features page so top hero matches sections below */
+body.features-page .hero,
+body.features-page .info {
+    max-width: 720px;
 }
 body.oversize-page .hero::before {
     display: none;
@@ -1467,32 +1468,16 @@ header p {
     max-width: 100%;
 }
 
-/* Features/pricing: remove card-style blocks so content sits on background */
-body.features-page .info,
-body.pricing-page .info {
-    background: none;
-    border: none;
-    border-radius: 0;
-    box-shadow: none;
-    backdrop-filter: none;
-}
-body.features-page .feature-card,
-body.pricing-page .feature-card {
-    background: none;
-    border: none;
-    border-radius: 0;
-    box-shadow: none;
-}
-
 /* Legal Page Specific Styles */
 .legal-section {
-    background: rgba(0, 180, 255, 0.05);
-    border: 1px solid rgba(0, 180, 255, 0.2);
+    background: rgba(3, 12, 24, 0.88);
+    border: 1px solid rgba(0, 180, 255, 0.35);
     padding: 2.5rem 2rem;
     margin: 2rem auto;
     max-width: 900px;
-    border-radius: 12px;
-    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    backdrop-filter: blur(14px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
 }
 
 .legal-section h2 {
