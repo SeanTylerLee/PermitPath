@@ -42,7 +42,7 @@ body::before {
     display: none;
 }
 
-/* Index page: background image from desktop, extends down to cover pricing band, fades at bottom */
+/* Index page: background image from desktop, fades to soft edge at bottom of hero area */
 body.index-page::before {
     content: '';
     display: block;
@@ -50,7 +50,7 @@ body.index-page::before {
     top: 0;
     left: 0;
     right: 0;
-    height: 115vh;
+    height: 98vh;
     background-image:
         linear-gradient(to bottom, transparent 50%, rgba(13, 27, 42, 0.3) 75%, rgba(13, 27, 42, 1) 100%),
         linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
@@ -100,27 +100,42 @@ body.index-page footer {
     margin-top: 0;
 }
 
-/* Index: hero + tagline zone + comparison image */
+/* Index: hero + tagline zone (background image stays behind this) */
 .hero-area {
-    min-height: 98vh;
-    display: flex;
-    flex-direction: column;
+    min-height: 98vh; /* match top background height so content ends where image ends */
 }
 .hero-area .hero-tagline-wrap {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 0;
+    margin-top: 1in; /* keep \"Try For Free Today\" about an inch under the app buttons */
+    text-align: center;
 }
-.hero-area .pricing-comparison {
-    margin-top: auto;
+
+.hero-steps {
+    list-style: none;
+    margin: 1.25rem 0 0;
+    padding: 0;
+    text-align: left;
+    display: inline-block;
+}
+.hero-steps li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.45rem;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 0.4rem;
+}
+.hero-steps__number {
+    font-weight: 700;
+    color: #00B4FF;
+}
+.hero-steps__text {
+    font-weight: 400;
 }
 
 /* Comparison image above pricing (index only) – narrower so background shows on sides */
 .pricing-comparison {
     width: 100%;
-    margin: 0;
+    margin: -1in 0 0;
     padding: 0;
     position: relative;
     z-index: 1;
