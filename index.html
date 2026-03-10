@@ -18,20 +18,20 @@
     <meta property="og:url" content="https://permitpathnav.com/" />
     <meta property="og:title" content="PermitPath - Oversize & Overweight Permit Routing App" />
     <meta property="og:description" content="The first mobile app designed specifically for oversize and overweight permit routing. Build routes, share between iOS and Android, navigate in real-time." />
-    <meta property="og:image" content="https://permitpathnav.com/images/logo.png" />
+    <meta property="og:image" content="https://permitpathnav.com/images/pppp.png" />
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="https://permitpathnav.com/" />
     <meta property="twitter:title" content="PermitPath - Oversize & Overweight Permit Routing App" />
     <meta property="twitter:description" content="The first mobile app designed specifically for oversize and overweight permit routing." />
-    <meta property="twitter:image" content="https://permitpathnav.com/images/logo.png" />
+    <meta property="twitter:image" content="https://permitpathnav.com/images/pppp.png" />
     
     <!-- Favicon -->
-    <link rel="icon" type="image/png" sizes="32x32" href="images/logo.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="images/logo.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="images/logo.png" />
-    <link rel="icon" type="image/png" href="images/logo.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="images/pppp.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="images/pppp.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="images/pppp.png" />
+    <link rel="icon" type="image/png" href="images/pppp.png" />
     
     <!-- Link to CSS -->
     <link rel="stylesheet" href="styles.css" />
@@ -51,7 +51,7 @@
       "operatingSystem": "iOS, Android",
       "url": "https://permitpathnav.com",
       "sameAs": [],
-      "screenshot": "https://permitpathnav.com/images/logo.png",
+      "screenshot": "https://permitpathnav.com/images/pppp.png",
       "offers": {
         "@type": "Offer",
         "price": "3.99",
@@ -72,7 +72,7 @@
       "name": "PermitPath",
       "alternateName": "PermitPath",
       "url": "https://permitpathnav.com",
-      "logo": "https://permitpathnav.com/images/logo.png",
+      "logo": "https://permitpathnav.com/images/pppp.png",
       "description": "PermitPath - The first mobile app designed specifically for oversize and overweight permit routing for truck drivers.",
       "sameAs": []
     }
@@ -96,10 +96,9 @@
 <body class="index-page">
 
     <header class="index-header">
-        <img src="images/logo.png" alt="PermitPath - Oversize and Overweight Permit Routing App Logo" class="logo" width="400" height="100" />
+        <img src="images/websitehead.png" alt="PermitPath - Oversize and Overweight Permit Routing App Logo" class="logo" width="200" height="50" />
         <div class="menu-container">
             <button class="menu-toggle" aria-label="Toggle menu" id="menuToggle">
-                <span>Menu</span>
                 <span class="menu-icon">
                     <span></span>
                     <span></span>
@@ -119,21 +118,26 @@
 
     <section class="hero">
         <h1>Oversize Route <span class="highlight">Navigation</span></h1>
-        <div class="download-buttons">
-            <div class="download-option">
-                <a href="#" id="iosLink" class="app-store-button">
-                    <img src="images/apple.png" alt="Download on the App Store" width="120" height="100" />
-                </a>
-                <span class="download-label">App Store</span>
-            </div>
-            <div class="download-option">
-                <a href="#" id="androidLink" class="google-play-button">
-                    <img src="images/android.png" alt="Get it on Google Play" width="120" height="100" />
-                </a>
-                <span class="download-label">Google Play</span>
+        <div class="download-row">
+            <h2 class="download-today">Download <span class="highlight">Today</span></h2>
+            <div class="download-buttons">
+                <div class="download-option">
+                    <span class="download-label">App Store</span>
+                    <a href="https://apps.apple.com/app/id673847291" id="iosLink" class="app-store-button" target="_blank" rel="noopener noreferrer">
+                        <img src="images/apple.png" alt="Download on the App Store" width="120" height="100" />
+                    </a>
+                </div>
+                <div class="download-option">
+                    <span class="download-label">Google Play</span>
+                    <a href="https://play.google.com/store/apps/details?id=com.haulpath.permitpath" id="androidLink" class="google-play-button" target="_blank" rel="noopener noreferrer">
+                        <img src="images/android.png" alt="Get it on Google Play" width="120" height="100" />
+                    </a>
+                </div>
             </div>
         </div>
     </section>
+
+    <div class="scroll-spacer" aria-hidden="true"></div>
 
     <footer>
         <p>© 2026 PermitPath. All Rights Reserved.</p>
@@ -158,6 +162,24 @@
                 menuToggle.classList.remove('active');
             }
         });
+
+        // Compact top bar when scrolled down, normal when near top (hysteresis avoids glitch)
+        (function() {
+            var header = document.querySelector('header');
+            var scrollDown = 100;
+            var scrollUp = 40;
+            var compact = false;
+            window.addEventListener('scroll', function() {
+                var y = window.scrollY;
+                if (!compact && y > scrollDown) {
+                    compact = true;
+                    header.classList.add('header--compact');
+                } else if (compact && y < scrollUp) {
+                    compact = false;
+                    header.classList.remove('header--compact');
+                }
+            }, { passive: true });
+        })();
     </script>
 
 </body>

@@ -18,10 +18,10 @@
     <meta property="og:title" content="Contact PermitPath" />
     
     <!-- Favicon -->
-    <link rel="icon" type="image/png" sizes="32x32" href="images/logo.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="images/logo.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="images/logo.png" />
-    <link rel="icon" type="image/png" href="images/logo.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="images/pppp.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="images/pppp.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="images/pppp.png" />
+    <link rel="icon" type="image/png" href="images/pppp.png" />
     
     <!-- Link to CSS -->
     <link rel="stylesheet" href="styles.css" />
@@ -34,9 +34,9 @@
 <body>
 
     <header>
+        <a href="index.html"><img src="images/websitehead.png" alt="PermitPath - Oversize and Overweight Permit Routing App Logo" class="logo" width="200" height="50" /></a>
         <div class="menu-container">
             <button class="menu-toggle" aria-label="Toggle menu" id="menuToggle">
-                <span>Menu</span>
                 <span class="menu-icon">
                     <span></span>
                     <span></span>
@@ -115,6 +115,24 @@
                 menuToggle.classList.remove('active');
             }
         });
+
+        // Compact top bar when scrolled down, normal when near top (hysteresis avoids glitch)
+        (function() {
+            var header = document.querySelector('header');
+            var scrollDown = 100;
+            var scrollUp = 40;
+            var compact = false;
+            window.addEventListener('scroll', function() {
+                var y = window.scrollY;
+                if (!compact && y > scrollDown) {
+                    compact = true;
+                    header.classList.add('header--compact');
+                } else if (compact && y < scrollUp) {
+                    compact = false;
+                    header.classList.remove('header--compact');
+                }
+            }, { passive: true });
+        })();
 
         // Form submission handler
         const contactForm = document.getElementById('contactForm');

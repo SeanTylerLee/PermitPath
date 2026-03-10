@@ -23,40 +23,59 @@ body::before {
     display: none;
 }
 
-/* Index page: divider above menu, menu below divider; no extra space around logo; background only behind logo/menu, not stretching down */
-header.index-header {
-    border-bottom: none;
-    padding-top: 0;
-    padding-bottom: 0;
-    background: none;
-    box-shadow: none;
-    backdrop-filter: none;
-}
-header.index-header::before {
+/* Index page: background image from desktop */
+body.index-page::before {
     content: '';
+    display: block;
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    height: 14rem;
-    background: linear-gradient(180deg, rgba(30, 58, 95, 0.95) 0%, rgba(13, 27, 42, 0.98) 100%);
-    backdrop-filter: blur(20px);
+    height: 80vh;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('images/background.png');
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
     z-index: -1;
     pointer-events: none;
 }
-header.index-header .logo {
-    margin-bottom: 0;
-    margin-top: -3.5rem;
-    display: block;
+
+/* Index page: same single-row header (logo left, menu right), no divider; header/footer match page background */
+header.index-header {
+    border-bottom: none;
+    background: none;
+    box-shadow: none;
+    backdrop-filter: none;
 }
-header.index-header .menu-container {
-    border-top: 1px solid rgba(0, 180, 255, 0.25);
-    margin-top: -5rem;
-    padding-top: 0.5rem;
+header.index-header .logo {
+    margin: 0;
 }
 
 body.index-page .hero {
-    margin-top: 5rem;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    background: none;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+}
+body.index-page .hero::before {
+    display: none;
+}
+
+body.index-page footer {
+    background: none;
+    border-top: none;
+    backdrop-filter: none;
+}
+
+/* Extra space at bottom of index for testing scroll */
+.scroll-spacer {
+    min-height: 120vh;
 }
 
 .hero.contact-hero {
@@ -76,76 +95,96 @@ body.index-page .hero {
     border-bottom-color: #00B4FF;
 }
 
+/* Header compact top bar when scrolled down – sticky so no layout jump */
+header.header--compact {
+    position: sticky;
+    top: 0;
+    padding: 0.15rem 1rem;
+    background: linear-gradient(180deg, rgba(30, 58, 95, 0.98) 0%, rgba(13, 27, 42, 0.99) 100%);
+    border-bottom: 1px solid rgba(0, 180, 255, 0.25);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(20px);
+    transition: padding 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+header.header--compact .logo {
+    max-width: 120px;
+    min-width: 80px;
+    transition: max-width 0.2s ease, min-width 0.2s ease;
+}
+header.header--compact .menu-toggle {
+    padding: 0.35rem 0.5rem;
+}
+header.header--compact .menu-icon {
+    width: 14px;
+    height: 10px;
+}
+
 /* Header Styles */
 header {
     background: linear-gradient(180deg, rgba(30, 58, 95, 0.95) 0%, rgba(13, 27, 42, 0.98) 100%);
+    transition: padding 0.25s ease, box-shadow 0.25s ease;
     color: white;
-    padding: 1rem 1rem 0.75rem 1rem;
-    text-align: center;
+    padding: 0.4rem 1rem;
+    text-align: left;
     border-bottom: 1px solid rgba(0, 180, 255, 0.25);
     position: relative;
     z-index: 1000;
     backdrop-filter: blur(20px);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
 }
 
 header:has(.logo) {
-    padding: 0.75rem 1rem 0.5rem 1rem;
+    justify-content: space-between;
 }
 
-/* Header without logo (other pages) - adjust menu position */
 header .menu-container {
-    margin-top: 0.5rem;
-}
-
-header:has(.logo) .menu-container {
-    margin-top: 0.5rem;
+    margin-top: 0;
 }
 
 header .logo {
-    width: 100%;
-    max-width: 400px;
-    min-width: 240px;
+    width: auto;
+    max-width: 200px;
+    min-width: 120px;
     height: auto;
-    margin-bottom: 1rem;
-    margin-top: 0;
+    margin: 0;
     display: block;
-    margin-left: auto;
-    margin-right: auto;
     object-fit: contain;
+    flex-shrink: 0;
 }
 
-/* Menu Container */
+/* Menu Container - top right */
 .menu-container {
     position: relative;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
-    margin-top: 0.5rem;
+    margin-top: 0;
     z-index: 1001;
 }
 
-/* Menu Toggle Button */
+/* Menu Toggle Button - icon only (three lines) */
 .menu-toggle {
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
     border: 1px solid rgba(255, 255, 255, 0.22);
     border-radius: 12px;
     cursor: pointer;
-    padding: 0.75rem 1.35rem;
+    padding: 0.65rem 0.75rem;
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    justify-content: center;
     color: rgba(255, 255, 255, 0.95);
-    font-size: 0.8125rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     z-index: 1002;
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.06);
-    text-transform: uppercase;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
@@ -160,10 +199,6 @@ header .logo {
 .menu-toggle:active {
     transform: translateY(0);
     box-shadow: 0 1px 8px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.04);
-}
-
-.menu-toggle span:first-child {
-    display: inline-block;
 }
 
 .menu-icon {
@@ -204,12 +239,13 @@ header .logo {
     transform: rotate(-45deg) translate(4px, -4px);
 }
 
-/* Dropdown Menu */
+/* Dropdown Menu - aligned to top right */
 .dropdown-menu {
     position: absolute;
     top: calc(100% + 0.6rem);
-    left: 50%;
-    transform: translateX(-50%) translateY(-8px);
+    right: 0;
+    left: auto;
+    transform: translateY(-8px);
     background: linear-gradient(180deg, rgba(28, 45, 68, 0.98) 0%, rgba(13, 27, 42, 0.98) 100%);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -229,7 +265,7 @@ header .logo {
 .dropdown-menu.active {
     opacity: 1;
     visibility: visible;
-    transform: translateX(-50%) translateY(0);
+    transform: translateY(0);
 }
 
 .dropdown-menu a {
@@ -472,24 +508,47 @@ header p {
     box-shadow: 0 4px 15px rgba(0, 180, 255, 0.4);
 }
 
-/* Download Buttons Container */
+/* Download row: "Download Today" on top, then buttons below */
+.download-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+    margin-top: 5rem;
+}
+
+/* Use h2 so .hero h2 styles apply – same look as "Oversize Route Navigation" */
+.hero .download-today {
+    margin: 0;
+}
+
+/* Download Buttons Container – labels and buttons lined up */
 .download-buttons {
     display: flex;
-    flex-direction: row;
-    gap: 7rem;
+    flex-direction: column;
+    gap: 1rem;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     flex-wrap: nowrap;
     position: relative;
     z-index: 1;
-    margin-top: 3rem;
 }
 
 .download-option {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    gap: 0.6rem;
+    gap: 1.25rem;
+    min-width: 280px;
+}
+
+.download-option .app-store-button,
+.download-option .google-play-button {
+    margin-left: 0.5rem;
 }
 
 .download-label {
@@ -499,6 +558,9 @@ header p {
     text-transform: uppercase;
     color: rgba(255, 255, 255, 0.9);
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    width: 7.5rem;
+    min-width: 7.5rem;
+    text-align: right;
 }
 
 .download-buttons .button {
@@ -531,20 +593,15 @@ header p {
     display: inline-block;
     transition: all 0.3s ease;
     text-decoration: none;
-    border-radius: 14px;
-    overflow: visible;
-    padding: 0.75rem 1.25rem;
-    background: linear-gradient(135deg, rgba(0, 180, 255, 0.12) 0%, rgba(0, 180, 255, 0.04) 100%);
-    border: 2px solid rgba(0, 180, 255, 0.4);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    padding: 0;
+    background: none;
+    border: none;
+    box-shadow: none;
     cursor: pointer;
 }
 
 .app-store-button:hover {
     transform: translateY(-3px);
-    border-color: rgba(0, 180, 255, 0.7);
-    background: linear-gradient(135deg, rgba(0, 180, 255, 0.18) 0%, rgba(0, 180, 255, 0.08) 100%);
-    box-shadow: 0 8px 28px rgba(0, 180, 255, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
 .app-store-button img {
@@ -576,20 +633,15 @@ header p {
     display: inline-block;
     transition: all 0.3s ease;
     text-decoration: none;
-    border-radius: 14px;
-    overflow: visible;
-    padding: 0.75rem 1.25rem;
-    background: linear-gradient(135deg, rgba(0, 180, 255, 0.12) 0%, rgba(0, 180, 255, 0.04) 100%);
-    border: 2px solid rgba(0, 180, 255, 0.4);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    padding: 0;
+    background: none;
+    border: none;
+    box-shadow: none;
     cursor: pointer;
 }
 
 .google-play-button:hover {
     transform: translateY(-3px);
-    border-color: rgba(0, 180, 255, 0.7);
-    background: linear-gradient(135deg, rgba(0, 180, 255, 0.18) 0%, rgba(0, 180, 255, 0.08) 100%);
-    box-shadow: 0 8px 28px rgba(0, 180, 255, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
 .google-play-button img {
@@ -913,7 +965,6 @@ header p {
     transform: translateY(-8px);
     border-color: rgba(0, 180, 255, 0.5);
     box-shadow: 0 12px 40px rgba(0, 180, 255, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
-    background: linear-gradient(135deg, rgba(0, 180, 255, 0.18) 0%, rgba(0, 180, 255, 0.08) 100%);
 }
 
 .feature-card:hover::before {
@@ -1075,13 +1126,12 @@ footer p {
     }
     
     header .logo {
-        margin-bottom: 0.75rem;
+        max-width: 180px;
+        min-width: 100px;
     }
     
     .menu-toggle {
-        padding: 0.75rem 1.25rem;
-        font-size: 0.85rem;
-        letter-spacing: 0.3px;
+        padding: 0.6rem 0.7rem;
     }
     
     .menu-icon {
@@ -1098,26 +1148,6 @@ footer p {
         font-size: 0.85rem;
     }
     
-    header .logo {
-        max-width: 360px;
-        min-width: 200px;
-        margin-bottom: 0.75rem;
-    }
-    
-    header.index-header {
-        padding-top: 0;
-        padding-bottom: 0;
-    }
-    header.index-header .logo {
-        margin-bottom: 0;
-        margin-top: -3.5rem;
-    }
-    header.index-header .menu-container {
-        margin-top: -5rem;
-        padding-top: 0.5rem;
-        border-top: 1px solid rgba(0, 180, 255, 0.25);
-    }
-    
     header h1 {
         font-size: 2rem;
     }
@@ -1131,9 +1161,12 @@ footer p {
         margin: 2rem 1rem;
         border-radius: 16px;
     }
-    
+
     body.index-page .hero {
-        margin-top: 5rem;
+        margin-top: 2rem;
+        border-radius: 0;
+        margin-left: 1rem;
+        margin-right: 1rem;
     }
     
     .hero h1,
@@ -1175,24 +1208,18 @@ footer p {
     
     .download-buttons {
         flex-direction: column;
-        gap: 0.75rem;
+        gap: 1rem;
     }
-    
+
     .download-buttons .button {
         width: 100%;
         min-width: auto;
     }
-    
+
     .app-store-button img,
     .google-play-button img {
         height: 90px;
         max-width: 100%;
-    }
-
-    .download-buttons {
-        flex-direction: row;
-        flex-wrap: nowrap;
-        gap: 6rem;
     }
 
     .price-amount {
@@ -1298,13 +1325,12 @@ footer p {
     }
     
     header .logo {
-        margin-bottom: 0.5rem;
+        max-width: 160px;
+        min-width: 90px;
     }
     
     .menu-toggle {
-        padding: 0.625rem 1rem;
-        font-size: 0.8rem;
-        letter-spacing: 0.3px;
+        padding: 0.55rem 0.65rem;
     }
     
     .menu-icon {
@@ -1322,26 +1348,6 @@ footer p {
         font-size: 0.8rem;
     }
     
-    header .logo {
-        max-width: 300px;
-        min-width: 160px;
-        margin-bottom: 0.5rem;
-    }
-    
-    header.index-header {
-        padding-top: 0;
-        padding-bottom: 0;
-    }
-    header.index-header .logo {
-        margin-bottom: 0;
-        margin-top: -3.5rem;
-    }
-    header.index-header .menu-container {
-        margin-top: -5rem;
-        padding-top: 0.5rem;
-        border-top: 1px solid rgba(0, 180, 255, 0.25);
-    }
-    
     header h1 {
         font-size: 1.75rem;
     }
@@ -1351,9 +1357,12 @@ footer p {
         margin: 1.5rem 0.5rem;
         border-radius: 16px;
     }
-    
+
     body.index-page .hero {
-        margin-top: 4rem;
+        margin-top: 2rem;
+        border-radius: 0;
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
     }
     
     .hero h1,
@@ -1400,24 +1409,18 @@ footer p {
     
     .download-buttons {
         flex-direction: column;
-        gap: 0.75rem;
+        gap: 1rem;
     }
-    
+
     .download-buttons .button {
         width: 100%;
         min-width: auto;
     }
-    
+
     .app-store-button img,
     .google-play-button img {
         height: 80px;
         max-width: 100%;
-    }
-
-    .download-buttons {
-        flex-direction: row;
-        flex-wrap: nowrap;
-        gap: 4rem;
     }
 
     .price-amount {
