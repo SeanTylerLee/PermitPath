@@ -150,7 +150,7 @@
     </div>
 
     <section class="pricing-comparison" aria-label="PermitPath vs other apps">
-        <img src="images/newadd.png" alt="PermitPath $3.99 per month with unlimited waypoints, iOS and Android, built for trucking. Other apps $5.99 per month, 150 waypoints, iOS only, built for cars." class="pricing-comparison__img" width="800" height="auto" />
+        <img src="images/comp.png" alt="PermitPath $3.99 per month with unlimited waypoints, iOS and Android, built for trucking. Other apps $5.99 per month, 150 waypoints, iOS only, built for cars." class="pricing-comparison__img" width="800" height="auto" />
     </section>
 
     <section class="pricing-band" aria-label="Pricing">
@@ -185,6 +185,12 @@
             </ul>
             <p class="why-permitpath__tagline">Never get off route when hauling <span class="highlight">oversize</span> loads.</p>
             <img src="images/screenpp.png" alt="PermitPath app screen" class="why-permitpath__screen" width="600" height="auto" />
+            <div class="why-permitpath__driver-wrap">
+                <img src="images/driver.jpg" alt="Oversize driver using PermitPath" class="why-permitpath__driver" width="600" height="auto" />
+                <div class="why-permitpath__driver-text">
+                    No more reading permits while driving
+                </div>
+            </div>
 
             <section class="testimonials" aria-label="Customer testimonials">
                 <h3 class="testimonials__heading">What drivers are saying</h3>
@@ -206,9 +212,28 @@
         </div>
     </section>
 
+    <section class="bg-video-strip" aria-hidden="true">
+        <video class="bg-video-strip__video" src="videos/bg.mp4" autoplay muted loop playsinline></video>
+        <div class="bg-video-strip__overlay"></div>
+        <div class="bg-video-strip__content">
+            <div class="bg-video-strip__headline">Download PermitPath and start routing smarter today.</div>
+            <div class="download-buttons bg-video-strip__buttons">
+                <div class="download-option">
+                    <a href="https://apps.apple.com/app/id673847291" class="app-store-button" target="_blank" rel="noopener noreferrer">
+                        <img src="images/applestore.png" alt="Download on the App Store" width="72" height="60" />
+                    </a>
+                </div>
+                <div class="download-option">
+                    <a href="https://play.google.com/store/apps/details?id=com.haulpath.permitpath" class="google-play-button" target="_blank" rel="noopener noreferrer">
+                        <img src="images/googleplay.png" alt="Get it on Google Play" width="72" height="60" />
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <footer>
         <p>© 2026 PermitPath. All Rights Reserved.</p>
-        <p class="view-counter" id="viewCounter" aria-label="Page view count"></p>
     </footer>
 
     <script>
@@ -271,25 +296,6 @@
             observer.observe(video);
         })();
 
-        // Discreet page view counter under footer copyright
-        (function() {
-            var counterEl = document.getElementById('viewCounter');
-            if (!counterEl) return;
-            // Show a default starting value even if the counter API is blocked (e.g. in preview)
-            counterEl.textContent = '1,050';
-            fetch('https://api.countapi.xyz/hit/permitpathnav.com/index')
-                .then(function(response) { return response.json(); })
-                .then(function(data) {
-                    if (data && typeof data.value === 'number') {
-                        // CountAPI starts at 0 and first hit returns 1; offset so display starts at 1,050
-                        var baseOffset = 1049;
-                        counterEl.textContent = (data.value + baseOffset).toLocaleString();
-                    }
-                })
-                .catch(function() {
-                    // Fail silently; counter is optional
-                });
-        })();
     </script>
 
 </body>
