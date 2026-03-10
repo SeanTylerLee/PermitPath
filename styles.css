@@ -42,7 +42,7 @@ body::before {
     display: none;
 }
 
-/* Index page: background image from desktop, fades to soft edge at bottom */
+/* Index page: background image from desktop, extends down to cover pricing band, fades at bottom */
 body.index-page::before {
     content: '';
     display: block;
@@ -50,7 +50,7 @@ body.index-page::before {
     top: 0;
     left: 0;
     right: 0;
-    height: 98vh;
+    height: 115vh;
     background-image:
         linear-gradient(to bottom, transparent 50%, rgba(13, 27, 42, 0.3) 75%, rgba(13, 27, 42, 1) 100%),
         linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
@@ -97,53 +97,68 @@ body.index-page footer {
     background: none;
     border-top: none;
     backdrop-filter: none;
+    margin-top: 0;
 }
 
-/* Index: hero + comparison image; image sits lower so more background shows above it */
+/* Index: hero + tagline zone + comparison image */
 .hero-area {
     min-height: 98vh;
     display: flex;
     flex-direction: column;
 }
+.hero-area .hero-tagline-wrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+}
 .hero-area .pricing-comparison {
     margin-top: auto;
 }
 
-/* Comparison image above pricing (index only) */
+/* Comparison image above pricing (index only) – narrower so background shows on sides */
 .pricing-comparison {
     width: 100%;
     margin: 0;
     padding: 0;
     position: relative;
     z-index: 1;
+    text-align: center;
 }
 .pricing-comparison__img {
     display: block;
-    width: 100%;
-    max-width: 100%;
+    width: auto;
+    max-width: 72%;
     height: auto;
+    margin: 0 auto;
     vertical-align: middle;
+    border-radius: 16px;
+    overflow: hidden;
 }
 
-/* Full-width pricing band where background image ends (index only) – theme-matched */
+/* Full-width pricing band – top background image shows behind it (index only) */
 .pricing-band {
     width: 100%;
     max-width: 100%;
     margin: 0;
     padding: 1.75rem 1.5rem 0;
-    background: linear-gradient(180deg, #0d1b2a 0%, #0a1520 100%);
     text-align: center;
     position: relative;
     z-index: 1;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
 }
 .pricing-band__price {
     margin: 0 0 0.4em;
-    font-size: 2rem;
+    font-size: 3rem;
     font-weight: 800;
+    color: white;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+}
+.pricing-band__price .highlight {
     color: #00B4FF;
-    letter-spacing: 0.03em;
-    text-shadow: 0 0 32px rgba(0, 180, 255, 0.6), 0 0 12px rgba(0, 180, 255, 0.4);
+    text-shadow: 0 0 30px rgba(0, 180, 255, 0.5);
 }
 .pricing-band__tagline {
     margin: 0;
@@ -155,7 +170,7 @@ body.index-page footer {
 
 /* Video below pricing band */
 .video-section {
-    margin-top: 0;
+    margin-top: 1.75rem;
     padding: 0;
     display: flex;
     justify-content: center;
@@ -184,34 +199,25 @@ body.index-page footer {
 
 .hero-video {
     width: 100%;
-    max-width: 100%;
+    max-width: 100vw;
     height: auto;
     display: block;
     pointer-events: none;
+    object-fit: cover;
 }
 
-/* Why PermitPath – feature row below video (index only), same background image as hero */
+/* Why PermitPath – feature row below video (index only) */
 .why-permitpath {
     position: relative;
-    padding: 2rem 1.5rem 3rem;
+    padding: calc(2rem + 2in) 1.5rem 3rem;
     max-width: 100%;
     margin: 0;
-    min-height: 50vh;
-}
-.why-permitpath::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background-image:
-        linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-        url('images/background.png');
-    background-size: cover;
-    background-position: center top;
-    background-repeat: no-repeat;
 }
 .why-permitpath .why-permitpath__title,
-.why-permitpath .why-permitpath__list {
+.why-permitpath .why-permitpath__tagline,
+.why-permitpath .why-permitpath__list,
+.why-permitpath .why-permitpath__screen,
+.why-permitpath .testimonials {
     position: relative;
     z-index: 1;
 }
@@ -232,8 +238,26 @@ body.index-page footer {
     color: #00B4FF;
     text-shadow: 0 0 30px rgba(0, 180, 255, 0.5);
 }
+/* Tagline: same look and style as title, below the points */
+.why-permitpath__tagline {
+    text-align: center;
+    font-size: 3rem;
+    font-weight: 800;
+    margin-top: calc(1.5rem + 1in);
+    margin-bottom: 0;
+    color: white;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+}
+.why-permitpath__tagline .highlight {
+    color: #00B4FF;
+    text-shadow: 0 0 30px rgba(0, 180, 255, 0.5);
+}
 
-/* Points: single-column list, lined up and professional */
+/* Points: single-column list, centered */
 .why-permitpath__list {
     list-style: none;
     margin: 0;
@@ -241,16 +265,16 @@ body.index-page footer {
     max-width: 520px;
     margin-left: auto;
     margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 .why-permitpath__item {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 0.75rem;
     padding: 0.5rem 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-}
-.why-permitpath__item:last-child {
-    border-bottom: none;
 }
 .why-permitpath__icon {
     display: inline-block;
@@ -265,6 +289,80 @@ body.index-page footer {
     font-size: 1.05rem;
     font-weight: 500;
     color: rgba(255, 255, 255, 0.95);
+}
+.why-permitpath__screen {
+    display: block;
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    margin: calc(1.5rem + 1in) auto 0;
+    filter: brightness(0.82);
+}
+
+/* Customer testimonials under screenshot */
+.testimonials {
+    margin-top: 2.5rem;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.testimonials__heading {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.02em;
+    text-shadow: 0 0 20px rgba(0, 180, 255, 0.6), 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+.testimonials__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+}
+.testimonial-card {
+    margin: 0;
+    padding: 1.25rem 1rem;
+    background: rgba(13, 27, 42, 0.6);
+    border: 1px solid rgba(0, 180, 255, 0.2);
+    border-radius: 12px;
+    text-align: center;
+}
+.testimonial-card__quote {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.95);
+    margin: 0 0 0.75rem;
+    font-style: italic;
+}
+.testimonial-card__author {
+    font-size: 0.85rem;
+    color: rgba(0, 180, 255, 0.9);
+    margin: 0;
+    font-style: normal;
+}
+
+/* Bottom section: Why PermitPath, testimonials – background image (index only) */
+.bottom-background {
+    position: relative;
+    min-height: 220vh;
+    width: 100%;
+}
+.bottom-background::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    min-height: 220vh;
+    background-image:
+        linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+        url('images/background.png');
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    z-index: -1;
 }
 
 /* Extra space at bottom of index for testing scroll */
@@ -560,6 +658,24 @@ header p {
 }
 
 .hero h2 .highlight {
+    color: #00B4FF;
+    text-shadow: 0 0 30px rgba(0, 180, 255, 0.5);
+}
+
+/* Centered between app buttons and newadd image – same style as Oversize Route Navigation */
+.hero-tagline {
+    font-size: 3rem;
+    font-weight: 800;
+    margin: 0;
+    color: white;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+}
+.hero-tagline .highlight {
     color: #00B4FF;
     text-shadow: 0 0 30px rgba(0, 180, 255, 0.5);
 }
@@ -1295,13 +1411,23 @@ footer p {
     letter-spacing: 0.3px;
 }
 
+.view-counter {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     /* Images and video fit screen; no horizontal overflow */
-    .hero-video,
-    .pricing-comparison__img {
+    .hero-video {
         width: 100%;
         max-width: 100vw;
+        object-fit: cover;
+    }
+    .pricing-comparison__img {
+        max-width: 85%;
+        width: auto;
         height: auto;
         object-fit: contain;
     }
@@ -1366,12 +1492,18 @@ footer p {
     }
     
     .hero h1,
-    .hero h2 {
+    .hero h2,
+    .hero-tagline,
+    .pricing-band__price {
         font-size: 2.25rem;
     }
 
-    .why-permitpath__title {
+    .why-permitpath__title,
+    .why-permitpath__tagline {
         font-size: 2.25rem;
+    }
+    .testimonials__grid {
+        grid-template-columns: repeat(2, 1fr);
     }
     
     .testers-hero h2 {
@@ -1566,7 +1698,7 @@ footer p {
     }
 
     .pricing-band__price {
-        font-size: 1.35rem;
+        font-size: 1.875rem;
     }
     .pricing-band__tagline {
         font-size: 0.875rem;
@@ -1575,8 +1707,11 @@ footer p {
     .why-permitpath {
         padding: 2rem 1rem 2.5rem;
     }
-    .why-permitpath__title {
+    .why-permitpath__title,
+    .why-permitpath__tagline {
         font-size: 1.875rem;
+    }
+    .why-permitpath__title {
         margin-bottom: 1.25rem;
     }
     .why-permitpath__list {
@@ -1586,12 +1721,19 @@ footer p {
     .why-permitpath__label {
         font-size: 0.95rem;
     }
-    
-    .hero h1,
-    .hero h2 {
-        font-size: 1.875rem;
+    .testimonials__grid {
+        grid-template-columns: 1fr;
+    }
+    .testimonials__heading {
+        font-size: 1.25rem;
     }
     
+    .hero h1,
+    .hero h2,
+    .hero-tagline {
+        font-size: 1.875rem;
+    }
+
     .testers-hero h2 {
         font-size: 1.6rem;
     }

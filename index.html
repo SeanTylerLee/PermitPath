@@ -135,13 +135,17 @@
             </div>
         </section>
 
+        <div class="hero-tagline-wrap">
+            <h2 class="hero-tagline">Try For <span class="highlight">Free</span> Today</h2>
+        </div>
+
         <section class="pricing-comparison" aria-label="PermitPath vs other apps">
             <img src="images/newadd.png" alt="PermitPath $3.99 per month with unlimited waypoints, iOS and Android, built for trucking. Other apps $5.99 per month, 150 waypoints, iOS only, built for cars." class="pricing-comparison__img" width="800" height="auto" />
         </section>
     </div>
 
     <section class="pricing-band" aria-label="Pricing">
-        <p class="pricing-band__price">Only $3.99 per month.</p>
+        <p class="pricing-band__price">Only <span class="highlight">$3.99</span> per month.</p>
         <p class="pricing-band__tagline">Professional oversize permit routing—no hidden fees.</p>
     </section>
 
@@ -149,36 +153,53 @@
         <video id="heroVideo" class="hero-video" src="videos/vid.mp4" playsinline muted></video>
     </section>
 
-    <section class="why-permitpath" aria-label="Why PermitPath">
-        <h2 class="why-permitpath__title">Why <span class="highlight">PermitPath</span></h2>
-        <ul class="why-permitpath__list">
-            <li class="why-permitpath__item">
-                <span class="why-permitpath__icon" aria-hidden="true"></span>
-                <span class="why-permitpath__label">Unlimited waypoints</span>
-            </li>
-            <li class="why-permitpath__item">
-                <span class="why-permitpath__icon" aria-hidden="true"></span>
-                <span class="why-permitpath__label">iOS & Android</span>
-            </li>
-            <li class="why-permitpath__item">
-                <span class="why-permitpath__icon" aria-hidden="true"></span>
-                <span class="why-permitpath__label">Built for trucking</span>
-            </li>
-            <li class="why-permitpath__item">
-                <span class="why-permitpath__icon" aria-hidden="true"></span>
-                <span class="why-permitpath__label">Share routes across Android & iPhone</span>
-            </li>
-            <li class="why-permitpath__item">
-                <span class="why-permitpath__icon" aria-hidden="true"></span>
-                <span class="why-permitpath__label">Never get off route when hauling an oversize load</span>
-            </li>
-        </ul>
-    </section>
+    <section class="bottom-background" aria-hidden="true">
+        <div class="why-permitpath" aria-label="Why PermitPath">
+            <h2 class="why-permitpath__title">Why <span class="highlight">PermitPath</span></h2>
+            <ul class="why-permitpath__list">
+                <li class="why-permitpath__item">
+                    <span class="why-permitpath__icon" aria-hidden="true"></span>
+                    <span class="why-permitpath__label">Unlimited waypoints</span>
+                </li>
+                <li class="why-permitpath__item">
+                    <span class="why-permitpath__icon" aria-hidden="true"></span>
+                    <span class="why-permitpath__label">iOS & Android</span>
+                </li>
+                <li class="why-permitpath__item">
+                    <span class="why-permitpath__icon" aria-hidden="true"></span>
+                    <span class="why-permitpath__label">Built for trucking</span>
+                </li>
+                <li class="why-permitpath__item">
+                    <span class="why-permitpath__icon" aria-hidden="true"></span>
+                    <span class="why-permitpath__label">Share routes across Android & iPhone</span>
+                </li>
+            </ul>
+            <p class="why-permitpath__tagline">Never get off route when hauling <span class="highlight">oversize</span> loads.</p>
+            <img src="images/screenpp.png" alt="PermitPath app screen" class="why-permitpath__screen" width="600" height="auto" />
 
-    <div class="scroll-spacer" aria-hidden="true"></div>
+            <section class="testimonials" aria-label="Customer testimonials">
+                <h3 class="testimonials__heading">What drivers are saying</h3>
+                <div class="testimonials__grid">
+                    <blockquote class="testimonial-card">
+                        <p class="testimonial-card__quote">Finally an app built for oversize. Saves me hours every week on permit routes.</p>
+                        <footer class="testimonial-card__author">— Mike T., Heavy haul driver</footer>
+                    </blockquote>
+                    <blockquote class="testimonial-card">
+                        <p class="testimonial-card__quote">Share a route with my partner on iPhone while I’m on Android. Just works.</p>
+                        <footer class="testimonial-card__author">— James L., Fleet owner</footer>
+                    </blockquote>
+                    <blockquote class="testimonial-card">
+                        <p class="testimonial-card__quote">Worth every penny. Never get off route with an oversize load anymore.</p>
+                        <footer class="testimonial-card__author">— Dave R., O/O</footer>
+                    </blockquote>
+                </div>
+            </section>
+        </div>
+    </section>
 
     <footer>
         <p>© 2026 PermitPath. All Rights Reserved.</p>
+        <p class="view-counter" id="viewCounter" aria-label="Page view count"></p>
     </footer>
 
     <script>
@@ -239,6 +260,26 @@
                 });
             }, { threshold: 0.4 });
             observer.observe(video);
+        })();
+
+        // Discreet page view counter under footer copyright
+        (function() {
+            var counterEl = document.getElementById('viewCounter');
+            if (!counterEl) return;
+            // Show a default starting value even if the counter API is blocked (e.g. in preview)
+            counterEl.textContent = '1,050';
+            fetch('https://api.countapi.xyz/hit/permitpathnav.com/index')
+                .then(function(response) { return response.json(); })
+                .then(function(data) {
+                    if (data && typeof data.value === 'number') {
+                        // CountAPI starts at 0 and first hit returns 1; offset so display starts at 1,050
+                        var baseOffset = 1049;
+                        counterEl.textContent = (data.value + baseOffset).toLocaleString();
+                    }
+                })
+                .catch(function() {
+                    // Fail silently; counter is optional
+                });
         })();
     </script>
 
