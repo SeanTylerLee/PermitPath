@@ -1562,6 +1562,20 @@ footer p {
     letter-spacing: 0.3px;
 }
 
+.footer-tagline {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+}
+.footer-tagline .highlight {
+    color: #00B4FF;
+    text-shadow: 0 0 30px rgba(0, 180, 255, 0.5);
+}
+
 /* On larger screens, keep a mobile-like narrow column for main content */
 @media (min-width: 1024px) {
     .hero,
