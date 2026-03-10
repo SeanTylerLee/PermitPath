@@ -5,6 +5,10 @@
     box-sizing: border-box;
 }
 
+html {
+    overflow-x: hidden;
+}
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     line-height: 1.7;
@@ -17,6 +21,21 @@ body {
     position: relative;
     /* Ensure background is always visible on mobile */
     background-color: #0d1b2a;
+    overflow-x: hidden;
+    /* Prevent double-tap zoom on mobile */
+    touch-action: manipulation;
+}
+
+/* All images and videos fit viewport; no overflow on mobile */
+img,
+video {
+    max-width: 100%;
+    height: auto;
+}
+video {
+    object-fit: contain;
+    width: 100%;
+    display: block;
 }
 
 body::before {
@@ -137,7 +156,7 @@ body.index-page footer {
 /* Video below pricing band */
 .video-section {
     margin-top: 0;
-    padding: 0 0 2rem;
+    padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -169,6 +188,83 @@ body.index-page footer {
     height: auto;
     display: block;
     pointer-events: none;
+}
+
+/* Why PermitPath – feature row below video (index only), same background image as hero */
+.why-permitpath {
+    position: relative;
+    padding: 2rem 1.5rem 3rem;
+    max-width: 100%;
+    margin: 0;
+    min-height: 50vh;
+}
+.why-permitpath::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image:
+        linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+        url('images/background.png');
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+}
+.why-permitpath .why-permitpath__title,
+.why-permitpath .why-permitpath__list {
+    position: relative;
+    z-index: 1;
+}
+/* Title: same style as hero "Oversize Route Navigation" */
+.why-permitpath__title {
+    text-align: center;
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    color: white;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+}
+.why-permitpath__title .highlight {
+    color: #00B4FF;
+    text-shadow: 0 0 30px rgba(0, 180, 255, 0.5);
+}
+
+/* Points: single-column list, lined up and professional */
+.why-permitpath__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.why-permitpath__item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+.why-permitpath__item:last-child {
+    border-bottom: none;
+}
+.why-permitpath__icon {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #00B4FF;
+    box-shadow: 0 0 12px rgba(0, 180, 255, 0.5);
+    flex-shrink: 0;
+}
+.why-permitpath__label {
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.95);
 }
 
 /* Extra space at bottom of index for testing scroll */
@@ -1201,6 +1297,15 @@ footer p {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    /* Images and video fit screen; no horizontal overflow */
+    .hero-video,
+    .pricing-comparison__img {
+        width: 100%;
+        max-width: 100vw;
+        height: auto;
+        object-fit: contain;
+    }
+
     /* Fix background on mobile iOS Safari - keep it fixed but ensure fallback */
     body {
         background-attachment: fixed;
@@ -1262,6 +1367,10 @@ footer p {
     
     .hero h1,
     .hero h2 {
+        font-size: 2.25rem;
+    }
+
+    .why-permitpath__title {
         font-size: 2.25rem;
     }
     
@@ -1461,6 +1570,21 @@ footer p {
     }
     .pricing-band__tagline {
         font-size: 0.875rem;
+    }
+
+    .why-permitpath {
+        padding: 2rem 1rem 2.5rem;
+    }
+    .why-permitpath__title {
+        font-size: 1.875rem;
+        margin-bottom: 1.25rem;
+    }
+    .why-permitpath__list {
+        max-width: 100%;
+        padding: 0 0.5rem;
+    }
+    .why-permitpath__label {
+        font-size: 0.95rem;
     }
     
     .hero h1,
