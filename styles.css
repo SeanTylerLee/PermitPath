@@ -23,7 +23,7 @@ body::before {
     display: none;
 }
 
-/* Index page: background image from desktop */
+/* Index page: background image from desktop, fades to soft edge at bottom */
 body.index-page::before {
     content: '';
     display: block;
@@ -31,11 +31,14 @@ body.index-page::before {
     top: 0;
     left: 0;
     right: 0;
-    height: 80vh;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('images/background.png');
-    background-size: cover;
-    background-position: center top;
-    background-repeat: no-repeat;
+    height: 98vh;
+    background-image:
+        linear-gradient(to bottom, transparent 50%, rgba(13, 27, 42, 0.3) 75%, rgba(13, 27, 42, 1) 100%),
+        linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+        url('images/background.png');
+    background-size: cover, cover, cover;
+    background-position: center top, center top, center top;
+    background-repeat: no-repeat, no-repeat, no-repeat;
     z-index: -1;
     pointer-events: none;
 }
@@ -49,11 +52,15 @@ header.index-header {
 }
 header.index-header .logo {
     margin: 0;
+    margin-top: 0.4rem;
+    margin-left: 0.75rem;
 }
 
 body.index-page .hero {
     margin-top: 2rem;
-    padding-top: 2rem;
+    margin-bottom: 0;
+    padding-top: 4.5rem;
+    padding-bottom: 0;
     background: none;
     border: none;
     border-radius: 0;
@@ -71,6 +78,97 @@ body.index-page footer {
     background: none;
     border-top: none;
     backdrop-filter: none;
+}
+
+/* Index: hero + comparison image; image sits lower so more background shows above it */
+.hero-area {
+    min-height: 98vh;
+    display: flex;
+    flex-direction: column;
+}
+.hero-area .pricing-comparison {
+    margin-top: auto;
+}
+
+/* Comparison image above pricing (index only) */
+.pricing-comparison {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    z-index: 1;
+}
+.pricing-comparison__img {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    vertical-align: middle;
+}
+
+/* Full-width pricing band where background image ends (index only) – theme-matched */
+.pricing-band {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 1.75rem 1.5rem 0;
+    background: linear-gradient(180deg, #0d1b2a 0%, #0a1520 100%);
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+}
+.pricing-band__price {
+    margin: 0 0 0.4em;
+    font-size: 2rem;
+    font-weight: 800;
+    color: #00B4FF;
+    letter-spacing: 0.03em;
+    text-shadow: 0 0 32px rgba(0, 180, 255, 0.6), 0 0 12px rgba(0, 180, 255, 0.4);
+}
+.pricing-band__tagline {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.88);
+    letter-spacing: 0.02em;
+}
+
+/* Video below pricing band */
+.video-section {
+    margin-top: 0;
+    padding: 0 0 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+/* Gradient fade between background image and video */
+.video-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 120px;
+    background: linear-gradient(to bottom, rgba(13, 27, 42, 0.95) 0%, rgba(13, 27, 42, 0.4) 50%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.video-section .hero-video {
+    position: relative;
+    z-index: 1;
+}
+
+.hero-video {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    pointer-events: none;
 }
 
 /* Extra space at bottom of index for testing scroll */
@@ -518,7 +616,7 @@ header p {
     flex-wrap: wrap;
     position: relative;
     z-index: 1;
-    margin-top: 5rem;
+    margin-top: 2.5rem;
 }
 
 /* Use h2 so .hero h2 styles apply – same look as "Oversize Route Navigation" */
@@ -598,7 +696,7 @@ header p {
 }
 
 .app-store-button img {
-    height: 80px;
+    height: 60px;
     width: auto;
     display: block;
     transition: transform 0.3s ease, filter 0.3s ease;
@@ -638,7 +736,7 @@ header p {
 }
 
 .google-play-button img {
-    height: 80px;
+    height: 60px;
     width: auto;
     display: block;
     transition: transform 0.3s ease, filter 0.3s ease;
@@ -1211,7 +1309,7 @@ footer p {
 
     .app-store-button img,
     .google-play-button img {
-        height: 70px;
+        height: 55px;
         max-width: 100%;
     }
 
@@ -1357,6 +1455,13 @@ footer p {
         margin-left: 0.5rem;
         margin-right: 0.5rem;
     }
+
+    .pricing-band__price {
+        font-size: 1.35rem;
+    }
+    .pricing-band__tagline {
+        font-size: 0.875rem;
+    }
     
     .hero h1,
     .hero h2 {
@@ -1412,7 +1517,7 @@ footer p {
 
     .app-store-button img,
     .google-play-button img {
-        height: 60px;
+        height: 48px;
         max-width: 100%;
     }
 

@@ -116,22 +116,37 @@
         </div>
     </header>
 
-    <section class="hero">
-        <h1>Oversize Route <span class="highlight">Navigation</span></h1>
-        <div class="download-row">
-            <div class="download-buttons">
-                <div class="download-option">
-                    <a href="https://apps.apple.com/app/id673847291" id="iosLink" class="app-store-button" target="_blank" rel="noopener noreferrer">
-                        <img src="images/applestore.png" alt="Download on the App Store" width="96" height="80" />
-                    </a>
-                </div>
-                <div class="download-option">
-                    <a href="https://play.google.com/store/apps/details?id=com.haulpath.permitpath" id="androidLink" class="google-play-button" target="_blank" rel="noopener noreferrer">
-                        <img src="images/googleplay.png" alt="Get it on Google Play" width="96" height="80" />
-                    </a>
+    <div class="hero-area">
+        <section class="hero">
+            <h1>Oversize Route <span class="highlight">Navigation</span></h1>
+            <div class="download-row">
+                <div class="download-buttons">
+                    <div class="download-option">
+                        <a href="https://apps.apple.com/app/id673847291" id="iosLink" class="app-store-button" target="_blank" rel="noopener noreferrer">
+                            <img src="images/applestore.png" alt="Download on the App Store" width="72" height="60" />
+                        </a>
+                    </div>
+                    <div class="download-option">
+                        <a href="https://play.google.com/store/apps/details?id=com.haulpath.permitpath" id="androidLink" class="google-play-button" target="_blank" rel="noopener noreferrer">
+                            <img src="images/googleplay.png" alt="Get it on Google Play" width="72" height="60" />
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
+
+        <section class="pricing-comparison" aria-label="PermitPath vs other apps">
+            <img src="images/newadd.png" alt="PermitPath $3.99 per month with unlimited waypoints, iOS and Android, built for trucking. Other apps $5.99 per month, 150 waypoints, iOS only, built for cars." class="pricing-comparison__img" width="800" height="auto" />
+        </section>
+    </div>
+
+    <section class="pricing-band" aria-label="Pricing">
+        <p class="pricing-band__price">Only $3.99 per month.</p>
+        <p class="pricing-band__tagline">Professional oversize permit routing—no hidden fees.</p>
+    </section>
+
+    <section class="video-section" aria-label="PermitPath video">
+        <video id="heroVideo" class="hero-video" src="videos/vid.mp4" playsinline muted></video>
     </section>
 
     <div class="scroll-spacer" aria-hidden="true"></div>
@@ -176,6 +191,28 @@
                     header.classList.remove('header--compact');
                 }
             }, { passive: true });
+        })();
+
+        // Play video when scrolled into view; play once then pause until refresh
+        (function() {
+            var video = document.getElementById('heroVideo');
+            if (!video) return;
+            var hasFinished = false;
+            video.addEventListener('ended', function() {
+                hasFinished = true;
+                video.currentTime = 0;
+                video.pause();
+            });
+            var observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting && !hasFinished) {
+                        video.play().catch(function() {});
+                    } else if (!entry.isIntersecting && !hasFinished) {
+                        video.pause();
+                    }
+                });
+            }, { threshold: 0.4 });
+            observer.observe(video);
         })();
     </script>
 
