@@ -529,26 +529,19 @@ header p {
 /* Download Buttons Container – labels and buttons lined up */
 .download-buttons {
     display: flex;
-    flex-direction: column;
-    gap: 1rem;
+    flex-direction: row;
+    gap: 1.25rem;
     justify-content: center;
     align-items: center;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     position: relative;
     z-index: 1;
 }
 
 .download-option {
     display: flex;
-    flex-direction: row;
     align-items: center;
-    gap: 1.25rem;
-    min-width: 280px;
-}
-
-.download-option .app-store-button,
-.download-option .google-play-button {
-    margin-left: 0.5rem;
+    justify-content: center;
 }
 
 .download-label {
@@ -605,7 +598,7 @@ header p {
 }
 
 .app-store-button img {
-    height: 120px;
+    height: 80px;
     width: auto;
     display: block;
     transition: transform 0.3s ease, filter 0.3s ease;
@@ -645,7 +638,7 @@ header p {
 }
 
 .google-play-button img {
-    height: 120px;
+    height: 80px;
     width: auto;
     display: block;
     transition: transform 0.3s ease, filter 0.3s ease;
@@ -1207,7 +1200,7 @@ footer p {
     }
     
     .download-buttons {
-        flex-direction: column;
+        flex-direction: row;
         gap: 1rem;
     }
 
@@ -1218,7 +1211,7 @@ footer p {
 
     .app-store-button img,
     .google-play-button img {
-        height: 100px;
+        height: 70px;
         max-width: 100%;
     }
 
@@ -1408,8 +1401,8 @@ footer p {
     }
     
     .download-buttons {
-        flex-direction: column;
-        gap: 1rem;
+        flex-direction: row;
+        gap: 0.75rem;
     }
 
     .download-buttons .button {
@@ -1419,7 +1412,7 @@ footer p {
 
     .app-store-button img,
     .google-play-button img {
-        height: 90px;
+        height: 60px;
         max-width: 100%;
     }
 
