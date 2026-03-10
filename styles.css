@@ -65,7 +65,8 @@ body.index-page::before {
 /* Other main pages: subtle background image behind content */
 body.features-page,
 body.pricing-page,
-body.contact-page {
+body.contact-page,
+body.oversize-page {
     background:
         url('images/background.png') no-repeat center top fixed,
         radial-gradient(ellipse at center, #1e3a5f 0%, #0d1b2a 60%);
@@ -530,6 +531,17 @@ body.contact-page .hero {
 body.features-page .hero::before,
 body.pricing-page .hero::before,
 body.contact-page .hero::before {
+    display: none;
+}
+
+/* Oversize routing page: darker blocks for readability on image background */
+body.oversize-page .hero,
+body.oversize-page .info {
+    background: rgba(3, 12, 24, 0.88);
+    border: 1px solid rgba(0, 180, 255, 0.35);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
+}
+body.oversize-page .hero::before {
     display: none;
 }
 header.header--compact .logo {
@@ -1623,6 +1635,10 @@ footer p {
     /* Fix background on mobile iOS Safari - keep it fixed but ensure fallback */
     body {
         background-attachment: fixed;
+    }
+
+    /* Keep simple gradient background on pages that don't use background.png */
+    body:not(.features-page):not(.pricing-page):not(.contact-page):not(.oversize-page) {
         background: radial-gradient(ellipse at center, #1e3a5f 0%, #0d1b2a 100%);
         background-color: #0d1b2a;
     }
@@ -1730,6 +1746,13 @@ footer p {
         flex-direction: row;
         gap: 1rem;
     }
+
+.store-disclaimer {
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+    color: #ff6b6b;
+    font-weight: 500;
+}
 
     .download-buttons .button {
         width: 100%;
