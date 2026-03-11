@@ -30,10 +30,10 @@
 
     <section class="hero testers-hero">
         <p>PermitPath beta testers—get rewarded for helping shape the app.</p>
-        <p class="testers-spots">Currently filled 20 out of 20 open positions.</p>
-        <p class="testers-open">0 OPEN TESTER POSITIONS</p>
+        <p class="testers-spots">Currently filled 15 out of 20 open positions.</p>
+        <p class="testers-open">5 OPEN TESTER POSITIONS</p>
         <p class="testers-note-full">
-            All positions are currently filled, but you are more than welcome to go ahead and fill out the info below and we will put you on a list for the next round of testing.
+            We currently have 5 open tester positions. Fill out the info below to apply and we will contact you with next steps.
         </p>
     </section>
 
@@ -64,20 +64,21 @@
 
     <section class="info">
         <h2><span class="highlight">Apply</span></h2>
-        <form class="contact-form apply-form" action="https://formspree.io/f/xaqpnokj" method="POST">
+        <form class="contact-form apply-form" id="testerForm">
             <div class="form-group">
-                <label for="apply-name">Name</label>
-                <input type="text" id="apply-name" name="name" placeholder="Name" required>
+                <label for="tester-name">Name</label>
+                <input type="text" id="tester-name" name="name" placeholder="Name" required>
             </div>
             <div class="form-group">
-                <label for="apply-email">Email</label>
-                <input type="email" id="apply-email" name="email" placeholder="MUST BE YOUR GOOGLE PLAY ACCOUNT EMAIL" required>
+                <label for="tester-email">Email</label>
+                <input type="email" id="tester-email" name="email" placeholder="MUST BE YOUR GOOGLE PLAY ACCOUNT EMAIL" required>
             </div>
             <div class="form-group">
-                <label for="apply-device">Device</label>
-                <input type="text" id="apply-device" name="device" placeholder="What device will you be testing the app on?" required>
+                <label for="tester-device">Device</label>
+                <input type="text" id="tester-device" name="device" placeholder="What device will you be testing the app on?" required>
             </div>
-            <button type="submit" class="button">Send</button>
+            <button type="submit" class="button">Send Application</button>
+            <div class="form-message" id="testerFormMessage"></div>
         </form>
         <div class="tester-info-box">
             <p>How it works: PermitPath needs to be tested on 15 devices for 14 consecutive days in order to be released on the Google Play Store. We are looking for 20 people to test the app.</p>
@@ -108,6 +109,63 @@
                     header.classList.remove('header--compact');
                 }
             }, { passive: true });
+        })();
+
+        // Tester application form submission handler (uses same backend as contact page)
+        (function () {
+            var form = document.getElementById("testerForm");
+            var formMessage = document.getElementById("testerFormMessage");
+            if (!form || !formMessage) return;
+
+            form.addEventListener("submit", function (e) {
+                e.preventDefault();
+
+                var submitButton = form.querySelector("button[type='submit']");
+                var name = (document.getElementById("tester-name").value || "").trim();
+                var email = (document.getElementById("tester-email").value || "").trim();
+                var device = (document.getElementById("tester-device").value || "").trim();
+
+                var message =
+                    "New beta tester application.\n\n" +
+                    "Name: " + name + "\n" +
+                    "Email: " + email + "\n" +
+                    "Device: " + device + "\n";
+
+                formMessage.textContent = "Sending...";
+                formMessage.className = "form-message";
+                formMessage.style.color = "#ffffff";
+                if (submitButton) submitButton.disabled = true;
+
+                fetch("https://permitpath-backend-slgb.vercel.app/api/contact", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ name: name, email: email, message: message })
+                })
+                .then(function (response) {
+                    return response.json().then(function (result) {
+                        if (response.ok) {
+                            formMessage.textContent = "Application sent successfully.";
+                            formMessage.className = "form-message success";
+                            formMessage.style.color = "#00c853";
+                            e.target.reset();
+                        } else {
+                            formMessage.textContent = (result && result.error) ? result.error : "Failed to send application.";
+                            formMessage.className = "form-message error";
+                            formMessage.style.color = "#ff5252";
+                        }
+                    });
+                })
+                .catch(function () {
+                    formMessage.textContent = "Something went wrong. Please try again.";
+                    formMessage.className = "form-message error";
+                    formMessage.style.color = "#ff5252";
+                })
+                .finally(function () {
+                    if (submitButton) submitButton.disabled = false;
+                });
+            });
         })();
     </script>
 
