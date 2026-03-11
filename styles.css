@@ -118,8 +118,32 @@ body.index-page footer {
     min-height: 98vh; /* match top background height so content ends where image ends */
 }
 .hero-area .hero-tagline-wrap {
-    margin-top: 1in; /* keep \"Try For Free Today\" about an inch under the app buttons */
+    margin-top: 0.15in; /* space under the app buttons */
     text-align: center;
+}
+
+.hero-facebook-wrap {
+    margin: 0 0 1.5rem 0;
+}
+
+.hero-facebook-wrap .facebook-button {
+    display: inline-block;
+}
+
+.contact-facebook-wrap {
+    margin: 1rem 0 0;
+}
+
+.contact-facebook-wrap .facebook-button {
+    display: inline-block;
+}
+
+/* Follow Us card on index (Why PermitPath section) */
+.index-follow-block {
+    max-width: 520px;
+    margin: 2rem auto;
+    position: relative;
+    z-index: 1;
 }
 
 .hero-steps {
@@ -169,7 +193,7 @@ body.index-page footer {
 .pricing-band {
     width: 100%;
     max-width: 100%;
-    margin: 0;
+    margin: 2.5rem 0 0;
     padding: 1.75rem 1.5rem 0;
     text-align: center;
     position: relative;
@@ -198,7 +222,7 @@ body.index-page footer {
 
 /* Video below pricing band */
 .video-section {
-    margin-top: 1.75rem;
+    margin-top: 3.5rem;
     padding: 0;
     display: flex;
     justify-content: center;
@@ -245,6 +269,7 @@ body.index-page footer {
 .why-permitpath .why-permitpath__title,
 .why-permitpath .why-permitpath__tagline,
 .why-permitpath .why-permitpath__list,
+.why-permitpath .why-permitpath__follow,
 .why-permitpath .why-permitpath__screen,
 .why-permitpath .testimonials {
     position: relative;
@@ -318,6 +343,41 @@ body.index-page footer {
     font-size: 1.05rem;
     font-weight: 500;
     color: rgba(255, 255, 255, 0.95);
+}
+
+/* Follow Us block (Facebook) under the bullet list */
+.why-permitpath__follow {
+    display: block;
+    text-align: center;
+    margin: 2rem 0;
+    padding: 1.25rem 1rem;
+    position: relative;
+    z-index: 1;
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.why-permitpath__follow-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.5px;
+}
+.why-permitpath__follow-title .highlight {
+    color: #00B4FF;
+    text-shadow: 0 0 30px rgba(0, 180, 255, 0.5);
+}
+.why-permitpath__follow-text {
+    margin: 0 0 1rem;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.88);
+}
+.why-permitpath__follow-button-wrap {
+    margin: 0;
+}
+.why-permitpath__follow-button-wrap .facebook-button {
+    display: inline-block;
 }
 .why-permitpath__screen {
     display: block;
@@ -1118,6 +1178,43 @@ header p {
     transform: translateY(0);
 }
 
+/* Facebook Button */
+.facebook-button {
+    display: inline-block;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    padding: 0;
+    background: none;
+    border: none;
+    box-shadow: none;
+    cursor: pointer;
+}
+
+.facebook-button:hover {
+    transform: translateY(-3px);
+}
+
+.facebook-button img {
+    height: 60px;
+    width: auto;
+    display: block;
+    transition: transform 0.3s ease, filter 0.3s ease;
+    filter: none;
+}
+
+.facebook-button:hover img {
+    filter: brightness(1.1);
+    transform: scale(1.02);
+}
+
+.facebook-button:active img {
+    filter: brightness(1.05);
+}
+
+.facebook-button:active {
+    transform: translateY(0);
+}
+
 /* Contact Form Styles */
 .contact-form {
     max-width: 600px;
@@ -1219,6 +1316,19 @@ header p {
     box-shadow: 0 12px 40px rgba(0, 180, 255, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
+/* Index Follow Us block: same dark style as contact page .info */
+.info.index-follow-block {
+    background: rgba(3, 12, 24, 0.88);
+    border: 1px solid rgba(0, 180, 255, 0.35);
+    border-radius: 20px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
+    backdrop-filter: none;
+}
+.info.index-follow-block:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), 0 4px 20px rgba(0, 180, 255, 0.08);
+}
+
 .info h2 {
     font-size: 2.5rem;
     color: white;
@@ -1229,7 +1339,8 @@ header p {
     line-height: 1.3;
 }
 
-.info h2 .highlight {
+.info h2 .highlight,
+.info p .highlight {
     color: #00B4FF;
     text-shadow: 0 0 20px rgba(0, 180, 255, 0.4);
 }
@@ -1246,6 +1357,12 @@ header p {
 
 .info p:last-child {
     margin-bottom: 0;
+}
+
+.info .follow-us-tagline {
+    font-weight: 600;
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
 }
 
 /* Apply form (reuses .contact-form + .form-group + .button) */
@@ -1745,7 +1862,8 @@ footer p {
     }
 
     .app-store-button img,
-    .google-play-button img {
+    .google-play-button img,
+    .facebook-button img {
         height: 55px;
         max-width: 100%;
     }
@@ -1978,7 +2096,8 @@ footer p {
     }
 
     .app-store-button img,
-    .google-play-button img {
+    .google-play-button img,
+    .facebook-button img {
         height: 48px;
         max-width: 100%;
     }
