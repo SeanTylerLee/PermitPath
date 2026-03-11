@@ -79,7 +79,7 @@
                 <textarea id="message" name="message" rows="6" required></textarea>
             </div>
             <button type="submit" class="button">Send Message</button>
-            <small style="display:block;margin-top:0.35rem;font-size:0.8rem;color:rgba(255,255,255,0.55);text-align:center;">v2</small>
+            <small style="display:block;margin-top:0.35rem;font-size:0.8rem;color:rgba(255,255,255,0.55);text-align:center;">v3</small>
             <div class="form-message" id="formMessage"></div>
         </form>
     </section>
@@ -159,7 +159,7 @@
             formMessage.style.color = "#ffffff";
             submitButton.disabled = true;
 
-            fetch("https://permitpath-backend.vercel.app/api/contact", {
+            fetch("https://permitpath-backend-slgb.vercel.app/api/contact", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
