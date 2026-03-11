@@ -65,7 +65,7 @@
         <p>
             Fill out the form below and we'll get back to you as soon as possible.
         </p>
-        <form class="contact-form" action="https://formspree.io/f/xykwznok" method="POST" id="contactForm">
+        <form class="contact-form" id="contactForm">
             <div class="form-group">
                 <label for="name">Name</label>
                 <input type="text" id="name" name="name" required>
@@ -142,36 +142,50 @@
             }, { passive: true });
         })();
 
-        // Form submission handler
-        const contactForm = document.getElementById('contactForm');
-        const formMessage = document.getElementById('formMessage');
+        // Form submission handler (PermitPath backend)
+        document.getElementById("contactForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
 
-        contactForm.addEventListener('submit', function(event) {
-            event.preventDefault();
-            
-            const formData = new FormData(contactForm);
-            
-            fetch(contactForm.action, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'Accept': 'application/json'
-                }
-            })
-            .then(response => {
+            const formMessage = document.getElementById("formMessage");
+            const submitButton = this.querySelector("button[type='submit']");
+
+            const name = document.getElementById("name").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const message = document.getElementById("message").value.trim();
+
+            formMessage.textContent = "Sending...";
+            formMessage.className = "form-message";
+            formMessage.style.color = "#ffffff";
+            submitButton.disabled = true;
+
+            try {
+                const response = await fetch("https://permitpath-backend.vercel.app/api/contact", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ name, email, message })
+                });
+
+                const result = await response.json();
+
                 if (response.ok) {
-                    formMessage.textContent = 'Thank you! Your message has been sent. We\'ll get back to you soon.';
-                    formMessage.className = 'form-message success';
-                    contactForm.reset();
+                    formMessage.textContent = "Message sent successfully.";
+                    formMessage.className = "form-message success";
+                    formMessage.style.color = "#00c853";
+                    this.reset();
                 } else {
-                    formMessage.textContent = 'Oops! There was a problem sending your message. Please try again.';
-                    formMessage.className = 'form-message error';
+                    formMessage.textContent = (result.get('error') if isinstance(result, dict) else None) or "Failed to send message.";
+                    formMessage.className = "form-message error";
+                    formMessage.style.color = "#ff5252";
                 }
-            })
-            .catch(error => {
-                formMessage.textContent = 'Oops! There was a problem sending your message. Please try again.';
-                formMessage.className = 'form-message error';
-            });
+            } catch (error) {
+                formMessage.textContent = "Something went wrong. Please try again.";
+                formMessage.className = "form-message error";
+                formMessage.style.color = "#ff5252";
+            }
+
+            submitButton.disabled = false;
         });
     </script>
 
