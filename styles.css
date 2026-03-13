@@ -466,6 +466,29 @@ body.index-page footer {
     /* reuse existing button styles; this just ensures spacing is consistent over the video */
 }
 
+.release-notify-section {
+    padding: 2rem 1rem;
+    text-align: center;
+}
+
+.release-date-block {
+    max-width: 520px;
+    margin: 1.5rem auto 0;
+    padding: 1rem 1.25rem;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(0, 180, 255, 0.25);
+    border-radius: 12px;
+}
+
+.release-date-block__text {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.95);
+    line-height: 1.5;
+    text-align: center;
+}
+
 /* Customer testimonials under screenshot */
 .testimonials {
     margin-top: 2.5rem;
@@ -1057,8 +1080,18 @@ header p {
 
 .download-option {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 0.35rem;
+}
+
+.coming-soon-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #e74c3c;
+    text-transform: none;
+    letter-spacing: 0.02em;
 }
 
 .download-label {
@@ -1854,6 +1887,77 @@ footer p {
     font-size: 0.9rem;
     color: #ff6b6b;
     font-weight: 500;
+}
+
+/* Release-notify form on index (below app buttons) */
+.release-notify-wrap {
+    margin-top: 1.25rem;
+    text-align: center;
+}
+.release-notify-label {
+    margin: 0 0 0.1rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: 0.02em;
+    line-height: 1.4;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+.release-notify-label .highlight {
+    color: #00B4FF;
+    text-shadow: 0 0 20px rgba(0, 180, 255, 0.4);
+}
+.release-notify-form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 auto 1in auto;
+    padding: 0.75rem 1rem;
+    background: rgba(0, 0, 0, 0.35);
+    border-radius: 12px;
+    border: 1px solid rgba(0, 180, 255, 0.25);
+    max-width: 420px;
+}
+.release-notify-form input[type="email"] {
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+    border: 1px solid rgba(0, 180, 255, 0.4);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    min-width: 200px;
+}
+.release-notify-form input[type="email"]::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+.release-notify-wrap .release-notify-btn,
+.release-notify-wrap .button.release-notify-btn {
+    flex-shrink: 0;
+    padding: 0.45rem 1rem !important;
+    font-size: 0.85rem !important;
+    font-weight: 600;
+    min-width: 0;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #00B4FF 0%, #0099DD 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    box-shadow: 0 2px 8px rgba(0, 180, 255, 0.3) !important;
+    letter-spacing: 0.03em;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.release-notify-wrap .release-notify-btn:hover,
+.release-notify-wrap .button.release-notify-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 180, 255, 0.4) !important;
+}
+.release-notify-wrap .release-notify-btn:active,
+.release-notify-wrap .button.release-notify-btn:active {
+    transform: translateY(0);
+}
+.release-notify-wrap .form-message {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
 }
 
     .download-buttons .button {

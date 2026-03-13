@@ -126,15 +126,24 @@
                         <a href="https://apps.apple.com/app/id673847291" id="iosLink" class="app-store-button" target="_blank" rel="noopener noreferrer">
                             <img src="images/applestore.png" alt="Download on the App Store" width="72" height="60" />
                         </a>
+                        <span class="coming-soon-label">Coming soon</span>
                     </div>
                     <div class="download-option">
                         <a href="https://play.google.com/store/apps/details?id=com.haulpath.permitpath" id="androidLink" class="google-play-button" target="_blank" rel="noopener noreferrer">
                             <img src="images/googleplay.png" alt="Get it on Google Play" width="72" height="60" />
                         </a>
+                        <span class="coming-soon-label">Coming soon</span>
                     </div>
                 </div>
             </div>
-            <p class="store-disclaimer">We are currently in Testing. Expecting Release by April 2026.</p>
+            <div class="release-notify-wrap">
+                <p class="release-notify-label">Enter email to be notified when <span class="highlight">Permit Path</span> releases.</p>
+                <form class="release-notify-form" id="releaseNotifyForm">
+                    <input type="email" id="releaseNotifyEmail" name="email" placeholder="Your email" required aria-label="Email for release notification">
+                    <button type="submit" class="button release-notify-btn">Notify Me</button>
+                </form>
+                <div class="form-message" id="releaseNotifyMessage"></div>
+            </div>
         </section>
 
         <div class="hero-tagline-wrap">
@@ -204,19 +213,19 @@
                 </div>
             </div>
 
-            <section class="testimonials" aria-label="Customer testimonials">
-                <h3 class="testimonials__heading">What drivers are saying</h3>
+            <section class="testimonials" aria-label="Anticipation messages">
+                <h3 class="testimonials__heading">What people are saying</h3>
                 <div class="testimonials__grid">
                     <blockquote class="testimonial-card">
-                        <p class="testimonial-card__quote">Finally an app built for oversize. Saves me hours every week on permit routes.</p>
+                        <p class="testimonial-card__quote">Can't wait for this. We've needed an oversize app that actually gets it.</p>
                         <footer class="testimonial-card__author">— Mike T., Heavy haul driver</footer>
                     </blockquote>
                     <blockquote class="testimonial-card">
-                        <p class="testimonial-card__quote">Share a route with my partner on iPhone while I’m on Android. Just works.</p>
+                        <p class="testimonial-card__quote">Signed up for the beta. Finally something built for truckers, not cars.</p>
                         <footer class="testimonial-card__author">— James L., Fleet owner</footer>
                     </blockquote>
                     <blockquote class="testimonial-card">
-                        <p class="testimonial-card__quote">Worth every penny. Never get off route with an oversize load anymore.</p>
+                        <p class="testimonial-card__quote">Looking forward to release. Permit routing has needed an app like this for years.</p>
                         <footer class="testimonial-card__author">— Dave R., O/O</footer>
                     </blockquote>
                 </div>
@@ -234,14 +243,29 @@
                     <a href="https://apps.apple.com/app/id673847291" class="app-store-button" target="_blank" rel="noopener noreferrer">
                         <img src="images/applestore.png" alt="Download on the App Store" width="72" height="60" />
                     </a>
+                    <span class="coming-soon-label">Coming soon</span>
                 </div>
                 <div class="download-option">
                     <a href="https://play.google.com/store/apps/details?id=com.haulpath.permitpath" class="google-play-button" target="_blank" rel="noopener noreferrer">
                         <img src="images/googleplay.png" alt="Get it on Google Play" width="72" height="60" />
                     </a>
+                    <span class="coming-soon-label">Coming soon</span>
                 </div>
             </div>
-            <p class="store-disclaimer">We are currently in Testing. Expecting Release by April 2026.</p>
+        </div>
+    </section>
+
+    <section class="release-notify-section" aria-label="Get notified when Permit Path releases">
+        <div class="release-notify-wrap">
+            <p class="release-notify-label">Enter email to be notified when <span class="highlight">Permit Path</span> releases.</p>
+            <form class="release-notify-form" id="releaseNotifyFormBottom">
+                <input type="email" id="releaseNotifyEmailBottom" name="email" placeholder="Your email" required aria-label="Email for release notification">
+                <button type="submit" class="button release-notify-btn">Notify Me</button>
+            </form>
+            <div class="form-message" id="releaseNotifyMessageBottom"></div>
+        </div>
+        <div class="release-date-block">
+            <p class="release-date-block__text">We are expecting to release on both Android and the App Store by April 2026.</p>
         </div>
     </section>
 
@@ -310,6 +334,91 @@
             observer.observe(video);
         })();
 
+        // Release-notify form (sends to backend; backend must send to team@permitpathnav.com for type release_notify)
+        (function() {
+            var form = document.getElementById('releaseNotifyForm');
+            var msgEl = document.getElementById('releaseNotifyMessage');
+            if (!form || !msgEl) return;
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                var email = (document.getElementById('releaseNotifyEmail').value || '').trim();
+                if (!email) return;
+
+                var btn = form.querySelector('button[type="submit"]');
+                msgEl.textContent = 'Sending...';
+                msgEl.className = 'form-message';
+                msgEl.style.color = '#ffffff';
+                if (btn) btn.disabled = true;
+
+                fetch('https://permitpath-backend-slgb.vercel.app/api/contact', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ type: 'release_notify', email: email })
+                })
+                .then(function(res) { return res.json().then(function(result) {
+                    if (res.ok) {
+                        msgEl.textContent = "You're on the list. We'll notify you when Permit Path releases.";
+                        msgEl.className = 'form-message success';
+                        msgEl.style.color = '#00c853';
+                        form.reset();
+                    } else {
+                        msgEl.textContent = (result && result.error) ? result.error : 'Something went wrong. Try again.';
+                        msgEl.className = 'form-message error';
+                        msgEl.style.color = '#ff5252';
+                    }
+                }); })
+                .catch(function() {
+                    msgEl.textContent = 'Something went wrong. Please try again.';
+                    msgEl.className = 'form-message error';
+                    msgEl.style.color = '#ff5252';
+                })
+                .finally(function() { if (btn) btn.disabled = false; });
+            });
+        })();
+
+        // Release-notify form at bottom (same behavior as hero form)
+        (function() {
+            var form = document.getElementById('releaseNotifyFormBottom');
+            var msgEl = document.getElementById('releaseNotifyMessageBottom');
+            if (!form || !msgEl) return;
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                var email = (document.getElementById('releaseNotifyEmailBottom').value || '').trim();
+                if (!email) return;
+
+                var btn = form.querySelector('button[type="submit"]');
+                msgEl.textContent = 'Sending...';
+                msgEl.className = 'form-message';
+                msgEl.style.color = '#ffffff';
+                if (btn) btn.disabled = true;
+
+                fetch('https://permitpath-backend-slgb.vercel.app/api/contact', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ type: 'release_notify', email: email })
+                })
+                .then(function(res) { return res.json().then(function(result) {
+                    if (res.ok) {
+                        msgEl.textContent = "You're on the list. We'll notify you when Permit Path releases.";
+                        msgEl.className = 'form-message success';
+                        msgEl.style.color = '#00c853';
+                        form.reset();
+                    } else {
+                        msgEl.textContent = (result && result.error) ? result.error : 'Something went wrong. Try again.';
+                        msgEl.className = 'form-message error';
+                        msgEl.style.color = '#ff5252';
+                    }
+                }); })
+                .catch(function() {
+                    msgEl.textContent = 'Something went wrong. Please try again.';
+                    msgEl.className = 'form-message error';
+                    msgEl.style.color = '#ff5252';
+                })
+                .finally(function() { if (btn) btn.disabled = false; });
+            });
+        })();
     </script>
 
 </body>
