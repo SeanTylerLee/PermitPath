@@ -354,7 +354,7 @@
                 fetch('https://permitpath-backend-slgb.vercel.app/api/contact', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ type: 'release_notify', email: email })
+                    body: JSON.stringify({ type: 'release_notify', email: email, name: 'Release notification signup', message: 'Notify when released: ' + email })
                 })
                 .then(function(res) { return res.json().then(function(result) {
                     if (res.ok) {
@@ -397,7 +397,7 @@
                 fetch('https://permitpath-backend-slgb.vercel.app/api/contact', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ type: 'release_notify', email: email })
+                    body: JSON.stringify({ type: 'release_notify', email: email, name: 'Release notification signup', message: 'Notify when released: ' + email })
                 })
                 .then(function(res) { return res.json().then(function(result) {
                     if (res.ok) {
