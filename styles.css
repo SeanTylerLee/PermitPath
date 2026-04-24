@@ -462,6 +462,11 @@ body.index-page footer {
     padding: 0 1.5rem;
 }
 
+.bg-video-strip__headline .highlight {
+    color: #00B4FF;
+    text-shadow: 0 0 20px rgba(0, 180, 255, 0.5);
+}
+
 .bg-video-strip__buttons .download-option {
     /* reuse existing button styles; this just ensures spacing is consistent over the video */
 }
