@@ -111,9 +111,10 @@
     </script>
 
     <!--
-      Supabase: add Redirect URL https://permitpathnav.com/permitpathna/reset
-      Recovery links may arrive as ?token_hash=... (verifyOtp) or #access_token=... (implicit session).
-      PKCE ?code=... alone cannot complete in a new browser (no code_verifier) — see lib/supabaseClient.js.
+      Single page for Supabase password reset:
+      - Set redirectTo to this URL only, e.g. https://permitpathnav.com/permitpathna/reset
+      - Supabase appends ?token_hash=…&type=recovery — we verifyOtp on load, then show the form; submit only calls updateUser.
+      - PKCE ?code=… cannot complete without code_verifier (see lib/supabaseClient.js).
     -->
     <script type="module">
         import { supabase } from '../../lib/supabaseClient.js';
@@ -127,9 +128,6 @@
         const form = document.getElementById('resetPasswordForm');
         const msgEl = document.getElementById('resetFormMessage');
         const submitBtn = document.getElementById('resetSubmitBtn');
-
-        /** @type {'token_hash' | 'session_ready' | null} */
-        let recoveryMode = null;
 
         function readQueryParams() {
             return new URLSearchParams(window.location.search);
@@ -183,7 +181,6 @@
             submitBtn.textContent = loading ? 'Updating…' : 'Update password';
         }
 
-        /** @returns {Promise<boolean>} true if session was established from hash */
         async function applyRecoveryFromHash(hashParams) {
             const access_token = hashParams.get('access_token');
             const refresh_token = hashParams.get('refresh_token');
@@ -194,50 +191,19 @@
                 showInvalid(error.message || 'Invalid recovery link.');
                 return false;
             }
-            recoveryMode = 'session_ready';
             window.history.replaceState({}, '', window.location.pathname + window.location.search);
             showForm();
             return true;
         }
 
-        (async function init() {
-            const params = readQueryParams();
-            const urlError = params.get('error');
-            const urlErrorDesc = params.get('error_description');
+        function stripTokenParamsFromUrl() {
+            const url = new URL(window.location.href);
+            url.searchParams.delete('token_hash');
+            url.searchParams.delete('type');
+            window.history.replaceState({}, '', url.pathname + url.search + url.hash);
+        }
 
-            if (urlError) {
-                const decoded = urlErrorDesc ? decodeURIComponent(urlErrorDesc.replace(/\+/g, ' ')) : '';
-                showInvalid(
-                    decoded ||
-                        'This reset link could not be completed (for example missing PKCE data). Request a new reset from the app and open the link again.'
-                );
-                return;
-            }
-
-            const hashParams = readHashParams();
-            if (hashParams && hashParams.get('access_token') && hashParams.get('refresh_token')) {
-                const ok = await applyRecoveryFromHash(hashParams);
-                if (!ok) return;
-            } else {
-                const token_hash = params.get('token_hash');
-                const code = params.get('code');
-
-                if (token_hash) {
-                    recoveryMode = 'token_hash';
-                    showForm();
-                } else if (code) {
-                    showInvalid(
-                        'This link used a one-time code that only works in the same browser session that started the reset. Open the link from your phone again after requesting a new password reset, or use a reset email that includes a token in the link (ask your developer to avoid PKCE-only links for app-triggered resets).'
-                    );
-                    return;
-                } else {
-                    showInvalid(
-                        'This page needs a valid reset link from your email. Open the PermitPath app, request a password reset, and use the link from the message.'
-                    );
-                    return;
-                }
-            }
-
+        function attachFormSubmit() {
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 clearInlineMessage();
@@ -254,45 +220,7 @@
                     return;
                 }
 
-                if (recoveryMode === 'session_ready') {
-                    setLoading(true);
-                    const { error: updateError } = await supabase.auth.updateUser({ password: p1 });
-                    setLoading(false);
-
-                    if (updateError) {
-                        mapUpdateError(updateError);
-                        return;
-                    }
-                    await supabase.auth.signOut();
-                    showSuccess();
-                    return;
-                }
-
-                const qs = readQueryParams();
-                const token_hash = qs.get('token_hash');
-                if (!token_hash) {
-                    setInlineMessage('Reset link is missing the token. Open the link from your email again.', 'error');
-                    return;
-                }
-
-                const type = otpTypeFromUrl();
-
                 setLoading(true);
-                const { error: verifyError } = await supabase.auth.verifyOtp({
-                    type: type,
-                    token_hash: token_hash
-                });
-
-                if (verifyError) {
-                    setLoading(false);
-                    setInlineMessage(
-                        verifyError.message ||
-                            'This reset link is invalid or has expired. Request a new password reset from the app.',
-                        'error'
-                    );
-                    return;
-                }
-
                 const { error: updateError } = await supabase.auth.updateUser({ password: p1 });
                 setLoading(false);
 
@@ -304,6 +232,74 @@
                 await supabase.auth.signOut();
                 showSuccess();
             });
+        }
+
+        (async function init() {
+            const params = readQueryParams();
+
+            if (params.get('error')) {
+                const urlErrorDesc = params.get('error_description');
+                const decoded = urlErrorDesc ? decodeURIComponent(urlErrorDesc.replace(/\+/g, ' ')) : '';
+                showInvalid(
+                    decoded ||
+                        'This reset link could not be completed. Request a new reset from the app and open the link again.'
+                );
+                return;
+            }
+
+            const token_hash = params.get('token_hash');
+            if (token_hash) {
+                leadSection.hidden = false;
+                introEl.textContent = 'Confirming your link…';
+                formWrap.hidden = true;
+                invalidWrap.hidden = true;
+
+                const { error: verifyError } = await supabase.auth.verifyOtp({
+                    type: otpTypeFromUrl(),
+                    token_hash: token_hash
+                });
+
+                if (verifyError) {
+                    showInvalid(
+                        verifyError.message ||
+                            'This reset link is invalid or has expired. Request a new password reset from the app.'
+                    );
+                    return;
+                }
+
+                stripTokenParamsFromUrl();
+                showForm();
+                attachFormSubmit();
+                return;
+            }
+
+            const hashParams = readHashParams();
+            if (hashParams && hashParams.get('access_token') && hashParams.get('refresh_token')) {
+                const ok = await applyRecoveryFromHash(hashParams);
+                if (!ok) return;
+                attachFormSubmit();
+                return;
+            }
+
+            const {
+                data: { session }
+            } = await supabase.auth.getSession();
+            if (session) {
+                showForm();
+                attachFormSubmit();
+                return;
+            }
+
+            if (params.get('code')) {
+                showInvalid(
+                    'This link uses a sign-in code that does not work when opened from email (missing PKCE data). Use a reset link that lands on this page with token_hash in the URL, or request a new reset from the app.'
+                );
+                return;
+            }
+
+            showInvalid(
+                'This page needs a valid reset link from your email. Open the PermitPath app, request a password reset, and use the link from the message.'
+            );
         })();
 
         function mapUpdateError(updateError) {
