@@ -61,6 +61,14 @@
                 <button type="button" class="button" id="adminSignOutBtn">Sign out</button>
             </div>
 
+            <section style="margin-top:1.5rem; padding:0.9rem; border:1px solid rgba(255,255,255,0.2); border-radius:10px;">
+                <h4 style="margin-bottom:0.6rem;">Auth Debug</h4>
+                <p style="text-align:left; margin:0.25rem 0;"><strong>User ID:</strong> <span id="adminDebugUserId">—</span></p>
+                <p style="text-align:left; margin:0.25rem 0;"><strong>Email:</strong> <span id="adminDebugEmail">—</span></p>
+                <p style="text-align:left; margin:0.25rem 0;"><strong>Profiles Endpoint:</strong> <span id="adminDebugProfilesEndpoint">—</span></p>
+                <p style="text-align:left; margin:0.25rem 0;"><strong>Expected Admin ID:</strong> <span>ee962eec-a890-4ce8-9dcc-b9b30d241008</span></p>
+            </section>
+
             <section style="margin-top: 2rem;">
                 <h3 style="margin-bottom: 1rem; text-align:center;">Usage Dashboard</h3>
 
@@ -143,6 +151,9 @@
         const adminDataMessage = document.getElementById('adminDataMessage');
         const profilesBody = document.getElementById('profilesBody');
         const eventsBody = document.getElementById('eventsBody');
+        const adminDebugUserId = document.getElementById('adminDebugUserId');
+        const adminDebugEmail = document.getElementById('adminDebugEmail');
+        const adminDebugProfilesEndpoint = document.getElementById('adminDebugProfilesEndpoint');
         const ADMIN_EMAIL_ALLOWLIST = ['support@permitpathnav.com'];
 
         menuToggle.addEventListener('click', function() {
@@ -217,6 +228,10 @@
             adminAuthedWrap.hidden = false;
             adminIntroText.textContent = 'Admin access granted.';
             adminWelcomeText.textContent = 'Signed in as ' + (user.email || 'admin');
+            adminDebugUserId.textContent = user.id || '—';
+            adminDebugEmail.textContent = user.email || '—';
+            adminDebugProfilesEndpoint.textContent = supabaseUrl + '/functions/v1/admin-data/profiles';
+            console.log('session user id:', user.id);
             clearAuthMessage();
         }
 
@@ -227,6 +242,9 @@
             clearDataMessage();
             profilesBody.innerHTML = '';
             eventsBody.innerHTML = '';
+            adminDebugUserId.textContent = '—';
+            adminDebugEmail.textContent = '—';
+            adminDebugProfilesEndpoint.textContent = '—';
         }
 
         function valueCell(value) {
