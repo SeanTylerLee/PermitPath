@@ -127,7 +127,7 @@
         </section>
 
         <p class="reset-support-hint" style="margin-top: 1.25rem;"><a href="index.html">Back to home</a></p>
-        <p style="margin-top:0.35rem;font-size:0.75rem;color:rgba(255,255,255,0.45);text-align:center;">v2</p>
+        <p style="margin-top:0.35rem;font-size:0.75rem;color:rgba(255,255,255,0.45);text-align:center;">v3</p>
     </section>
 
     <footer>
@@ -249,6 +249,72 @@
             adminDebugUserId.textContent = '—';
             adminDebugEmail.textContent = '—';
             adminDebugProfilesEndpoint.textContent = '—';
+        }
+
+        function projectRefFromSupabaseUrl() {
+            try {
+                return new URL(supabaseUrl).hostname.split('.')[0] || '';
+            } catch (_e) {
+                return '';
+            }
+        }
+
+        function clearPersistedSupabaseAuth() {
+            const ref = projectRefFromSupabaseUrl();
+            if (!ref || typeof localStorage === 'undefined') return;
+            try {
+                for (let i = localStorage.length - 1; i >= 0; i--) {
+                    const key = localStorage.key(i);
+                    if (key && key.startsWith('sb-') && key.includes(ref)) {
+                        localStorage.removeItem(key);
+                    }
+                }
+            } catch (_e) {
+                /* ignore */
+            }
+        }
+
+        async function performSignOut() {
+            adminSignOutBtn.disabled = true;
+            adminSignOutBtn.textContent = 'Signing out…';
+            clearAuthMessage();
+
+            try {
+                await supabase.auth.signOut({ scope: 'local' });
+                let {
+                    data: { session }
+                } = await supabase.auth.getSession();
+                if (session) {
+                    await supabase.auth.signOut({ scope: 'global' });
+                    ({
+                        data: { session }
+                    } = await supabase.auth.getSession());
+                }
+                if (session) {
+                    clearPersistedSupabaseAuth();
+                    await supabase.auth.signOut({ scope: 'local' });
+                }
+
+                showSignedOutState();
+
+                const {
+                    data: { session: finalSession }
+                } = await supabase.auth.getSession();
+                if (finalSession) {
+                    setAuthMessage(
+                        'Session could not be fully cleared in this browser. Clear site data for this site or use a private window.',
+                        'error'
+                    );
+                } else {
+                    setAuthMessage('Signed out successfully.', 'success');
+                }
+            } catch (err) {
+                showSignedOutState();
+                setAuthMessage(err.message || 'Sign out failed.', 'error');
+            } finally {
+                adminSignOutBtn.disabled = false;
+                adminSignOutBtn.textContent = 'Sign out';
+            }
         }
 
         function valueCell(value) {
@@ -418,10 +484,10 @@
             await loadDashboardData();
         });
 
-        adminSignOutBtn.addEventListener('click', async function() {
-            await supabase.auth.signOut();
-            showSignedOutState();
-            setAuthMessage('Signed out successfully.', 'success');
+        adminSignOutBtn.addEventListener('click', async function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            await performSignOut();
         });
 
         supabase.auth.onAuthStateChange(async function(_event, session) {
