@@ -8,15 +8,23 @@
  * Security: resolves caller via JWT (Authorization: Bearer <access_token>),
  * compares auth.users id to ADMIN_USER_ID, then uses service role for reads.
  *
- * CORS: Safari is strict — echo a known Origin (your site) instead of relying on * alone.
+ * CORS: echo allowed Origins (production + localhost with any port for dev).
  */
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.49.4';
 
 const DEFAULT_ADMIN_USER_ID = 'ee962eec-a890-4ce8-9dcc-b9b30d241008';
 
+const SPECIFIC_ORIGINS = new Set([
+    'https://permitpathnav.com',
+    'https://www.permitpathnav.com',
+    'http://localhost',
+    'http://127.0.0.1'
+]);
+
 function originAllowed(origin: string | null): string {
     if (!origin || origin === 'null') return '*';
+    if (SPECIFIC_ORIGINS.has(origin)) return origin;
     try {
         const u = new URL(origin);
         const host = u.hostname.toLowerCase();
@@ -36,7 +44,7 @@ function corsHeadersFor(req: Request): Record<string, string> {
     const allowOrigin = originAllowed(req.headers.get('Origin'));
     const h: Record<string, string> = {
         'Access-Control-Allow-Origin': allowOrigin,
-        'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+        'Access-Control-Allow-Headers': 'authorization, apikey, content-type, x-client-info',
         'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
     };
     if (allowOrigin !== '*') {
@@ -75,7 +83,7 @@ Deno.serve(async (req) => {
         });
 
     if (req.method === 'OPTIONS') {
-        return new Response('ok', { headers: cors });
+        return new Response('ok', { headers: cors, status: 200 });
     }
 
     if (req.method !== 'GET') {
