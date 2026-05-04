@@ -7,11 +7,11 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
-    <title>Admin - PermitPath</title>
+    <title>Admin (v1) - PermitPath</title>
     <meta name="robots" content="noindex, nofollow" />
     <link rel="canonical" href="https://permitpathnav.com/admin.html" />
     <link rel="icon" type="image/png" href="images/pppp.png" />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css?v=1" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 </head>
@@ -132,7 +132,7 @@
         </section>
 
         <p class="reset-support-hint" style="margin-top: 1.25rem;"><a href="index.html">Back to home</a></p>
-        <p style="margin-top:0.35rem;font-size:0.75rem;color:rgba(255,255,255,0.45);text-align:center;">v6</p>
+        <p style="margin-top:0.35rem;font-size:0.75rem;color:rgba(255,255,255,0.45);text-align:center;">v1</p>
     </section>
 
     <footer>
@@ -163,6 +163,17 @@
         const adminDebugProfilesEndpoint = document.getElementById('adminDebugProfilesEndpoint');
         const ADMIN_USER_ID = 'ee962eec-a890-4ce8-9dcc-b9b30d241008';
         const ADMIN_EMAIL_ALLOWLIST = ['support@permitpathnav.com'];
+
+        function withTimeout(promise, ms) {
+            return Promise.race([
+                promise,
+                new Promise(function(_, reject) {
+                    setTimeout(function() {
+                        reject(new Error('Request timed out after ' + ms + 'ms'));
+                    }, ms);
+                })
+            ]);
+        }
 
         menuToggle.addEventListener('click', function() {
             dropdownMenu.classList.toggle('active');
@@ -278,17 +289,22 @@
 
         function clearPersistedSupabaseAuth() {
             const ref = projectRefFromSupabaseUrl();
-            if (!ref || typeof localStorage === 'undefined') return;
-            try {
-                for (let i = localStorage.length - 1; i >= 0; i--) {
-                    const key = localStorage.key(i);
-                    if (key && key.startsWith('sb-') && key.includes(ref)) {
-                        localStorage.removeItem(key);
+            if (!ref) return;
+            const stores = [];
+            if (typeof localStorage !== 'undefined') stores.push(localStorage);
+            if (typeof sessionStorage !== 'undefined') stores.push(sessionStorage);
+            stores.forEach(function(store) {
+                try {
+                    for (let i = store.length - 1; i >= 0; i--) {
+                        const key = store.key(i);
+                        if (key && key.startsWith('sb-') && key.includes(ref)) {
+                            store.removeItem(key);
+                        }
                     }
+                } catch (_e) {
+                    /* ignore */
                 }
-            } catch (_e) {
-                /* ignore */
-            }
+            });
         }
 
         async function performSignOut() {
@@ -297,37 +313,23 @@
             clearAuthMessage();
 
             try {
-                await supabase.auth.signOut({ scope: 'local' });
-                let {
-                    data: { session }
-                } = await supabase.auth.getSession();
-                if (session) {
-                    await supabase.auth.signOut({ scope: 'global' });
-                    ({
-                        data: { session }
-                    } = await supabase.auth.getSession());
-                }
-                if (session) {
-                    clearPersistedSupabaseAuth();
-                    await supabase.auth.signOut({ scope: 'local' });
-                }
-
+                clearPersistedSupabaseAuth();
                 showSignedOutState();
+                setAuthMessage('Signed out.', 'success');
 
-                const {
-                    data: { session: finalSession }
-                } = await supabase.auth.getSession();
-                if (finalSession) {
-                    setAuthMessage(
-                        'Session could not be fully cleared in this browser. Clear site data for this site or use a private window.',
-                        'error'
-                    );
-                } else {
-                    setAuthMessage('Signed out successfully.', 'success');
+                try {
+                    await withTimeout(supabase.auth.signOut({ scope: 'local' }), 5000);
+                } catch (_e) {
+                    /* already cleared storage + UI */
+                }
+                try {
+                    await withTimeout(supabase.auth.signOut({ scope: 'global' }), 4000);
+                } catch (_e) {
+                    /* ignore */
                 }
             } catch (err) {
                 showSignedOutState();
-                setAuthMessage(err.message || 'Sign out failed.', 'error');
+                setAuthMessage(err.message || 'Signed out locally.', 'success');
             } finally {
                 adminSignOutBtn.disabled = false;
                 adminSignOutBtn.textContent = 'Sign out';
@@ -445,9 +447,17 @@
             setDataLoading(true);
 
             try {
-                const {
-                    data: { session }
-                } = await supabase.auth.getSession();
+                let session = null;
+                try {
+                    const got = await withTimeout(supabase.auth.getSession(), 10000);
+                    session = got.data && got.data.session ? got.data.session : null;
+                } catch (_timeout) {
+                    setDataMessage(
+                        'Could not read your session in time (network or browser storage). Try a private window or clear site data for this site.',
+                        'error'
+                    );
+                    return;
+                }
 
                 if (!session || !session.access_token) {
                     setDataMessage('Please sign in again.', 'error');
@@ -505,7 +515,11 @@
             }
 
             if (!isAdminUser(user)) {
-                await supabase.auth.signOut();
+                try {
+                    await withTimeout(supabase.auth.signOut({ scope: 'local' }), 5000);
+                } catch (_e) {
+                    clearPersistedSupabaseAuth();
+                }
                 showSignedOutState();
                 setAuthMessage('This account is not allowed to access admin.', 'error');
                 return;
@@ -563,9 +577,18 @@
         });
 
         (async function initAdminAuth() {
-            const {
-                data: { session }
-            } = await supabase.auth.getSession();
+            let session = null;
+            try {
+                const got = await withTimeout(supabase.auth.getSession(), 10000);
+                session = got.data && got.data.session ? got.data.session : null;
+            } catch (_e) {
+                showSignedOutState();
+                setAuthMessage(
+                    'Session storage is slow or blocked. Try a private window, or clear site data for this site, then reload.',
+                    'error'
+                );
+                return;
+            }
             await enforceAdminState(session);
 
             const user = session && session.user ? session.user : null;
