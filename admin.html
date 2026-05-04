@@ -7,23 +7,23 @@
             try {
                 var u = new URL(window.location.href);
                 if (!u.searchParams.has('v')) {
-                    u.searchParams.set('v', '13');
+                    u.searchParams.set('v', '19');
                     window.location.replace(u.pathname + u.search + u.hash);
                 }
             } catch (_e) {}
         })();
     </script>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <!-- Avoid stale admin.html after deploy (browser + some CDNs respect hints). -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
     <title>Admin (v1) - PermitPath</title>
     <meta name="robots" content="noindex, nofollow" />
-    <link rel="canonical" href="https://permitpathnav.com/admin.html?v=13" />
+    <link rel="canonical" href="https://permitpathnav.com/admin.html?v=19" />
     <link rel="icon" type="image/png" href="images/pppp.png" />
-    <link rel="stylesheet" href="styles.css?v=13" />
+    <link rel="stylesheet" href="styles.css?v=18" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 </head>
@@ -115,14 +115,6 @@
                     </p>
                     <div id="profilesWrap" class="admin-profile-list"></div>
                 </div>
-
-                <div class="admin-block-spaced">
-                    <div class="admin-section-head">
-                        <h4>Usage Events</h4>
-                        <span id="eventsCount" class="admin-count-pill" hidden aria-live="polite"></span>
-                    </div>
-                    <div id="eventsWrap" class="admin-event-list"></div>
-                </div>
             </section>
             </div>
 
@@ -138,6 +130,9 @@
             </div>
 
             <div class="admin-signout-footer">
+                <div id="adminEventTotals" class="admin-event-totals" aria-live="polite">
+                    <div id="adminEventTotalsInner" class="admin-event-totals-inner"></div>
+                </div>
                 <button type="button" class="button button-secondary" id="adminSignOutBtn">Sign out</button>
             </div>
         </section>
@@ -169,15 +164,14 @@
         const adminLoginForm = document.getElementById('adminLoginForm');
         const adminLoginBtn = document.getElementById('adminLoginBtn');
         const adminSignOutBtn = document.getElementById('adminSignOutBtn');
+        const adminEventTotalsInner = document.getElementById('adminEventTotalsInner');
         const adminAuthMessage = document.getElementById('adminAuthMessage');
         const adminFiltersForm = document.getElementById('adminFiltersForm');
         const adminLoadBtn = document.getElementById('adminLoadBtn');
         const adminDataMessage = document.getElementById('adminDataMessage');
         const adminLoadStatus = document.getElementById('adminLoadStatus');
         const profilesWrap = document.getElementById('profilesWrap');
-        const eventsWrap = document.getElementById('eventsWrap');
         const profilesCount = document.getElementById('profilesCount');
-        const eventsCount = document.getElementById('eventsCount');
         const adminMainView = document.getElementById('adminMainView');
         const adminEmailToolView = document.getElementById('adminEmailToolView');
         const adminEmailToolTitle = document.getElementById('adminEmailToolTitle');
@@ -259,6 +253,8 @@
 
         let latestDashboardLoadId = 0;
         let latestProfilesList = [];
+        let latestEventsList = [];
+        let usageEventTotalsLoading = false;
 
         function setLoginLoading(isLoading) {
             adminLoginBtn.disabled = isLoading;
@@ -296,6 +292,7 @@
             adminIntroText.hidden = false;
             adminIntroText.textContent = 'Sign in with your admin account to access this page.';
             latestProfilesList = [];
+            latestEventsList = [];
             if (adminMainView && adminEmailToolView) {
                 adminEmailToolView.hidden = true;
                 adminMainView.hidden = false;
@@ -304,15 +301,11 @@
             clearDataMessage();
             clearLoadStatus();
             profilesWrap.innerHTML = '';
-            eventsWrap.innerHTML = '';
             if (profilesCount) {
                 profilesCount.hidden = true;
                 profilesCount.textContent = '';
             }
-            if (eventsCount) {
-                eventsCount.hidden = true;
-                eventsCount.textContent = '';
-            }
+            clearUsageEventTotals();
         }
 
         function projectRefFromSupabaseUrl() {
@@ -416,18 +409,62 @@
             return String(v);
         }
 
-        function appendProfileExpandTextRow(expandEl, label, text) {
-            const line = document.createElement('p');
-            line.className = 'admin-profile-expand-line admin-profile-expand-line--stack';
+        function makeProfileExpandCell(label, text, cellOpts) {
+            cellOpts = cellOpts || {};
+            const cell = document.createElement('div');
+            cell.className = 'admin-profile-expand-cell';
             const lbl = document.createElement('span');
             lbl.className = 'admin-profile-expand-label';
             lbl.textContent = label;
-            const val = document.createElement('span');
-            val.className = 'admin-profile-expand-value';
+            const val = document.createElement('div');
+            val.className =
+                'admin-profile-expand-value admin-profile-expand-value--in-grid admin-profile-expand-value-box';
+            if (cellOpts.useCode) {
+                const code = document.createElement('code');
+                code.className = 'admin-profile-user-id';
+                code.textContent = text;
+                val.appendChild(code);
+            } else if (cellOpts.routesCount) {
+                const strong = document.createElement('span');
+                strong.className = 'admin-profile-routes-count';
+                strong.textContent = text;
+                val.appendChild(strong);
+            } else {
+                val.textContent = text;
+            }
+            cell.appendChild(lbl);
+            cell.appendChild(val);
+            return cell;
+        }
+
+        function appendProfileExpandTwoColumnRow(gridEl, leftLabel, leftText, rightLabel, rightText, opts) {
+            opts = opts || {};
+            const row = document.createElement('div');
+            row.className = 'admin-profile-expand-grid-row';
+            row.appendChild(
+                makeProfileExpandCell(leftLabel, leftText, { useCode: opts.leftCode, routesCount: opts.leftRoutes })
+            );
+            row.appendChild(
+                makeProfileExpandCell(rightLabel, rightText, {
+                    useCode: opts.rightCode,
+                    routesCount: opts.rightRoutes
+                })
+            );
+            gridEl.appendChild(row);
+        }
+
+        function appendProfileExpandFullRow(expandEl, label, text) {
+            const row = document.createElement('div');
+            row.className = 'admin-profile-expand-fullrow';
+            const lbl = document.createElement('span');
+            lbl.className = 'admin-profile-expand-label';
+            lbl.textContent = label;
+            const val = document.createElement('div');
+            val.className = 'admin-profile-expand-value admin-profile-expand-value-box';
             val.textContent = text;
-            line.appendChild(lbl);
-            line.appendChild(val);
-            expandEl.appendChild(line);
+            row.appendChild(lbl);
+            row.appendChild(val);
+            expandEl.appendChild(row);
         }
 
         function collectEmailsFromProfiles(profiles, filter) {
@@ -519,18 +556,6 @@
             }
         }
 
-        function buildUserLabelMap(profiles) {
-            const map = Object.create(null);
-            (profiles || []).forEach(function(p) {
-                const uid = p && p.user_id ? String(p.user_id) : '';
-                if (!uid) return;
-                const em = p.email && String(p.email).trim();
-                const fn = p.full_name && String(p.full_name).trim();
-                map[uid] = em || fn || uid;
-            });
-            return map;
-        }
-
         function userIdFromUsageEvent(ev) {
             if (!ev || typeof ev !== 'object') return '';
             if (ev.user_id) return String(ev.user_id);
@@ -614,6 +639,33 @@
             container.appendChild(item);
         }
 
+        function eventsForProfileUserId(allEvents, profileUserId) {
+            if (!profileUserId) return [];
+            const want = String(profileUserId);
+            return (allEvents || []).filter(function(ev) {
+                return userIdFromUsageEvent(ev) === want;
+            });
+        }
+
+        function renderEventListInto(container, events) {
+            container.innerHTML = '';
+            const list = (events || []).slice().sort(function(a, b) {
+                const ta = a && a.created_at ? new Date(a.created_at).getTime() : 0;
+                const tb = b && b.created_at ? new Date(b.created_at).getTime() : 0;
+                return tb - ta;
+            });
+            if (list.length === 0) {
+                const p = document.createElement('p');
+                p.className = 'admin-profile-user-events-empty';
+                p.textContent = 'No usage events for this user with the current filters.';
+                container.appendChild(p);
+                return;
+            }
+            list.forEach(function(ev) {
+                appendUsageEventItem(container, ev);
+            });
+        }
+
         function jsonForPre(value) {
             if (value === null || value === undefined) return '—';
             if (typeof value === 'object') {
@@ -646,7 +698,8 @@
                 const em = profile.email && String(profile.email).trim();
                 const fn = profile.full_name && String(profile.full_name).trim();
                 const uid = profile.user_id ? String(profile.user_id) : '';
-                const summaryLabel = em || fn || uid || 'Unknown';
+                const routes = profile.routes_built_count;
+                const routesStr = routes === null || routes === undefined ? '—' : String(routes);
 
                 const det = document.createElement('details');
                 det.className = 'admin-profile-row';
@@ -654,9 +707,25 @@
                 const sum = document.createElement('summary');
                 sum.className = 'admin-profile-email';
 
-                const emailSpan = document.createElement('span');
-                emailSpan.className = 'admin-profile-email-text';
-                emailSpan.textContent = summaryLabel;
+                const textWrap = document.createElement('div');
+                textWrap.className = 'admin-profile-summary-text';
+                const nameEl = document.createElement('span');
+                nameEl.className = 'admin-profile-summary-name';
+                const subEmail = document.createElement('span');
+                subEmail.className = 'admin-profile-summary-email';
+                if (fn) {
+                    nameEl.textContent = fn;
+                    if (em) {
+                        subEmail.textContent = em;
+                    } else {
+                        subEmail.classList.add('admin-profile-summary-email--empty');
+                    }
+                } else {
+                    nameEl.textContent = em || uid || 'Unknown';
+                    subEmail.classList.add('admin-profile-summary-email--empty');
+                }
+                textWrap.appendChild(nameEl);
+                textWrap.appendChild(subEmail);
 
                 const kind = subscriptionIndicatorKind(profile);
                 const meta = subscriptionIndicatorMeta(kind);
@@ -666,143 +735,109 @@
                 dot.setAttribute('role', 'img');
                 dot.setAttribute('aria-label', meta.aria);
 
-                sum.appendChild(emailSpan);
+                sum.appendChild(textWrap);
                 sum.appendChild(dot);
 
                 const expand = document.createElement('div');
                 expand.className = 'admin-profile-expand';
 
-                appendProfileExpandTextRow(expand, 'Full name', profileScalarDisplay(profile, 'full_name'));
+                const grid = document.createElement('div');
+                grid.className = 'admin-profile-expand-grid';
+                expand.appendChild(grid);
 
-                const uidLine = document.createElement('p');
-                uidLine.className = 'admin-profile-expand-line admin-profile-expand-line--stack';
-                const uidLbl = document.createElement('span');
-                uidLbl.className = 'admin-profile-expand-label';
-                uidLbl.textContent = 'User ID';
-                const uidCode = document.createElement('code');
-                uidCode.className = 'admin-profile-user-id';
-                uidCode.textContent = uid || '—';
-                uidLine.appendChild(uidLbl);
-                uidLine.appendChild(uidCode);
-                expand.appendChild(uidLine);
-
-                appendProfileExpandTextRow(expand, 'Profile created', profileScalarDisplay(profile, 'created_at'));
-                appendProfileExpandTextRow(expand, 'Last seen', profileScalarDisplay(profile, 'last_seen_at'));
-                appendProfileExpandTextRow(
-                    expand,
+                appendProfileExpandTwoColumnRow(
+                    grid,
+                    'Full name',
+                    profileScalarDisplay(profile, 'full_name'),
+                    'Email',
+                    em || '—'
+                );
+                appendProfileExpandTwoColumnRow(grid, 'User ID', uid || '—', 'Routes built', routesStr, {
+                    leftCode: true,
+                    rightRoutes: true
+                });
+                appendProfileExpandTwoColumnRow(
+                    grid,
+                    'Profile created',
+                    profileScalarDisplay(profile, 'created_at'),
+                    'Last seen',
+                    profileScalarDisplay(profile, 'last_seen_at')
+                );
+                appendProfileExpandTwoColumnRow(
+                    grid,
                     'Subscription',
-                    isTruthyFlag(profile.subscription_is_active) ? 'Active' : 'Inactive'
-                );
-                appendProfileExpandTextRow(
-                    expand,
-                    'Subscription product ID',
-                    profileScalarDisplay(profile, 'subscription_product_id')
-                );
-                appendProfileExpandTextRow(
-                    expand,
+                    isTruthyFlag(profile.subscription_is_active) ? 'Active' : 'Inactive',
                     'Subscription expires',
                     profileScalarDisplay(profile, 'subscription_expires_at')
                 );
 
-                const routesLine = document.createElement('p');
-                routesLine.className = 'admin-profile-expand-line admin-profile-routes-line';
-                const routesLbl = document.createElement('span');
-                routesLbl.className = 'admin-profile-expand-label';
-                routesLbl.textContent = 'Routes built';
-                const routesVal = document.createElement('span');
-                routesVal.className = 'admin-profile-routes-count';
-                const routes = profile.routes_built_count;
-                routesVal.textContent =
-                    routes === null || routes === undefined ? '—' : String(routes);
-                routesLine.appendChild(routesLbl);
-                routesLine.appendChild(routesVal);
-                expand.appendChild(routesLine);
+                appendProfileExpandFullRow(
+                    expand,
+                    'Subscription product ID',
+                    profileScalarDisplay(profile, 'subscription_product_id')
+                );
+
+                const eventsSection = document.createElement('div');
+                eventsSection.className = 'admin-profile-user-events-block';
+                const eventsHeading = document.createElement('h5');
+                eventsHeading.className = 'admin-profile-user-events-heading';
+                eventsHeading.textContent = 'Usage events';
+
+                const eventsBtn = document.createElement('button');
+                eventsBtn.type = 'button';
+                eventsBtn.className = 'button button-secondary admin-profile-events-btn';
+                eventsBtn.textContent = 'Show usage events';
+
+                const eventsPanel = document.createElement('div');
+                eventsPanel.className = 'admin-profile-user-events-panel';
+                eventsPanel.hidden = true;
+
+                const profileUserId =
+                    profile.user_id !== null && profile.user_id !== undefined && profile.user_id !== ''
+                        ? String(profile.user_id)
+                        : '';
+
+                if (!profileUserId) {
+                    eventsBtn.disabled = true;
+                    eventsBtn.textContent = 'Usage events (no user id)';
+                    eventsBtn.title = 'This profile has no user_id; events cannot be matched.';
+                }
+
+                eventsBtn.addEventListener('click', function() {
+                    if (!profileUserId) return;
+                    if (eventsPanel.hidden) {
+                        renderEventListInto(eventsPanel, eventsForProfileUserId(latestEventsList, profileUserId));
+                        eventsPanel.hidden = false;
+                        eventsBtn.textContent = 'Hide usage events';
+                    } else {
+                        eventsPanel.hidden = true;
+                        eventsBtn.textContent = 'Show usage events';
+                    }
+                });
+
+                eventsSection.appendChild(eventsHeading);
+                eventsSection.appendChild(eventsBtn);
+                eventsSection.appendChild(eventsPanel);
+                expand.appendChild(eventsSection);
+
+                det.addEventListener('toggle', function() {
+                    if (det.open) {
+                        profilesWrap.querySelectorAll('details.admin-profile-row').forEach(function(other) {
+                            if (other !== det && other.open) {
+                                other.open = false;
+                            }
+                        });
+                    } else {
+                        eventsPanel.hidden = true;
+                        if (!eventsBtn.disabled) {
+                            eventsBtn.textContent = 'Show usage events';
+                        }
+                    }
+                });
 
                 det.appendChild(sum);
                 det.appendChild(expand);
                 profilesWrap.appendChild(det);
-            });
-        }
-
-        function renderEvents(events, userLabelMap) {
-            eventsWrap.innerHTML = '';
-            const list = events || [];
-            const labels = userLabelMap && typeof userLabelMap === 'object' ? userLabelMap : Object.create(null);
-            setSectionCount(eventsCount, list.length, 'event', 'events');
-
-            if (list.length === 0) {
-                const empty = document.createElement('div');
-                empty.className = 'admin-empty-state';
-                empty.textContent = 'No usage events found.';
-                eventsWrap.appendChild(empty);
-                return;
-            }
-
-            const groups = new Map();
-            list.forEach(function(ev) {
-                const uid = userIdFromUsageEvent(ev);
-                const key = uid || '__unknown__';
-                if (!groups.has(key)) groups.set(key, []);
-                groups.get(key).push(ev);
-            });
-
-            const entries = Array.from(groups.entries());
-            entries.sort(function(a, b) {
-                if (a[0] === '__unknown__') return 1;
-                if (b[0] === '__unknown__') return -1;
-                const la = labels[a[0]] || a[0];
-                const lb = labels[b[0]] || b[0];
-                return String(la).localeCompare(String(lb), undefined, { sensitivity: 'base' });
-            });
-
-            entries.forEach(function(entry) {
-                const key = entry[0];
-                const evs = entry[1];
-
-                const section = document.createElement('section');
-                section.className = 'admin-event-user-group';
-
-                const heading = document.createElement('h5');
-                heading.className = 'admin-event-user-heading';
-                const n = evs.length;
-                const countPart = n === 1 ? '1 event' : n + ' events';
-
-                if (key === '__unknown__') {
-                    heading.textContent = 'Unknown user · ' + countPart;
-                } else {
-                    const display = labels[key] || key;
-                    heading.textContent = display + ' · ' + countPart;
-                }
-                section.appendChild(heading);
-
-                if (key !== '__unknown__') {
-                    const idLine = document.createElement('p');
-                    idLine.className = 'admin-event-user-idline';
-                    const idLbl = document.createElement('span');
-                    idLbl.className = 'admin-event-user-idlabel';
-                    idLbl.textContent = 'User ID: ';
-                    const idCode = document.createElement('code');
-                    idCode.className = 'admin-event-user-idcode';
-                    idCode.textContent = key;
-                    idLine.appendChild(idLbl);
-                    idLine.appendChild(idCode);
-                    section.appendChild(idLine);
-                } else {
-                    const hint = document.createElement('p');
-                    hint.className = 'admin-event-user-hint';
-                    hint.textContent =
-                        'No user id on these rows. The API must return user_id (now included) or metadata keys user_id, userId, auth_user_id, uid.';
-                    section.appendChild(hint);
-                }
-
-                const inner = document.createElement('div');
-                inner.className = 'admin-event-user-events';
-                evs.forEach(function(ev) {
-                    appendUsageEventItem(inner, ev);
-                });
-                section.appendChild(inner);
-
-                eventsWrap.appendChild(section);
             });
         }
 
@@ -881,6 +916,85 @@
             return new Date(value + 'T23:59:59.999Z').toISOString();
         }
 
+        function eventTypeLabelFromUsageEvent(ev) {
+            if (!ev || typeof ev !== 'object') return '(no type)';
+            const et = ev.event_type;
+            if (et === null || et === undefined || String(et).trim() === '') return '(no type)';
+            return String(et).trim();
+        }
+
+        function aggregateUsageEventTypeCounts(events) {
+            const counts = Object.create(null);
+            (events || []).forEach(function(ev) {
+                const key = eventTypeLabelFromUsageEvent(ev);
+                counts[key] = (counts[key] || 0) + 1;
+            });
+            return counts;
+        }
+
+        function clearUsageEventTotals() {
+            usageEventTotalsLoading = false;
+            if (adminEventTotalsInner) {
+                adminEventTotalsInner.innerHTML = '';
+            }
+        }
+
+        function renderUsageEventTotals() {
+            if (!adminEventTotalsInner) return;
+            adminEventTotalsInner.innerHTML = '';
+            if (usageEventTotalsLoading) {
+                const p = document.createElement('p');
+                p.className = 'admin-event-totals-loading';
+                p.textContent = 'Updating event totals…';
+                adminEventTotalsInner.appendChild(p);
+                return;
+            }
+            const events = latestEventsList || [];
+            if (events.length === 0) {
+                const p = document.createElement('p');
+                p.className = 'admin-event-totals-empty';
+                p.textContent = 'No usage events in the current result set.';
+                adminEventTotalsInner.appendChild(p);
+                return;
+            }
+            const title = document.createElement('p');
+            title.className = 'admin-event-totals-title';
+            title.textContent = 'Total events by type (all users)';
+
+            const sub = document.createElement('p');
+            sub.className = 'admin-event-totals-sub';
+            const n = events.length;
+            sub.textContent = n === 1 ? '1 event in this load.' : n + ' events in this load.';
+
+            const counts = aggregateUsageEventTypeCounts(events);
+            const keys = Object.keys(counts).sort(function(a, b) {
+                const ca = counts[a];
+                const cb = counts[b];
+                if (cb !== ca) return cb - ca;
+                return a.localeCompare(b);
+            });
+
+            const ul = document.createElement('ul');
+            ul.className = 'admin-event-totals-list';
+            keys.forEach(function(key) {
+                const li = document.createElement('li');
+                li.className = 'admin-event-totals-row';
+                const name = document.createElement('span');
+                name.className = 'admin-event-totals-type';
+                name.textContent = key;
+                const num = document.createElement('span');
+                num.className = 'admin-event-totals-count';
+                num.textContent = String(counts[key]);
+                li.appendChild(name);
+                li.appendChild(num);
+                ul.appendChild(li);
+            });
+
+            adminEventTotalsInner.appendChild(title);
+            adminEventTotalsInner.appendChild(sub);
+            adminEventTotalsInner.appendChild(ul);
+        }
+
         async function loadDashboardData(passedSession) {
             const loadId = ++latestDashboardLoadId;
             clearDataMessage();
@@ -910,7 +1024,11 @@
                     return;
                 }
 
+                usageEventTotalsLoading = true;
+                renderUsageEventTotals();
+
                 latestProfilesList = [];
+                latestEventsList = [];
 
                 let profilesData;
                 try {
@@ -950,16 +1068,19 @@
                     usageData.usageEvents ||
                     usageData.data ||
                     (Array.isArray(usageData) ? usageData : []);
-                renderEvents(eventsList, buildUserLabelMap(profilesList));
+                latestEventsList = Array.isArray(eventsList) ? eventsList.slice() : [];
                 clearLoadStatus();
                 setDataMessage('Dashboard loaded.', 'success');
             } catch (err) {
                 clearLoadStatus();
+                latestEventsList = [];
                 const msg = err && err.message ? err.message : 'Unable to load dashboard data.';
                 setDataMessage(msg, 'error');
                 setLoadStatus('Stopped: ' + msg);
             } finally {
                 if (loadId === latestDashboardLoadId) {
+                    usageEventTotalsLoading = false;
+                    renderUsageEventTotals();
                     setDataLoading(false);
                 }
             }

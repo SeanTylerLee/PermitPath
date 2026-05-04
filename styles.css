@@ -2331,6 +2331,21 @@ body.admin-page {
     background-color: #e8eef5;
     background-image: none;
     color: #1a2332;
+    padding-left: max(0px, env(safe-area-inset-left, 0px));
+    padding-right: max(0px, env(safe-area-inset-right, 0px));
+    padding-bottom: max(0px, env(safe-area-inset-bottom, 0px));
+    min-height: 100vh;
+    min-height: 100dvh;
+}
+
+body.admin-page header {
+    padding-top: max(0.35rem, env(safe-area-inset-top, 0px));
+    padding-left: max(0.5rem, env(safe-area-inset-left, 0px));
+    padding-right: max(0.5rem, env(safe-area-inset-right, 0px));
+}
+
+body.admin-page footer {
+    padding-bottom: max(2.5rem, calc(1rem + env(safe-area-inset-bottom, 0px)));
 }
 
 body.admin-page .contact-form h1,
@@ -2529,6 +2544,80 @@ body.admin-page .admin-signout-footer {
     text-align: center;
 }
 
+body.admin-page .admin-event-totals {
+    margin-bottom: 1.25rem;
+    text-align: left;
+}
+
+body.admin-page .admin-event-totals-inner {
+    max-width: 28rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0.85rem 1rem;
+    background: rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(26, 35, 50, 0.12);
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(15, 35, 60, 0.06);
+}
+
+body.admin-page .admin-event-totals-title {
+    margin: 0 0 0.35rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #1a2332;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+body.admin-page .admin-event-totals-sub {
+    margin: 0 0 0.65rem;
+    font-size: 0.8rem;
+    color: #5a6b80;
+}
+
+body.admin-page .admin-event-totals-loading,
+body.admin-page .admin-event-totals-empty {
+    margin: 0;
+    font-size: 0.88rem;
+    color: #5a6b80;
+    text-align: center;
+}
+
+body.admin-page .admin-event-totals-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+body.admin-page .admin-event-totals-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+    font-size: 0.88rem;
+    line-height: 1.35;
+    padding: 0.35rem 0.5rem;
+    border-radius: 8px;
+    background: rgba(228, 234, 243, 0.55);
+}
+
+body.admin-page .admin-event-totals-type {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+        monospace;
+    font-size: 0.8rem;
+    color: #2c5282;
+    word-break: break-all;
+}
+
+body.admin-page .admin-event-totals-count {
+    font-weight: 700;
+    color: #1a2332;
+    flex-shrink: 0;
+}
+
 body.admin-page .button.button-secondary {
     background: transparent;
     color: #2c5282;
@@ -2665,14 +2754,39 @@ body.admin-page .admin-profile-email {
     user-select: none;
     position: relative;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 0.35rem;
 }
 
-body.admin-page .admin-profile-email-text {
+body.admin-page .admin-profile-summary-text {
     flex: 1;
     min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding-top: 0.1rem;
+}
+
+body.admin-page .admin-profile-summary-name {
+    display: block;
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 1.3;
+    color: #1a365d;
     word-break: break-word;
+}
+
+body.admin-page .admin-profile-summary-email {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: #5a6b80;
+    line-height: 1.35;
+    word-break: break-all;
+}
+
+body.admin-page .admin-profile-summary-email--empty {
+    display: none;
 }
 
 body.admin-page .admin-profile-email::-webkit-details-marker {
@@ -2706,7 +2820,8 @@ body.admin-page .admin-profile-sub-dot {
     height: 10px;
     border-radius: 50%;
     box-sizing: border-box;
-    align-self: center;
+    align-self: flex-start;
+    margin-top: 0.35rem;
 }
 
 body.admin-page .admin-profile-sub-dot--active {
@@ -2725,24 +2840,42 @@ body.admin-page .admin-profile-sub-dot--legend {
 }
 
 body.admin-page .admin-profile-expand {
-    padding: 0.65rem 1rem 0.9rem 1.75rem;
+    padding: 0.75rem 1rem 0.95rem 1.75rem;
     background: #f8fafc;
     border-top: 1px solid rgba(26, 35, 50, 0.06);
 }
 
-body.admin-page .admin-profile-expand-line {
-    margin: 0 0 0.65rem;
-    font-size: 0.88rem;
-    color: #1a2332;
+body.admin-page .admin-profile-expand-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
 }
 
-body.admin-page .admin-profile-expand-line:last-child {
-    margin-bottom: 0;
+body.admin-page .admin-profile-expand-grid-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.65rem 1.25rem;
+    align-items: start;
 }
 
-body.admin-page .admin-profile-expand-line--stack .admin-profile-expand-label {
+@media (max-width: 520px) {
+    body.admin-page .admin-profile-expand-grid-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+body.admin-page .admin-profile-expand-cell {
+    min-width: 0;
+}
+
+body.admin-page .admin-profile-expand-label {
     display: block;
-    margin-bottom: 0.2rem;
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #8b9cb0;
+    margin-bottom: 0.32rem;
 }
 
 body.admin-page .admin-profile-expand-value {
@@ -2752,30 +2885,95 @@ body.admin-page .admin-profile-expand-value {
     word-break: break-word;
 }
 
-body.admin-page .admin-profile-expand-label {
-    display: block;
-    font-size: 0.72rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: #5a6b80;
-    margin-bottom: 0.25rem;
+body.admin-page .admin-profile-expand-value--in-grid {
+    font-size: 0.9rem;
+    line-height: 1.45;
 }
 
-body.admin-page .admin-profile-routes-line .admin-profile-expand-label {
-    display: inline;
-    margin-right: 0.35rem;
-    text-transform: none;
-    letter-spacing: normal;
-    font-size: 0.88rem;
+body.admin-page .admin-profile-expand-value-box {
+    background: #fff;
+    border: 1px solid rgba(26, 35, 50, 0.14);
+    border-radius: 8px;
+    padding: 0.45rem 0.6rem;
     font-weight: 600;
-    color: #5a6b80;
+    color: #0f172a;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+}
+
+body.admin-page .admin-profile-expand-value-box .admin-profile-user-id {
+    font-weight: 500;
+    font-size: 0.74rem;
+    color: #1e3a5f;
+}
+
+body.admin-page .admin-profile-expand-value-box .admin-profile-routes-count {
+    font-size: 1.05rem;
+}
+
+body.admin-page .admin-profile-expand-fullrow {
+    margin-top: 0.85rem;
+    padding-top: 0.85rem;
+    border-top: 1px solid rgba(26, 35, 50, 0.08);
+}
+
+body.admin-page .admin-profile-expand-fullrow .admin-profile-expand-label {
+    margin-bottom: 0.3rem;
+}
+
+body.admin-page .admin-profile-expand-fullrow .admin-profile-expand-value {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+body.admin-page .admin-profile-user-events-block {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(26, 35, 50, 0.12);
+}
+
+body.admin-page .admin-profile-user-events-heading {
+    margin: 0 0 0.5rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #647896;
+}
+
+body.admin-page .admin-profile-events-btn {
+    width: 100%;
+    max-width: 320px;
+    margin-bottom: 0.65rem;
+}
+
+body.admin-page .admin-profile-user-events-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* [hidden] must win over display:flex, otherwise "Hide usage events" leaves the panel visible */
+body.admin-page .admin-profile-user-events-panel[hidden] {
+    display: none !important;
+}
+
+body.admin-page .admin-profile-user-events-panel .admin-event-item {
+    padding: 0.55rem 0.7rem;
+    box-shadow: none;
+}
+
+body.admin-page .admin-profile-user-events-empty {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #6b7c94;
+    font-style: italic;
 }
 
 body.admin-page .admin-profile-user-id {
     display: block;
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
-    font-size: 0.8rem;
+    font-size: 0.76rem;
     word-break: break-all;
     line-height: 1.45;
     color: #1a2332;
@@ -2953,6 +3151,80 @@ body.admin-page .admin-empty-state {
 
 body.admin-page .admin-block-spaced {
     margin-top: 1.5rem;
+}
+
+@media (hover: none) {
+    body.admin-page .info:hover {
+        transform: none;
+        box-shadow: 0 8px 32px rgba(15, 35, 60, 0.08);
+    }
+}
+
+@media (max-width: 640px) {
+    body.admin-page .info {
+        padding: 2rem 1rem;
+        margin: 1rem auto 1.5rem;
+        border-radius: 16px;
+    }
+
+    body.admin-page .info h2 {
+        font-size: 1.65rem;
+        margin-bottom: 1.25rem;
+    }
+
+    body.admin-page .form-group input,
+    body.admin-page .form-group select,
+    body.admin-page .form-group textarea {
+        font-size: 16px;
+    }
+
+    body.admin-page .admin-email-tool-textarea {
+        font-size: 16px;
+    }
+
+    body.admin-page .button {
+        min-height: 48px;
+        padding-top: 0.85rem;
+        padding-bottom: 0.85rem;
+        box-sizing: border-box;
+    }
+
+    body.admin-page .admin-profile-email {
+        min-height: 48px;
+        box-sizing: border-box;
+        padding-top: 0.95rem;
+        padding-bottom: 0.95rem;
+        -webkit-tap-highlight-color: rgba(44, 82, 130, 0.12);
+    }
+
+    body.admin-page .admin-filters-summary {
+        min-height: 48px;
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: rgba(44, 82, 130, 0.12);
+    }
+
+    body.admin-page .admin-tool-nav-btn,
+    body.admin-page .admin-profile-events-btn {
+        min-height: 48px;
+        box-sizing: border-box;
+    }
+
+    body.admin-page .admin-profile-expand {
+        padding-left: 0.85rem;
+        padding-right: 0.65rem;
+        padding-bottom: 1rem;
+    }
+
+    body.admin-page .admin-json-pre {
+        font-size: 0.7rem;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    body.admin-page .menu-toggle {
+        min-width: 44px;
+        min-height: 44px;
+        -webkit-tap-highlight-color: rgba(44, 82, 130, 0.12);
+    }
 }
 
 /* Smooth Scrolling */
