@@ -7,7 +7,7 @@
             try {
                 var u = new URL(window.location.href);
                 if (!u.searchParams.has('v')) {
-                    u.searchParams.set('v', '1');
+                    u.searchParams.set('v', '2');
                     window.location.replace(u.pathname + u.search + u.hash);
                 }
             } catch (_e) {}
@@ -21,9 +21,9 @@
     <meta http-equiv="Expires" content="0" />
     <title>Admin (v1) - PermitPath</title>
     <meta name="robots" content="noindex, nofollow" />
-    <link rel="canonical" href="https://permitpathnav.com/admin.html?v=1" />
+    <link rel="canonical" href="https://permitpathnav.com/admin.html?v=2" />
     <link rel="icon" type="image/png" href="images/pppp.png" />
-    <link rel="stylesheet" href="styles.css?v=1" />
+    <link rel="stylesheet" href="styles.css?v=2" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 </head>
@@ -460,23 +460,22 @@
             return new Date(value + 'T23:59:59.999Z').toISOString();
         }
 
-        async function loadDashboardData() {
+        async function loadDashboardData(passedSession) {
             const loadId = ++latestDashboardLoadId;
             clearDataMessage();
             clearLoadStatus();
             setDataLoading(true);
 
             try {
-                let session = null;
-                try {
-                    const got = await withTimeout(supabase.auth.getSession(), 10000);
-                    session = got.data && got.data.session ? got.data.session : null;
-                } catch (_timeout) {
-                    setDataMessage(
-                        'Could not read your session in time (network or browser storage). Try a private window or clear site data for this site.',
-                        'error'
-                    );
-                    return;
+                let session =
+                    passedSession && passedSession.access_token ? passedSession : null;
+                if (!session) {
+                    const { data: sessWrap, error: sessErr } = await supabase.auth.getSession();
+                    if (sessErr) {
+                        setDataMessage(sessErr.message || 'Could not read session.', 'error');
+                        return;
+                    }
+                    session = sessWrap && sessWrap.session ? sessWrap.session : null;
                 }
 
                 if (!session || !session.access_token) {
@@ -573,7 +572,7 @@
             }
 
             await enforceAdminState(data.session);
-            await loadDashboardData();
+            await loadDashboardData(data.session);
         });
 
         adminSignOutBtn.addEventListener('click', async function(e) {
@@ -593,20 +592,17 @@
             if (event === 'INITIAL_SESSION') {
                 return;
             }
-            await loadDashboardData();
+            await loadDashboardData(session);
         });
 
         (async function initAdminAuth() {
-            let session = null;
-            try {
-                const got = await withTimeout(supabase.auth.getSession(), 10000);
-                session = got.data && got.data.session ? got.data.session : null;
-            } catch (_e) {
+            const {
+                data: { session },
+                error: sessionError
+            } = await supabase.auth.getSession();
+            if (sessionError) {
                 showSignedOutState();
-                setAuthMessage(
-                    'Session storage is slow or blocked. Try a private window, or clear site data for this site, then reload.',
-                    'error'
-                );
+                setAuthMessage(sessionError.message || 'Could not read session.', 'error');
                 return;
             }
             await enforceAdminState(session);
