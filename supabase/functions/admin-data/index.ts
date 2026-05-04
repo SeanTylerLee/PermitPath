@@ -46,8 +46,23 @@ function corsHeadersFor(req: Request): Record<string, string> {
 }
 
 function routeFromUrl(url: URL): string | null {
-    const m = url.pathname.match(/\/functions\/v1\/admin-data\/([^/]+)\/?$/);
-    return m ? decodeURIComponent(m[1]) : null;
+    const p = (url.pathname || '').replace(/\/+$/, '');
+    if (!p) return null;
+
+    // Supabase runtimes can expose different path shapes depending on gateway/proxy:
+    // - /profiles
+    // - /admin-data/profiles
+    // - /functions/v1/admin-data/profiles
+    const m1 = p.match(/^\/functions\/v1\/admin-data\/([^/]+)$/);
+    if (m1) return decodeURIComponent(m1[1]);
+
+    const m2 = p.match(/^\/admin-data\/([^/]+)$/);
+    if (m2) return decodeURIComponent(m2[1]);
+
+    const m3 = p.match(/^\/([^/]+)$/);
+    if (m3) return decodeURIComponent(m3[1]);
+
+    return null;
 }
 
 Deno.serve(async (req) => {

@@ -1821,7 +1821,7 @@ footer p {
     }
 
     /* Keep simple gradient background on pages that don't use background.png */
-    body:not(.features-page):not(.pricing-page):not(.contact-page):not(.reset-page):not(.oversize-page) {
+    body:not(.features-page):not(.pricing-page):not(.contact-page):not(.reset-page):not(.oversize-page):not(.admin-page) {
         background: radial-gradient(ellipse at center, #1e3a5f 0%, #0d1b2a 100%);
         background-color: #0d1b2a;
     }
@@ -2108,10 +2108,16 @@ footer p {
 
 @media (max-width: 480px) {
     /* Ensure background on small mobile devices - keep it fixed */
-    body {
+    body:not(.admin-page) {
         background-attachment: fixed;
         background: radial-gradient(ellipse at center, #1e3a5f 0%, #0d1b2a 100%);
         background-color: #0d1b2a;
+    }
+
+    body.admin-page {
+        background-attachment: scroll;
+        background: linear-gradient(180deg, #e8eef5 0%, #dce6f2 100%);
+        background-color: #e8eef5;
     }
     
     header {
@@ -2317,6 +2323,612 @@ footer p {
     .legal-section ul {
         margin-left: 1.25rem;
     }
+}
+
+/* Admin dashboard (light, no hero background image) */
+body.admin-page {
+    background: linear-gradient(180deg, #e8eef5 0%, #dce6f2 100%);
+    background-color: #e8eef5;
+    background-image: none;
+    color: #1a2332;
+}
+
+body.admin-page .contact-form h1,
+body.admin-page .contact-form p {
+    color: #1a2332;
+}
+
+body.admin-page .contact-form {
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(26, 35, 50, 0.12);
+    box-shadow: 0 8px 32px rgba(15, 35, 60, 0.08);
+}
+
+body.admin-page .form-group label {
+    color: #2c3a4d;
+}
+
+body.admin-page .form-group input,
+body.admin-page .form-group select {
+    background: #fff;
+    color: #1a2332;
+    border-color: rgba(26, 35, 50, 0.2);
+}
+
+body.admin-page .form-group input:focus,
+body.admin-page .form-group select:focus {
+    outline: none;
+    background: #fff;
+    border-color: #2c5282;
+    box-shadow: 0 0 0 2px rgba(44, 82, 130, 0.2);
+}
+
+body.admin-page .form-group input::placeholder {
+    color: rgba(26, 35, 50, 0.45);
+}
+
+body.admin-page .admin-dashboard-section {
+    margin-top: 0.5rem;
+}
+
+body.admin-page .admin-dashboard-title {
+    margin-bottom: 1rem;
+    text-align: center;
+    color: #1a2332;
+}
+
+body.admin-page .admin-filters-details {
+    margin: 0 auto 1.25rem;
+    max-width: 600px;
+}
+
+body.admin-page .admin-filters-summary {
+    cursor: pointer;
+    list-style: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #2c5282;
+    padding: 0.7rem 1rem;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(26, 35, 50, 0.12);
+    border-radius: 10px;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+body.admin-page .admin-filters-summary::-webkit-details-marker {
+    display: none;
+}
+
+body.admin-page .admin-filters-summary::before {
+    content: '▸';
+    flex-shrink: 0;
+    width: 1rem;
+    color: #8899aa;
+    font-size: 0.75rem;
+    transition: transform 0.15s ease;
+}
+
+body.admin-page .admin-filters-details[open] > .admin-filters-summary::before {
+    transform: rotate(90deg);
+}
+
+body.admin-page .admin-filters-details[open] > .admin-filters-summary {
+    border-radius: 10px 10px 0 0;
+}
+
+body.admin-page .admin-filters-panel {
+    padding: 0.25rem 0.5rem 0.85rem;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(26, 35, 50, 0.12);
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+}
+
+body.admin-page .admin-filters-panel .contact-form {
+    margin-top: 0.35rem;
+}
+
+body.admin-page .admin-email-tools-nav {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    margin: 0 auto 1.25rem;
+    max-width: 720px;
+}
+
+@media (max-width: 520px) {
+    body.admin-page .admin-email-tools-nav {
+        grid-template-columns: 1fr;
+    }
+}
+
+body.admin-page .admin-tool-nav-btn {
+    font-size: 0.88rem;
+    padding: 0.55rem 0.5rem;
+    white-space: normal;
+    line-height: 1.25;
+    text-align: center;
+}
+
+body.admin-page .admin-email-tool-view {
+    max-width: 720px;
+    margin: 0 auto 1.5rem;
+    padding: 1rem 1.1rem;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(26, 35, 50, 0.12);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(15, 35, 60, 0.08);
+}
+
+body.admin-page .admin-email-tool-title {
+    margin: 0 0 0.5rem;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #1a2332;
+    text-align: center;
+}
+
+body.admin-page .admin-email-tool-hint {
+    margin: 0 0 0.75rem;
+    font-size: 0.85rem;
+    color: #5a6b80;
+    text-align: center;
+    line-height: 1.45;
+}
+
+body.admin-page .admin-email-tool-textarea {
+    width: 100%;
+    box-sizing: border-box;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    padding: 0.65rem 0.75rem;
+    border: 1px solid rgba(26, 35, 50, 0.18);
+    border-radius: 8px;
+    background: #f8fafc;
+    color: #1a2332;
+    resize: vertical;
+    min-height: 200px;
+}
+
+body.admin-page .admin-email-tool-status {
+    margin: 0.5rem 0 0;
+    min-height: 1.25em;
+    font-size: 0.85rem;
+    color: #2c5282;
+    text-align: center;
+}
+
+body.admin-page .admin-email-tool-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+body.admin-page .admin-dashboard-section h3 {
+    color: #1a2332;
+}
+
+body.admin-page .admin-load-status {
+    margin-top: 0.75rem;
+    font-size: 0.85rem;
+    color: #5a6b80;
+    text-align: center;
+    min-height: 1.35em;
+}
+
+body.admin-page .admin-signout-footer {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(26, 35, 50, 0.1);
+    text-align: center;
+}
+
+body.admin-page .button.button-secondary {
+    background: transparent;
+    color: #2c5282;
+    border: 2px solid rgba(44, 82, 130, 0.45);
+}
+
+body.admin-page .button.button-secondary:hover {
+    background: rgba(44, 82, 130, 0.08);
+    border-color: #2c5282;
+}
+
+body.admin-page .info {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(26, 35, 50, 0.12);
+    color: #1a2332;
+    box-shadow: 0 8px 32px rgba(15, 35, 60, 0.08);
+    backdrop-filter: none;
+}
+
+body.admin-page .info:hover {
+    box-shadow: 0 12px 40px rgba(15, 35, 60, 0.1);
+}
+
+body.admin-page .info h2 {
+    color: #1a2332;
+}
+
+body.admin-page .info p {
+    color: #3d4f66;
+}
+
+body.admin-page .info h2 .highlight {
+    color: #2c5282;
+    text-shadow: none;
+}
+
+body.admin-page .reset-support-hint a {
+    color: #2c5282;
+}
+
+body.admin-page .reset-support-hint a:hover {
+    color: #1a365d;
+}
+
+body.admin-page .admin-back-hint {
+    margin-top: 1.25rem;
+}
+
+body.admin-page .admin-page-version {
+    margin-top: 0.35rem;
+    font-size: 0.75rem;
+    color: #8899aa;
+    text-align: center;
+}
+
+body.admin-page .form-message.success {
+    background: rgba(44, 82, 130, 0.1);
+    border: 2px solid rgba(44, 82, 130, 0.45);
+    color: #1a365d;
+}
+
+body.admin-page .form-message.error {
+    background: rgba(200, 50, 50, 0.08);
+    border: 2px solid rgba(200, 50, 50, 0.4);
+    color: #a32020;
+}
+
+body.admin-page .admin-dashboard-section h4 {
+    color: #1a2332;
+    margin-bottom: 0;
+}
+
+body.admin-page .admin-section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.75rem;
+}
+
+body.admin-page .admin-count-pill {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #2c3a4d;
+    background: #e4eaf3;
+    padding: 0.25rem 0.65rem;
+    border-radius: 999px;
+    border: 1px solid rgba(26, 35, 50, 0.1);
+}
+
+body.admin-page .admin-profile-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    align-items: center;
+    font-size: 0.78rem;
+    color: #5a6b80;
+    margin: 0 0 0.65rem;
+    padding: 0 0.15rem;
+}
+
+body.admin-page .admin-profile-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+body.admin-page .admin-profile-list {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid rgba(26, 35, 50, 0.12);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(15, 35, 60, 0.05);
+}
+
+body.admin-page .admin-profile-row {
+    border-bottom: 1px solid rgba(26, 35, 50, 0.08);
+}
+
+body.admin-page .admin-profile-row:last-of-type {
+    border-bottom: none;
+}
+
+body.admin-page .admin-profile-email {
+    cursor: pointer;
+    list-style: none;
+    padding: 0.8rem 1rem 0.8rem 0.75rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #2c5282;
+    user-select: none;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+body.admin-page .admin-profile-email-text {
+    flex: 1;
+    min-width: 0;
+    word-break: break-word;
+}
+
+body.admin-page .admin-profile-email::-webkit-details-marker {
+    display: none;
+}
+
+body.admin-page .admin-profile-email::before {
+    content: '▸';
+    display: inline-block;
+    flex-shrink: 0;
+    width: 1.1rem;
+    margin-right: 0;
+    color: #8899aa;
+    font-size: 0.75rem;
+    transform: translateY(-0.05em);
+    transition: transform 0.15s ease;
+}
+
+body.admin-page .admin-profile-row[open] > .admin-profile-email::before {
+    transform: rotate(90deg) translateY(-0.05em);
+}
+
+body.admin-page .admin-profile-row[open] > .admin-profile-email {
+    background: #f0f4fa;
+    color: #1a365d;
+}
+
+body.admin-page .admin-profile-sub-dot {
+    flex-shrink: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    align-self: center;
+}
+
+body.admin-page .admin-profile-sub-dot--active {
+    background: #16a34a;
+    box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.25);
+}
+
+body.admin-page .admin-profile-sub-dot--inactive {
+    background: #9ca3af;
+    box-shadow: 0 0 0 2px rgba(156, 163, 175, 0.28);
+}
+
+body.admin-page .admin-profile-sub-dot--legend {
+    width: 8px;
+    height: 8px;
+}
+
+body.admin-page .admin-profile-expand {
+    padding: 0.65rem 1rem 0.9rem 1.75rem;
+    background: #f8fafc;
+    border-top: 1px solid rgba(26, 35, 50, 0.06);
+}
+
+body.admin-page .admin-profile-expand-line {
+    margin: 0 0 0.65rem;
+    font-size: 0.88rem;
+    color: #1a2332;
+}
+
+body.admin-page .admin-profile-expand-line:last-child {
+    margin-bottom: 0;
+}
+
+body.admin-page .admin-profile-expand-label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #5a6b80;
+    margin-bottom: 0.25rem;
+}
+
+body.admin-page .admin-profile-routes-line .admin-profile-expand-label {
+    display: inline;
+    margin-right: 0.35rem;
+    text-transform: none;
+    letter-spacing: normal;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #5a6b80;
+}
+
+body.admin-page .admin-profile-user-id {
+    display: block;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
+    font-size: 0.8rem;
+    word-break: break-all;
+    line-height: 1.45;
+    color: #1a2332;
+}
+
+body.admin-page .admin-profile-routes-count {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1a365d;
+}
+
+body.admin-page .admin-badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.15rem 0.45rem;
+    border-radius: 6px;
+    line-height: 1.35;
+}
+
+body.admin-page .admin-badge--ok {
+    background: rgba(34, 150, 90, 0.15);
+    color: #1c6d43;
+    border: 1px solid rgba(34, 150, 90, 0.35);
+}
+
+body.admin-page .admin-badge--muted {
+    background: #eef2f8;
+    color: #5a6b80;
+    border: 1px solid rgba(26, 35, 50, 0.1);
+}
+
+body.admin-page .admin-badge--event {
+    background: rgba(44, 82, 130, 0.12);
+    color: #1a365d;
+    border: 1px solid rgba(44, 82, 130, 0.28);
+    max-width: 100%;
+    word-break: break-word;
+}
+
+body.admin-page .admin-event-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+body.admin-page .admin-event-user-group {
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(26, 35, 50, 0.12);
+    border-radius: 12px;
+    padding: 0.85rem 1rem 1rem;
+    box-shadow: 0 1px 8px rgba(15, 35, 60, 0.05);
+}
+
+body.admin-page .admin-event-user-heading {
+    margin: 0 0 0.35rem;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1a2332;
+    line-height: 1.35;
+}
+
+body.admin-page .admin-event-user-idline {
+    margin: 0 0 0.65rem;
+    font-size: 0.82rem;
+    color: #3d4f66;
+}
+
+body.admin-page .admin-event-user-idlabel {
+    font-weight: 600;
+}
+
+body.admin-page .admin-event-user-idcode {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
+    font-size: 0.78rem;
+    word-break: break-all;
+}
+
+body.admin-page .admin-event-user-hint {
+    margin: 0 0 0.65rem;
+    font-size: 0.8rem;
+    color: #6b7c94;
+    line-height: 1.45;
+}
+
+body.admin-page .admin-event-user-events {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+body.admin-page .admin-event-user-events .admin-event-item {
+    box-shadow: none;
+    border-radius: 8px;
+    padding: 0.65rem 0.85rem;
+}
+
+body.admin-page .admin-event-item {
+    background: #fff;
+    border: 1px solid rgba(26, 35, 50, 0.12);
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    box-shadow: 0 1px 8px rgba(15, 35, 60, 0.05);
+}
+
+body.admin-page .admin-event-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+body.admin-page .admin-event-time {
+    font-size: 0.85rem;
+    color: #5a6b80;
+}
+
+body.admin-page .admin-event-muted {
+    margin: 0.5rem 0 0;
+    font-size: 0.8rem;
+    color: #8899aa;
+}
+
+body.admin-page .admin-meta {
+    margin-top: 0.6rem;
+}
+
+body.admin-page .admin-meta summary {
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #2c5282;
+    user-select: none;
+}
+
+body.admin-page .admin-meta summary:hover {
+    text-decoration: underline;
+}
+
+body.admin-page .admin-json-pre {
+    margin: 0.5rem 0 0;
+    padding: 0.65rem 0.75rem;
+    background: #f4f6fa;
+    border: 1px solid rgba(26, 35, 50, 0.1);
+    border-radius: 8px;
+    font-size: 0.72rem;
+    line-height: 1.45;
+    overflow-x: auto;
+    max-height: 220px;
+    overflow-y: auto;
+}
+
+body.admin-page .admin-empty-state {
+    padding: 1.25rem 1rem;
+    text-align: center;
+    color: #5a6b80;
+    font-size: 0.95rem;
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px dashed rgba(26, 35, 50, 0.15);
+    border-radius: 10px;
+}
+
+body.admin-page .admin-block-spaced {
+    margin-top: 1.5rem;
 }
 
 /* Smooth Scrolling */

@@ -7,7 +7,7 @@
             try {
                 var u = new URL(window.location.href);
                 if (!u.searchParams.has('v')) {
-                    u.searchParams.set('v', '3');
+                    u.searchParams.set('v', '12');
                     window.location.replace(u.pathname + u.search + u.hash);
                 }
             } catch (_e) {}
@@ -21,13 +21,13 @@
     <meta http-equiv="Expires" content="0" />
     <title>Admin (v1) - PermitPath</title>
     <meta name="robots" content="noindex, nofollow" />
-    <link rel="canonical" href="https://permitpathnav.com/admin.html?v=3" />
+    <link rel="canonical" href="https://permitpathnav.com/admin.html?v=12" />
     <link rel="icon" type="image/png" href="images/pppp.png" />
-    <link rel="stylesheet" href="styles.css?v=3" />
+    <link rel="stylesheet" href="styles.css?v=12" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 </head>
-<body class="contact-page">
+<body class="admin-page">
 
     <header>
         <a href="index.html"><img src="images/websitehead.png" alt="PermitPath" class="logo" width="200" height="50" /></a>
@@ -71,80 +71,79 @@
         </section>
 
         <section id="adminAuthedWrap" hidden>
-            <p id="adminWelcomeText"></p>
-            <p>You are signed in as an admin. Add your internal tools below this block when you are ready.</p>
-            <div class="button-wrap">
-                <button type="button" class="button" id="adminSignOutBtn">Sign out</button>
+            <div class="admin-email-tools-nav" role="toolbar" aria-label="Email lists">
+                <button type="button" class="button admin-tool-nav-btn" id="adminBtnMassEmail">Mass Email</button>
+                <button type="button" class="button admin-tool-nav-btn" id="adminBtnSubscribedEmails">Subscribed emails</button>
+                <button type="button" class="button admin-tool-nav-btn" id="adminBtnUnsubscribedEmails">Not subscribed</button>
             </div>
 
-            <section style="margin-top:1.5rem; padding:0.9rem; border:1px solid rgba(255,255,255,0.2); border-radius:10px;">
-                <h4 style="margin-bottom:0.6rem;">Auth Debug</h4>
-                <p style="text-align:left; margin:0.25rem 0;"><strong>User ID:</strong> <span id="adminDebugUserId">—</span></p>
-                <p style="text-align:left; margin:0.25rem 0;"><strong>Email:</strong> <span id="adminDebugEmail">—</span></p>
-                <p style="text-align:left; margin:0.25rem 0;"><strong>Profiles Endpoint:</strong> <span id="adminDebugProfilesEndpoint">—</span></p>
-                <p style="text-align:left; margin:0.25rem 0;"><strong>Expected Admin ID:</strong> <span>ee962eec-a890-4ce8-9dcc-b9b30d241008</span></p>
-            </section>
+            <div id="adminMainView">
+            <section class="admin-dashboard-section">
+                <h3 class="admin-dashboard-title">Usage Dashboard</h3>
 
-            <section style="margin-top: 2rem;">
-                <h3 style="margin-bottom: 1rem; text-align:center;">Usage Dashboard</h3>
+                <details class="admin-filters-details">
+                    <summary class="admin-filters-summary">Search: from, to, event type</summary>
+                    <div class="admin-filters-panel">
+                        <form class="contact-form" id="adminFiltersForm" novalidate>
+                            <div class="form-group">
+                                <label for="eventsFrom">From</label>
+                                <input type="date" id="eventsFrom" name="from" />
+                            </div>
+                            <div class="form-group">
+                                <label for="eventsTo">To</label>
+                                <input type="date" id="eventsTo" name="to" />
+                            </div>
+                            <div class="form-group">
+                                <label for="eventsType">Event type (optional)</label>
+                                <input type="text" id="eventsType" name="event_type" placeholder="route_built" maxlength="100" />
+                            </div>
+                            <button type="submit" class="button" id="adminLoadBtn">Load</button>
+                            <p id="adminLoadStatus" class="admin-load-status"></p>
+                            <div class="form-message" id="adminDataMessage" aria-live="polite"></div>
+                        </form>
+                    </div>
+                </details>
 
-                <form class="contact-form" id="adminFiltersForm" novalidate>
-                    <div class="form-group">
-                        <label for="eventsFrom">From</label>
-                        <input type="date" id="eventsFrom" name="from" />
+                <div class="admin-block-spaced">
+                    <div class="admin-section-head">
+                        <h4>Profiles</h4>
+                        <span id="profilesCount" class="admin-count-pill" hidden aria-live="polite"></span>
                     </div>
-                    <div class="form-group">
-                        <label for="eventsTo">To</label>
-                        <input type="date" id="eventsTo" name="to" />
-                    </div>
-                    <div class="form-group">
-                        <label for="eventsType">Event type (optional)</label>
-                        <input type="text" id="eventsType" name="event_type" placeholder="route_built" maxlength="100" />
-                    </div>
-                    <button type="submit" class="button" id="adminLoadBtn">Load</button>
-                    <p id="adminLoadStatus" style="margin-top:0.75rem;font-size:0.85rem;color:rgba(255,255,255,0.65);text-align:center;min-height:1.35em;"></p>
-                    <div class="form-message" id="adminDataMessage" aria-live="polite"></div>
-                </form>
-
-                <div style="margin-top:1.5rem;">
-                    <h4 style="margin-bottom:0.75rem;">Profiles</h4>
-                    <div id="profilesWrap" style="overflow-x:auto;">
-                        <table id="profilesTable" style="width:100%; border-collapse:collapse; font-size:0.9rem;">
-                            <thead>
-                                <tr>
-                                    <th style="text-align:left; padding:0.5rem;">id</th>
-                                    <th style="text-align:left; padding:0.5rem;">user_id</th>
-                                    <th style="text-align:left; padding:0.5rem;">full_name</th>
-                                    <th style="text-align:left; padding:0.5rem;">email</th>
-                                    <th style="text-align:left; padding:0.5rem;">routes_built_count</th>
-                                    <th style="text-align:left; padding:0.5rem;">subscription_is_active</th>
-                                </tr>
-                            </thead>
-                            <tbody id="profilesBody"></tbody>
-                        </table>
-                    </div>
+                    <p class="admin-profile-legend">
+                        <span class="admin-profile-legend-item"><span class="admin-profile-sub-dot admin-profile-sub-dot--active admin-profile-sub-dot--legend"></span> Subscribed</span>
+                        <span class="admin-profile-legend-item"><span class="admin-profile-sub-dot admin-profile-sub-dot--inactive admin-profile-sub-dot--legend"></span> Not subscribed</span>
+                    </p>
+                    <div id="profilesWrap" class="admin-profile-list"></div>
                 </div>
 
-                <div style="margin-top:1.5rem;">
-                    <h4 style="margin-bottom:0.75rem;">Usage Events</h4>
-                    <div id="eventsWrap" style="overflow-x:auto;">
-                        <table id="eventsTable" style="width:100%; border-collapse:collapse; font-size:0.9rem;">
-                            <thead>
-                                <tr>
-                                    <th style="text-align:left; padding:0.5rem;">event_type</th>
-                                    <th style="text-align:left; padding:0.5rem;">created_at</th>
-                                    <th style="text-align:left; padding:0.5rem;">metadata</th>
-                                </tr>
-                            </thead>
-                            <tbody id="eventsBody"></tbody>
-                        </table>
+                <div class="admin-block-spaced">
+                    <div class="admin-section-head">
+                        <h4>Usage Events</h4>
+                        <span id="eventsCount" class="admin-count-pill" hidden aria-live="polite"></span>
                     </div>
+                    <div id="eventsWrap" class="admin-event-list"></div>
                 </div>
             </section>
+            </div>
+
+            <div id="adminEmailToolView" class="admin-email-tool-view" hidden>
+                <h3 id="adminEmailToolTitle" class="admin-email-tool-title"></h3>
+                <p class="admin-email-tool-hint">Select all (⌘/Ctrl+A) or use Copy all, then paste into your email app.</p>
+                <textarea id="adminEmailToolTextarea" class="admin-email-tool-textarea" readonly rows="14" spellcheck="false" aria-label="Email addresses"></textarea>
+                <p id="adminEmailToolStatus" class="admin-email-tool-status" aria-live="polite"></p>
+                <div class="admin-email-tool-actions">
+                    <button type="button" class="button" id="adminEmailToolCopy">Copy all</button>
+                    <button type="button" class="button button-secondary" id="adminEmailToolBack">Back to dashboard</button>
+                </div>
+            </div>
+
+            <div class="admin-signout-footer">
+                <button type="button" class="button button-secondary" id="adminSignOutBtn">Sign out</button>
+            </div>
         </section>
 
-        <p class="reset-support-hint" style="margin-top: 1.25rem;"><a href="index.html">Back to home</a></p>
-        <p style="margin-top:0.35rem;font-size:0.75rem;color:rgba(255,255,255,0.45);text-align:center;">v1</p>
+        <p class="reset-support-hint admin-back-hint"><a href="index.html">Back to home</a></p>
+        <p class="admin-page-version">v1</p>
     </section>
 
     <footer>
@@ -167,7 +166,6 @@
         const adminLoginWrap = document.getElementById('adminLoginWrap');
         const adminAuthedWrap = document.getElementById('adminAuthedWrap');
         const adminIntroText = document.getElementById('adminIntroText');
-        const adminWelcomeText = document.getElementById('adminWelcomeText');
         const adminLoginForm = document.getElementById('adminLoginForm');
         const adminLoginBtn = document.getElementById('adminLoginBtn');
         const adminSignOutBtn = document.getElementById('adminSignOutBtn');
@@ -176,11 +174,20 @@
         const adminLoadBtn = document.getElementById('adminLoadBtn');
         const adminDataMessage = document.getElementById('adminDataMessage');
         const adminLoadStatus = document.getElementById('adminLoadStatus');
-        const profilesBody = document.getElementById('profilesBody');
-        const eventsBody = document.getElementById('eventsBody');
-        const adminDebugUserId = document.getElementById('adminDebugUserId');
-        const adminDebugEmail = document.getElementById('adminDebugEmail');
-        const adminDebugProfilesEndpoint = document.getElementById('adminDebugProfilesEndpoint');
+        const profilesWrap = document.getElementById('profilesWrap');
+        const eventsWrap = document.getElementById('eventsWrap');
+        const profilesCount = document.getElementById('profilesCount');
+        const eventsCount = document.getElementById('eventsCount');
+        const adminMainView = document.getElementById('adminMainView');
+        const adminEmailToolView = document.getElementById('adminEmailToolView');
+        const adminEmailToolTitle = document.getElementById('adminEmailToolTitle');
+        const adminEmailToolTextarea = document.getElementById('adminEmailToolTextarea');
+        const adminEmailToolStatus = document.getElementById('adminEmailToolStatus');
+        const adminBtnMassEmail = document.getElementById('adminBtnMassEmail');
+        const adminBtnSubscribedEmails = document.getElementById('adminBtnSubscribedEmails');
+        const adminBtnUnsubscribedEmails = document.getElementById('adminBtnUnsubscribedEmails');
+        const adminEmailToolCopy = document.getElementById('adminEmailToolCopy');
+        const adminEmailToolBack = document.getElementById('adminEmailToolBack');
         const ADMIN_USER_ID = 'ee962eec-a890-4ce8-9dcc-b9b30d241008';
         const ADMIN_EMAIL_ALLOWLIST = ['support@permitpathnav.com'];
 
@@ -251,6 +258,7 @@
         }
 
         let latestDashboardLoadId = 0;
+        let latestProfilesList = [];
 
         function setLoginLoading(isLoading) {
             adminLoginBtn.disabled = isLoading;
@@ -275,28 +283,36 @@
             return ADMIN_EMAIL_ALLOWLIST.includes(email);
         }
 
-        function showAuthedState(user) {
+        function showAuthedState() {
             adminLoginWrap.hidden = true;
             adminAuthedWrap.hidden = false;
-            adminIntroText.textContent = 'Admin access granted.';
-            adminWelcomeText.textContent = 'Signed in as ' + (user.email || 'admin');
-            adminDebugUserId.textContent = user.id || '—';
-            adminDebugEmail.textContent = user.email || '—';
-            adminDebugProfilesEndpoint.textContent = supabaseUrl + '/functions/v1/admin-data/profiles';
+            adminIntroText.hidden = true;
             clearAuthMessage();
         }
 
         function showSignedOutState() {
             adminLoginWrap.hidden = false;
             adminAuthedWrap.hidden = true;
+            adminIntroText.hidden = false;
             adminIntroText.textContent = 'Sign in with your admin account to access this page.';
+            latestProfilesList = [];
+            if (adminMainView && adminEmailToolView) {
+                adminEmailToolView.hidden = true;
+                adminMainView.hidden = false;
+            }
+            if (adminEmailToolStatus) adminEmailToolStatus.textContent = '';
             clearDataMessage();
             clearLoadStatus();
-            profilesBody.innerHTML = '';
-            eventsBody.innerHTML = '';
-            adminDebugUserId.textContent = '—';
-            adminDebugEmail.textContent = '—';
-            adminDebugProfilesEndpoint.textContent = '—';
+            profilesWrap.innerHTML = '';
+            eventsWrap.innerHTML = '';
+            if (profilesCount) {
+                profilesCount.hidden = true;
+                profilesCount.textContent = '';
+            }
+            if (eventsCount) {
+                eventsCount.hidden = true;
+                eventsCount.textContent = '';
+            }
         }
 
         function projectRefFromSupabaseUrl() {
@@ -356,48 +372,377 @@
             }
         }
 
-        function valueCell(value) {
-            if (value === null || value === undefined || value === '') return '—';
+        function formatDisplayDate(isoOrStr) {
+            if (isoOrStr === null || isoOrStr === undefined || isoOrStr === '') return '—';
+            const d = new Date(isoOrStr);
+            if (Number.isNaN(d.getTime())) return String(isoOrStr);
+            return d.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+        }
+
+        function isoForTitle(isoOrStr) {
+            if (!isoOrStr) return '';
+            const d = new Date(isoOrStr);
+            if (Number.isNaN(d.getTime())) return String(isoOrStr);
+            return d.toISOString();
+        }
+
+        function setSectionCount(el, n, singular, plural) {
+            if (!el) return;
+            el.hidden = false;
+            el.textContent = n === 1 ? '1 ' + singular : n + ' ' + plural;
+        }
+
+        function isTruthyFlag(v) {
+            return v === true || v === 'true' || v === 1 || v === '1';
+        }
+
+        function subscriptionIndicatorKind(profile) {
+            return isTruthyFlag(profile.subscription_is_active) ? 'active' : 'inactive';
+        }
+
+        function subscriptionIndicatorMeta(kind) {
+            if (kind === 'active') {
+                return { title: 'Subscribed', aria: 'Subscribed' };
+            }
+            return { title: 'Not subscribed', aria: 'Not subscribed' };
+        }
+
+        function collectEmailsFromProfiles(profiles, filter) {
+            const map = new Map();
+            (profiles || []).forEach(function(p) {
+                const raw = p.email;
+                if (raw === null || raw === undefined) return;
+                const em = String(raw).trim();
+                if (!em) return;
+                if (filter === 'subscribed' && !isTruthyFlag(p.subscription_is_active)) return;
+                if (filter === 'unsubscribed' && isTruthyFlag(p.subscription_is_active)) return;
+                const key = em.toLowerCase();
+                if (!map.has(key)) map.set(key, em);
+            });
+            return Array.from(map.values()).sort(function(a, b) {
+                return a.toLowerCase().localeCompare(b.toLowerCase());
+            });
+        }
+
+        async function openEmailTool(filter) {
+            if (!adminMainView || !adminEmailToolView || !adminEmailToolTitle || !adminEmailToolTextarea) return;
+            try {
+                const { data: wrap } = await supabase.auth.getSession();
+                const session = wrap && wrap.session ? wrap.session : null;
+                const user = session && session.user ? session.user : null;
+                if (!user || !isAdminUser(user)) {
+                    closeEmailTool();
+                    latestProfilesList = [];
+                    await enforceAdminState(session);
+                    return;
+                }
+            } catch (_e) {
+                closeEmailTool();
+                return;
+            }
+
+            adminMainView.hidden = true;
+            adminEmailToolView.hidden = false;
+            if (adminEmailToolStatus) adminEmailToolStatus.textContent = '';
+            const lines = collectEmailsFromProfiles(latestProfilesList, filter);
+            adminEmailToolTextarea.value = lines.join('\n');
+            const titles = {
+                all: 'Mass Email — all addresses on file',
+                subscribed: 'Subscribed — email list',
+                unsubscribed: 'Not subscribed — email list'
+            };
+            adminEmailToolTitle.textContent = titles[filter] + ' (' + lines.length + ')';
+            adminEmailToolTextarea.focus();
+            adminEmailToolTextarea.select();
+        }
+
+        function closeEmailTool() {
+            if (!adminMainView || !adminEmailToolView) return;
+            adminEmailToolView.hidden = true;
+            adminMainView.hidden = false;
+            if (adminEmailToolStatus) adminEmailToolStatus.textContent = '';
+        }
+
+        async function copyAdminEmailList() {
+            if (!adminEmailToolTextarea) return;
+            const { data: wrap } = await supabase.auth.getSession();
+            const session = wrap && wrap.session ? wrap.session : null;
+            const user = session && session.user ? session.user : null;
+            if (!user || !isAdminUser(user)) {
+                closeEmailTool();
+                latestProfilesList = [];
+                await enforceAdminState(session);
+                return;
+            }
+            const t = adminEmailToolTextarea.value;
+            if (!t.trim()) {
+                if (adminEmailToolStatus) adminEmailToolStatus.textContent = 'No addresses to copy yet. Load the dashboard first.';
+                return;
+            }
+            try {
+                await navigator.clipboard.writeText(t);
+                if (adminEmailToolStatus) adminEmailToolStatus.textContent = 'Copied to clipboard.';
+            } catch (_e) {
+                adminEmailToolTextarea.focus();
+                adminEmailToolTextarea.select();
+                try {
+                    document.execCommand('copy');
+                    if (adminEmailToolStatus) adminEmailToolStatus.textContent = 'Copied to clipboard.';
+                } catch (_e2) {
+                    if (adminEmailToolStatus) {
+                        adminEmailToolStatus.textContent = 'Copy blocked: select all in the box and press ⌘/Ctrl+C.';
+                    }
+                }
+            }
+        }
+
+        function buildUserLabelMap(profiles) {
+            const map = Object.create(null);
+            (profiles || []).forEach(function(p) {
+                const uid = p && p.user_id ? String(p.user_id) : '';
+                if (!uid) return;
+                const em = p.email && String(p.email).trim();
+                const fn = p.full_name && String(p.full_name).trim();
+                map[uid] = em || fn || uid;
+            });
+            return map;
+        }
+
+        function userIdFromUsageEvent(ev) {
+            if (!ev || typeof ev !== 'object') return '';
+            if (ev.user_id) return String(ev.user_id);
+            const m = ev.metadata;
+            if (m && typeof m === 'object') {
+                if (m.user_id) return String(m.user_id);
+                if (m.userId) return String(m.userId);
+                if (m.auth_user_id) return String(m.auth_user_id);
+                if (m.uid) return String(m.uid);
+            }
+            return '';
+        }
+
+        function appendUsageEventItem(container, ev) {
+            const item = document.createElement('article');
+            item.className = 'admin-event-item';
+
+            const head = document.createElement('div');
+            head.className = 'admin-event-head';
+
+            const badge = document.createElement('span');
+            badge.className = 'admin-badge admin-badge--event';
+            const et = ev.event_type;
+            badge.textContent = et === null || et === undefined || et === '' ? '—' : String(et);
+
+            const timeEl = document.createElement('time');
+            timeEl.className = 'admin-event-time';
+            const raw = ev.created_at;
+            if (raw) {
+                timeEl.dateTime = String(raw);
+                timeEl.title = isoForTitle(raw);
+            }
+            timeEl.textContent = formatDisplayDate(raw);
+
+            head.appendChild(badge);
+            head.appendChild(timeEl);
+            item.appendChild(head);
+
+            const meta = ev.metadata;
+            const hasMeta =
+                meta !== null &&
+                meta !== undefined &&
+                !(typeof meta === 'object' && meta !== null && Object.keys(meta).length === 0);
+
+            if (hasMeta) {
+                const details = document.createElement('details');
+                details.className = 'admin-meta';
+                const summary = document.createElement('summary');
+                summary.textContent = 'Metadata';
+                const pre = document.createElement('pre');
+                pre.className = 'admin-json-pre';
+                pre.textContent = jsonForPre(meta);
+                details.appendChild(summary);
+                details.appendChild(pre);
+                item.appendChild(details);
+            } else {
+                const muted = document.createElement('p');
+                muted.className = 'admin-event-muted';
+                muted.textContent = 'No metadata';
+                item.appendChild(muted);
+            }
+
+            container.appendChild(item);
+        }
+
+        function jsonForPre(value) {
+            if (value === null || value === undefined) return '—';
+            if (typeof value === 'object') {
+                try {
+                    return JSON.stringify(value, null, 2);
+                } catch (_e) {
+                    return String(value);
+                }
+            }
             return String(value);
         }
 
         function renderProfiles(profiles) {
-            profilesBody.innerHTML = '';
-            if (!profiles || profiles.length === 0) {
-                profilesBody.innerHTML =
-                    '<tr><td colspan="6" style="padding:0.5rem;">No profiles found.</td></tr>';
+            profilesWrap.innerHTML = '';
+            const list = profiles || [];
+            setSectionCount(profilesCount, list.length, 'user', 'users');
+
+            if (list.length === 0) {
+                profilesWrap.className = '';
+                const empty = document.createElement('div');
+                empty.className = 'admin-empty-state';
+                empty.textContent = 'No profiles found.';
+                profilesWrap.appendChild(empty);
                 return;
             }
 
-            profiles.forEach(function(profile) {
-                const row = document.createElement('tr');
-                row.innerHTML =
-                    '<td style="padding:0.5rem;">' + valueCell(profile.id) + '</td>' +
-                    '<td style="padding:0.5rem;">' + valueCell(profile.user_id) + '</td>' +
-                    '<td style="padding:0.5rem;">' + valueCell(profile.full_name) + '</td>' +
-                    '<td style="padding:0.5rem;">' + valueCell(profile.email) + '</td>' +
-                    '<td style="padding:0.5rem;">' + valueCell(profile.routes_built_count) + '</td>' +
-                    '<td style="padding:0.5rem;">' + valueCell(profile.subscription_is_active) + '</td>';
-                profilesBody.appendChild(row);
+            profilesWrap.className = 'admin-profile-list';
+
+            list.forEach(function(profile) {
+                const em = profile.email && String(profile.email).trim();
+                const fn = profile.full_name && String(profile.full_name).trim();
+                const uid = profile.user_id ? String(profile.user_id) : '';
+                const summaryLabel = em || fn || uid || 'Unknown';
+
+                const det = document.createElement('details');
+                det.className = 'admin-profile-row';
+
+                const sum = document.createElement('summary');
+                sum.className = 'admin-profile-email';
+
+                const emailSpan = document.createElement('span');
+                emailSpan.className = 'admin-profile-email-text';
+                emailSpan.textContent = summaryLabel;
+
+                const kind = subscriptionIndicatorKind(profile);
+                const meta = subscriptionIndicatorMeta(kind);
+                const dot = document.createElement('span');
+                dot.className = 'admin-profile-sub-dot admin-profile-sub-dot--' + kind;
+                dot.title = meta.title;
+                dot.setAttribute('role', 'img');
+                dot.setAttribute('aria-label', meta.aria);
+
+                sum.appendChild(emailSpan);
+                sum.appendChild(dot);
+
+                const expand = document.createElement('div');
+                expand.className = 'admin-profile-expand';
+
+                const uidLine = document.createElement('p');
+                uidLine.className = 'admin-profile-expand-line';
+                const uidLbl = document.createElement('span');
+                uidLbl.className = 'admin-profile-expand-label';
+                uidLbl.textContent = 'User ID';
+                const uidCode = document.createElement('code');
+                uidCode.className = 'admin-profile-user-id';
+                uidCode.textContent = uid || '—';
+                uidLine.appendChild(uidLbl);
+                uidLine.appendChild(uidCode);
+
+                const routesLine = document.createElement('p');
+                routesLine.className = 'admin-profile-expand-line admin-profile-routes-line';
+                const routesLbl = document.createElement('span');
+                routesLbl.className = 'admin-profile-expand-label';
+                routesLbl.textContent = 'Routes built';
+                const routesVal = document.createElement('span');
+                routesVal.className = 'admin-profile-routes-count';
+                const routes = profile.routes_built_count;
+                routesVal.textContent =
+                    routes === null || routes === undefined ? '—' : String(routes);
+                routesLine.appendChild(routesLbl);
+                routesLine.appendChild(routesVal);
+
+                expand.appendChild(uidLine);
+                expand.appendChild(routesLine);
+
+                det.appendChild(sum);
+                det.appendChild(expand);
+                profilesWrap.appendChild(det);
             });
         }
 
-        function renderEvents(events) {
-            eventsBody.innerHTML = '';
-            if (!events || events.length === 0) {
-                eventsBody.innerHTML =
-                    '<tr><td colspan="3" style="padding:0.5rem;">No usage events found.</td></tr>';
+        function renderEvents(events, userLabelMap) {
+            eventsWrap.innerHTML = '';
+            const list = events || [];
+            const labels = userLabelMap && typeof userLabelMap === 'object' ? userLabelMap : Object.create(null);
+            setSectionCount(eventsCount, list.length, 'event', 'events');
+
+            if (list.length === 0) {
+                const empty = document.createElement('div');
+                empty.className = 'admin-empty-state';
+                empty.textContent = 'No usage events found.';
+                eventsWrap.appendChild(empty);
                 return;
             }
 
-            events.forEach(function(eventRow) {
-                const row = document.createElement('tr');
-                const metadataText = eventRow.metadata ? JSON.stringify(eventRow.metadata) : '—';
-                row.innerHTML =
-                    '<td style="padding:0.5rem;">' + valueCell(eventRow.event_type) + '</td>' +
-                    '<td style="padding:0.5rem;">' + valueCell(eventRow.created_at) + '</td>' +
-                    '<td style="padding:0.5rem; white-space:pre-wrap; word-break:break-word;">' + valueCell(metadataText) + '</td>';
-                eventsBody.appendChild(row);
+            const groups = new Map();
+            list.forEach(function(ev) {
+                const uid = userIdFromUsageEvent(ev);
+                const key = uid || '__unknown__';
+                if (!groups.has(key)) groups.set(key, []);
+                groups.get(key).push(ev);
+            });
+
+            const entries = Array.from(groups.entries());
+            entries.sort(function(a, b) {
+                if (a[0] === '__unknown__') return 1;
+                if (b[0] === '__unknown__') return -1;
+                const la = labels[a[0]] || a[0];
+                const lb = labels[b[0]] || b[0];
+                return String(la).localeCompare(String(lb), undefined, { sensitivity: 'base' });
+            });
+
+            entries.forEach(function(entry) {
+                const key = entry[0];
+                const evs = entry[1];
+
+                const section = document.createElement('section');
+                section.className = 'admin-event-user-group';
+
+                const heading = document.createElement('h5');
+                heading.className = 'admin-event-user-heading';
+                const n = evs.length;
+                const countPart = n === 1 ? '1 event' : n + ' events';
+
+                if (key === '__unknown__') {
+                    heading.textContent = 'Unknown user · ' + countPart;
+                } else {
+                    const display = labels[key] || key;
+                    heading.textContent = display + ' · ' + countPart;
+                }
+                section.appendChild(heading);
+
+                if (key !== '__unknown__') {
+                    const idLine = document.createElement('p');
+                    idLine.className = 'admin-event-user-idline';
+                    const idLbl = document.createElement('span');
+                    idLbl.className = 'admin-event-user-idlabel';
+                    idLbl.textContent = 'User ID: ';
+                    const idCode = document.createElement('code');
+                    idCode.className = 'admin-event-user-idcode';
+                    idCode.textContent = key;
+                    idLine.appendChild(idLbl);
+                    idLine.appendChild(idCode);
+                    section.appendChild(idLine);
+                } else {
+                    const hint = document.createElement('p');
+                    hint.className = 'admin-event-user-hint';
+                    hint.textContent =
+                        'No user id on these rows. Grouping needs user_id on the event or in metadata (user_id, userId, auth_user_id, or uid).';
+                    section.appendChild(hint);
+                }
+
+                const inner = document.createElement('div');
+                inner.className = 'admin-event-user-events';
+                evs.forEach(function(ev) {
+                    appendUsageEventItem(inner, ev);
+                });
+                section.appendChild(inner);
+
+                eventsWrap.appendChild(section);
             });
         }
 
@@ -499,6 +844,14 @@
                     return;
                 }
 
+                if (!session.user || !isAdminUser(session.user)) {
+                    setDataMessage('Admin access required.', 'error');
+                    await enforceAdminState(session);
+                    return;
+                }
+
+                latestProfilesList = [];
+
                 let profilesData;
                 try {
                     setLoadStatus('Loading profiles…');
@@ -511,6 +864,7 @@
                     profilesData.profiles ||
                     profilesData.data ||
                     (Array.isArray(profilesData) ? profilesData : []);
+                latestProfilesList = Array.isArray(profilesList) ? profilesList.slice() : [];
                 renderProfiles(profilesList);
 
                 let usageData;
@@ -536,7 +890,7 @@
                     usageData.usageEvents ||
                     usageData.data ||
                     (Array.isArray(usageData) ? usageData : []);
-                renderEvents(eventsList);
+                renderEvents(eventsList, buildUserLabelMap(profilesList));
                 clearLoadStatus();
                 setDataMessage('Dashboard loaded.', 'success');
             } catch (err) {
@@ -570,7 +924,7 @@
                 return;
             }
 
-            showAuthedState(user);
+            showAuthedState();
         }
 
         adminLoginForm.addEventListener('submit', async function(e) {
@@ -638,6 +992,22 @@
                 await loadDashboardData();
             }
         })();
+
+        adminBtnMassEmail.addEventListener('click', function() {
+            openEmailTool('all').catch(function() {});
+        });
+        adminBtnSubscribedEmails.addEventListener('click', function() {
+            openEmailTool('subscribed').catch(function() {});
+        });
+        adminBtnUnsubscribedEmails.addEventListener('click', function() {
+            openEmailTool('unsubscribed').catch(function() {});
+        });
+        adminEmailToolBack.addEventListener('click', function() {
+            closeEmailTool();
+        });
+        adminEmailToolCopy.addEventListener('click', function() {
+            copyAdminEmailList().catch(function() {});
+        });
 
         adminFiltersForm.addEventListener('submit', async function(e) {
             e.preventDefault();
