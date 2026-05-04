@@ -8,27 +8,41 @@
  * Security: resolves caller via JWT (Authorization: Bearer <access_token>),
  * compares auth.users id to ADMIN_USER_ID, then uses service role for reads.
  *
- * RLS: service role bypasses RLS. Do not expose service key to clients; only this
- * function runs with it after the admin check. If you add direct client reads on
- * these tables, add RLS policies keyed on auth.uid() and an admin flag/role.
+ * CORS: Safari is strict — echo a known Origin (your site) instead of relying on * alone.
  */
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.49.4';
 
-const corsHeaders: Record<string, string> = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-    // Include POST defensively (preflight / proxies); handler only implements GET.
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
-};
-
 const DEFAULT_ADMIN_USER_ID = 'ee962eec-a890-4ce8-9dcc-b9b30d241008';
 
-function jsonResponse(body: unknown, status = 200): Response {
-    return new Response(JSON.stringify(body), {
-        status,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-    });
+function originAllowed(origin: string | null): string {
+    if (!origin || origin === 'null') return '*';
+    try {
+        const u = new URL(origin);
+        const host = u.hostname.toLowerCase();
+        if (host === 'permitpathnav.com' || host === 'www.permitpathnav.com') {
+            return origin;
+        }
+        if (host === 'localhost' || host === '127.0.0.1') {
+            return origin;
+        }
+    } catch (_e) {
+        /* ignore */
+    }
+    return '*';
+}
+
+function corsHeadersFor(req: Request): Record<string, string> {
+    const allowOrigin = originAllowed(req.headers.get('Origin'));
+    const h: Record<string, string> = {
+        'Access-Control-Allow-Origin': allowOrigin,
+        'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
+    };
+    if (allowOrigin !== '*') {
+        h['Vary'] = 'Origin';
+    }
+    return h;
 }
 
 function routeFromUrl(url: URL): string | null {
@@ -37,12 +51,20 @@ function routeFromUrl(url: URL): string | null {
 }
 
 Deno.serve(async (req) => {
+    const cors = corsHeadersFor(req);
+
+    const json = (body: unknown, status = 200) =>
+        new Response(JSON.stringify(body), {
+            status,
+            headers: { ...cors, 'Content-Type': 'application/json' }
+        });
+
     if (req.method === 'OPTIONS') {
-        return new Response('ok', { headers: corsHeaders });
+        return new Response('ok', { headers: cors });
     }
 
     if (req.method !== 'GET') {
-        return jsonResponse({ error: 'Method not allowed' }, 405);
+        return json({ error: 'Method not allowed' }, 405);
     }
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL');
@@ -52,14 +74,14 @@ Deno.serve(async (req) => {
 
     if (!supabaseUrl || !anonKey || !serviceKey) {
         console.error('admin-data: missing SUPABASE_URL, SUPABASE_ANON_KEY, or SUPABASE_SERVICE_ROLE_KEY');
-        return jsonResponse({ error: 'Server misconfiguration' }, 500);
+        return json({ error: 'Server misconfiguration' }, 500);
     }
 
     const authHeader = req.headers.get('Authorization') || '';
     const hasBearer = /^Bearer\s+\S+$/i.test(authHeader.trim());
 
     if (!hasBearer) {
-        return jsonResponse({ error: 'Missing or invalid Authorization header' }, 401);
+        return json({ error: 'Missing or invalid Authorization header' }, 401);
     }
 
     const supabaseUser = createClient(supabaseUrl, anonKey, {
@@ -72,11 +94,11 @@ Deno.serve(async (req) => {
     } = await supabaseUser.auth.getUser();
 
     if (userError || !user) {
-        return jsonResponse({ error: 'Invalid session' }, 401);
+        return json({ error: 'Invalid session' }, 401);
     }
 
     if (user.id !== adminUserId) {
-        return jsonResponse({ error: 'Forbidden' }, 403);
+        return json({ error: 'Forbidden' }, 403);
     }
 
     const supabaseAdmin = createClient(supabaseUrl, serviceKey, {
@@ -87,7 +109,7 @@ Deno.serve(async (req) => {
     const route = routeFromUrl(url);
 
     if (!route) {
-        return jsonResponse({ error: 'Not found' }, 404);
+        return json({ error: 'Not found' }, 404);
     }
 
     try {
@@ -98,10 +120,10 @@ Deno.serve(async (req) => {
 
             if (error) {
                 console.error('admin-data profiles query:', error.message);
-                return jsonResponse({ error: error.message }, 500);
+                return json({ error: error.message }, 500);
             }
 
-            return jsonResponse({ profiles: profiles ?? [] });
+            return json({ profiles: profiles ?? [] });
         }
 
         if (route === 'usage-events') {
@@ -122,16 +144,16 @@ Deno.serve(async (req) => {
 
             if (error) {
                 console.error('admin-data usage_events query:', error.message);
-                return jsonResponse({ error: error.message }, 500);
+                return json({ error: error.message }, 500);
             }
 
-            return jsonResponse({ usage_events: usage_events ?? [] });
+            return json({ usage_events: usage_events ?? [] });
         }
 
-        return jsonResponse({ error: 'Not found' }, 404);
+        return json({ error: 'Not found' }, 404);
     } catch (e) {
         const msg = e instanceof Error ? e.message : 'Unexpected error';
         console.error('admin-data:', msg);
-        return jsonResponse({ error: msg }, 500);
+        return json({ error: msg }, 500);
     }
 });
