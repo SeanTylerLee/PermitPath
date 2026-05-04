@@ -77,6 +77,7 @@
 
     <footer>
         <p>© 2026 PermitPath. All Rights Reserved.</p>
+        <p style="margin-top:0.5rem;font-size:0.75rem;color:rgba(255,255,255,0.45);text-align:center;">v1</p>
     </footer>
 
     <script>
@@ -110,12 +111,7 @@
         })();
     </script>
 
-    <!--
-      Single page for Supabase password reset:
-      - Set redirectTo to this URL only, e.g. https://permitpathnav.com/permitpathna/reset
-      - Supabase appends ?token_hash=…&type=recovery — we verifyOtp on load, then show the form; submit only calls updateUser.
-      - PKCE ?code=… cannot complete without code_verifier (see lib/supabaseClient.js).
-    -->
+    <!-- Recovery: ?token_hash → verifyOtp on load; submit → updateUser. ?code only (PKCE) cannot finish here—see lib/supabaseClient.js -->
     <script type="module">
         import { supabase } from '../../lib/supabaseClient.js';
 
