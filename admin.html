@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+        (function () {
+            if (location.protocol === 'file:') return;
+            try {
+                var u = new URL(window.location.href);
+                if (!u.searchParams.has('v')) {
+                    u.searchParams.set('v', '1');
+                    window.location.replace(u.pathname + u.search + u.hash);
+                }
+            } catch (_e) {}
+        })();
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <!-- Avoid stale admin.html after deploy (browser + some CDNs respect hints). -->
@@ -9,7 +21,7 @@
     <meta http-equiv="Expires" content="0" />
     <title>Admin (v1) - PermitPath</title>
     <meta name="robots" content="noindex, nofollow" />
-    <link rel="canonical" href="https://permitpathnav.com/admin.html" />
+    <link rel="canonical" href="https://permitpathnav.com/admin.html?v=1" />
     <link rel="icon" type="image/png" href="images/pppp.png" />
     <link rel="stylesheet" href="styles.css?v=1" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
