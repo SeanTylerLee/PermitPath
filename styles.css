@@ -66,6 +66,7 @@ body.index-page::before {
 body.features-page,
 body.pricing-page,
 body.contact-page,
+body.reset-page,
 body.oversize-page {
     background:
         url('images/background.png') no-repeat center top,
@@ -618,6 +619,8 @@ body.pricing-page .hero,
 body.pricing-page .info,
 body.contact-page .hero,
 body.contact-page .info,
+body.reset-page .hero,
+body.reset-page .info,
 body.oversize-page .hero,
 body.oversize-page .info {
     background: rgba(3, 12, 24, 0.88);
@@ -1336,6 +1339,35 @@ header p {
     color: #ff7b7b;
 }
 
+.reset-field-hint {
+    display: block;
+    margin-top: 0.35rem;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.reset-support-hint {
+    margin-top: 1.25rem;
+    color: rgba(255, 255, 255, 0.88);
+    line-height: 1.5;
+}
+
+.reset-support-hint a {
+    color: #00b4ff;
+    text-decoration: underline;
+}
+
+.reset-support-hint a:hover {
+    color: #4dcfff;
+}
+
+.reset-success-lead {
+    margin-top: 1rem;
+    font-size: 1.05rem;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.92);
+}
+
 /* Info Section */
 .info {
     background: linear-gradient(135deg, rgba(0, 180, 255, 0.22) 0%, rgba(0, 180, 255, 0.12) 100%);
@@ -1778,7 +1810,7 @@ footer p {
     }
 
     /* Keep simple gradient background on pages that don't use background.png */
-    body:not(.features-page):not(.pricing-page):not(.contact-page):not(.oversize-page) {
+    body:not(.features-page):not(.pricing-page):not(.contact-page):not(.reset-page):not(.oversize-page) {
         background: radial-gradient(ellipse at center, #1e3a5f 0%, #0d1b2a 100%);
         background-color: #0d1b2a;
     }
