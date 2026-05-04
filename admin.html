@@ -37,7 +37,87 @@
 
     <section class="info">
         <h2><span class="highlight">Admin</span></h2>
-        <p>This page is a placeholder. Add your admin tools or authentication here when you are ready.</p>
+        <p id="adminIntroText">Sign in with your admin account to access this page.</p>
+
+        <section id="adminLoginWrap">
+            <form class="contact-form" id="adminLoginForm" novalidate>
+                <div class="form-group">
+                    <label for="adminEmail">Admin email</label>
+                    <input type="email" id="adminEmail" name="email" autocomplete="email" required maxlength="254" />
+                </div>
+                <div class="form-group">
+                    <label for="adminPassword">Password</label>
+                    <input type="password" id="adminPassword" name="password" autocomplete="current-password" required minlength="6" maxlength="128" />
+                </div>
+                <button type="submit" class="button" id="adminLoginBtn">Sign in</button>
+                <div class="form-message" id="adminAuthMessage" aria-live="polite"></div>
+            </form>
+        </section>
+
+        <section id="adminAuthedWrap" hidden>
+            <p id="adminWelcomeText"></p>
+            <p>You are signed in as an admin. Add your internal tools below this block when you are ready.</p>
+            <div class="button-wrap">
+                <button type="button" class="button" id="adminSignOutBtn">Sign out</button>
+            </div>
+
+            <section style="margin-top: 2rem;">
+                <h3 style="margin-bottom: 1rem; text-align:center;">Usage Dashboard</h3>
+
+                <form class="contact-form" id="adminFiltersForm" novalidate>
+                    <div class="form-group">
+                        <label for="eventsFrom">From</label>
+                        <input type="date" id="eventsFrom" name="from" />
+                    </div>
+                    <div class="form-group">
+                        <label for="eventsTo">To</label>
+                        <input type="date" id="eventsTo" name="to" />
+                    </div>
+                    <div class="form-group">
+                        <label for="eventsType">Event type (optional)</label>
+                        <input type="text" id="eventsType" name="event_type" placeholder="route_built" maxlength="100" />
+                    </div>
+                    <button type="submit" class="button" id="adminLoadBtn">Load</button>
+                    <div class="form-message" id="adminDataMessage" aria-live="polite"></div>
+                </form>
+
+                <div style="margin-top:1.5rem;">
+                    <h4 style="margin-bottom:0.75rem;">Profiles</h4>
+                    <div id="profilesWrap" style="overflow-x:auto;">
+                        <table id="profilesTable" style="width:100%; border-collapse:collapse; font-size:0.9rem;">
+                            <thead>
+                                <tr>
+                                    <th style="text-align:left; padding:0.5rem;">id</th>
+                                    <th style="text-align:left; padding:0.5rem;">user_id</th>
+                                    <th style="text-align:left; padding:0.5rem;">full_name</th>
+                                    <th style="text-align:left; padding:0.5rem;">email</th>
+                                    <th style="text-align:left; padding:0.5rem;">routes_built_count</th>
+                                    <th style="text-align:left; padding:0.5rem;">subscription_is_active</th>
+                                </tr>
+                            </thead>
+                            <tbody id="profilesBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div style="margin-top:1.5rem;">
+                    <h4 style="margin-bottom:0.75rem;">Usage Events</h4>
+                    <div id="eventsWrap" style="overflow-x:auto;">
+                        <table id="eventsTable" style="width:100%; border-collapse:collapse; font-size:0.9rem;">
+                            <thead>
+                                <tr>
+                                    <th style="text-align:left; padding:0.5rem;">event_type</th>
+                                    <th style="text-align:left; padding:0.5rem;">created_at</th>
+                                    <th style="text-align:left; padding:0.5rem;">metadata</th>
+                                </tr>
+                            </thead>
+                            <tbody id="eventsBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </section>
+
         <p class="reset-support-hint" style="margin-top: 1.25rem;"><a href="index.html">Back to home</a></p>
     </section>
 
@@ -45,9 +125,26 @@
         <p>© 2026 PermitPath. All Rights Reserved.</p>
     </footer>
 
-    <script>
+    <script type="module">
+        import { supabase, supabaseUrl } from './lib/supabaseClient.js';
+
         const menuToggle = document.getElementById('menuToggle');
         const dropdownMenu = document.getElementById('dropdownMenu');
+        const adminLoginWrap = document.getElementById('adminLoginWrap');
+        const adminAuthedWrap = document.getElementById('adminAuthedWrap');
+        const adminIntroText = document.getElementById('adminIntroText');
+        const adminWelcomeText = document.getElementById('adminWelcomeText');
+        const adminLoginForm = document.getElementById('adminLoginForm');
+        const adminLoginBtn = document.getElementById('adminLoginBtn');
+        const adminSignOutBtn = document.getElementById('adminSignOutBtn');
+        const adminAuthMessage = document.getElementById('adminAuthMessage');
+        const adminFiltersForm = document.getElementById('adminFiltersForm');
+        const adminLoadBtn = document.getElementById('adminLoadBtn');
+        const adminDataMessage = document.getElementById('adminDataMessage');
+        const profilesBody = document.getElementById('profilesBody');
+        const eventsBody = document.getElementById('eventsBody');
+        const ADMIN_EMAIL_ALLOWLIST = ['support@permitpathnav.com'];
+
         menuToggle.addEventListener('click', function() {
             dropdownMenu.classList.toggle('active');
             menuToggle.classList.toggle('active');
@@ -74,6 +171,262 @@
                 }
             }, { passive: true });
         })();
+
+        function setAuthMessage(text, kind) {
+            adminAuthMessage.textContent = text;
+            adminAuthMessage.className = 'form-message ' + (kind === 'success' ? 'success' : 'error');
+        }
+
+        function clearAuthMessage() {
+            adminAuthMessage.textContent = '';
+            adminAuthMessage.className = 'form-message';
+        }
+
+        function setDataMessage(text, kind) {
+            adminDataMessage.textContent = text;
+            adminDataMessage.className = 'form-message ' + (kind === 'success' ? 'success' : 'error');
+        }
+
+        function clearDataMessage() {
+            adminDataMessage.textContent = '';
+            adminDataMessage.className = 'form-message';
+        }
+
+        function setLoginLoading(isLoading) {
+            adminLoginBtn.disabled = isLoading;
+            adminLoginBtn.textContent = isLoading ? 'Signing in…' : 'Sign in';
+        }
+
+        function setDataLoading(isLoading) {
+            adminLoadBtn.disabled = isLoading;
+            adminLoadBtn.textContent = isLoading ? 'Loading…' : 'Load';
+        }
+
+        function isAdminUser(user) {
+            if (!user) return false;
+
+            const role = user.app_metadata && user.app_metadata.role;
+            if (role === 'admin') return true;
+
+            const email = (user.email || '').toLowerCase();
+            return ADMIN_EMAIL_ALLOWLIST.includes(email);
+        }
+
+        function showAuthedState(user) {
+            adminLoginWrap.hidden = true;
+            adminAuthedWrap.hidden = false;
+            adminIntroText.textContent = 'Admin access granted.';
+            adminWelcomeText.textContent = 'Signed in as ' + (user.email || 'admin');
+            clearAuthMessage();
+        }
+
+        function showSignedOutState() {
+            adminLoginWrap.hidden = false;
+            adminAuthedWrap.hidden = true;
+            adminIntroText.textContent = 'Sign in with your admin account to access this page.';
+            clearDataMessage();
+            profilesBody.innerHTML = '';
+            eventsBody.innerHTML = '';
+        }
+
+        function valueCell(value) {
+            if (value === null || value === undefined || value === '') return '—';
+            return String(value);
+        }
+
+        function renderProfiles(profiles) {
+            profilesBody.innerHTML = '';
+            if (!profiles || profiles.length === 0) {
+                profilesBody.innerHTML =
+                    '<tr><td colspan="6" style="padding:0.5rem;">No profiles found.</td></tr>';
+                return;
+            }
+
+            profiles.forEach(function(profile) {
+                const row = document.createElement('tr');
+                row.innerHTML =
+                    '<td style="padding:0.5rem;">' + valueCell(profile.id) + '</td>' +
+                    '<td style="padding:0.5rem;">' + valueCell(profile.user_id) + '</td>' +
+                    '<td style="padding:0.5rem;">' + valueCell(profile.full_name) + '</td>' +
+                    '<td style="padding:0.5rem;">' + valueCell(profile.email) + '</td>' +
+                    '<td style="padding:0.5rem;">' + valueCell(profile.routes_built_count) + '</td>' +
+                    '<td style="padding:0.5rem;">' + valueCell(profile.subscription_is_active) + '</td>';
+                profilesBody.appendChild(row);
+            });
+        }
+
+        function renderEvents(events) {
+            eventsBody.innerHTML = '';
+            if (!events || events.length === 0) {
+                eventsBody.innerHTML =
+                    '<tr><td colspan="3" style="padding:0.5rem;">No usage events found.</td></tr>';
+                return;
+            }
+
+            events.forEach(function(eventRow) {
+                const row = document.createElement('tr');
+                const metadataText = eventRow.metadata ? JSON.stringify(eventRow.metadata) : '—';
+                row.innerHTML =
+                    '<td style="padding:0.5rem;">' + valueCell(eventRow.event_type) + '</td>' +
+                    '<td style="padding:0.5rem;">' + valueCell(eventRow.created_at) + '</td>' +
+                    '<td style="padding:0.5rem; white-space:pre-wrap; word-break:break-word;">' + valueCell(metadataText) + '</td>';
+                eventsBody.appendChild(row);
+            });
+        }
+
+        async function fetchJsonWithAuth(url, accessToken) {
+            const res = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    Authorization: 'Bearer ' + accessToken,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            let body = {};
+            try {
+                body = await res.json();
+            } catch (_parseErr) {
+                body = {};
+            }
+
+            if (!res.ok) {
+                if (res.status === 403) {
+                    throw new Error('Not authorized');
+                }
+                throw new Error(body.error || body.message || 'Request failed with status ' + res.status);
+            }
+
+            return body;
+        }
+
+        function toIsoStartOfDay(value) {
+            if (!value) return null;
+            return new Date(value + 'T00:00:00.000Z').toISOString();
+        }
+
+        function toIsoEndOfDay(value) {
+            if (!value) return null;
+            return new Date(value + 'T23:59:59.999Z').toISOString();
+        }
+
+        async function loadDashboardData() {
+            clearDataMessage();
+            setDataLoading(true);
+
+            const {
+                data: { session }
+            } = await supabase.auth.getSession();
+
+            if (!session || !session.access_token) {
+                setDataLoading(false);
+                setDataMessage('Please sign in again.', 'error');
+                return;
+            }
+
+            try {
+                const profilesUrl = supabaseUrl + '/functions/v1/admin-data/profiles';
+                const profilesData = await fetchJsonWithAuth(profilesUrl, session.access_token);
+                renderProfiles(profilesData.profiles || []);
+
+                const usageUrl = new URL(supabaseUrl + '/functions/v1/admin-data/usage-events');
+                const fromValue = document.getElementById('eventsFrom').value;
+                const toValue = document.getElementById('eventsTo').value;
+                const eventTypeValue = document.getElementById('eventsType').value.trim();
+                const fromIso = toIsoStartOfDay(fromValue);
+                const toIso = toIsoEndOfDay(toValue);
+
+                if (fromIso) usageUrl.searchParams.set('from', fromIso);
+                if (toIso) usageUrl.searchParams.set('to', toIso);
+                if (eventTypeValue) usageUrl.searchParams.set('event_type', eventTypeValue);
+
+                const usageData = await fetchJsonWithAuth(usageUrl.toString(), session.access_token);
+                renderEvents(usageData.usage_events || []);
+                setDataMessage('Dashboard loaded.', 'success');
+            } catch (err) {
+                setDataMessage(err.message || 'Unable to load dashboard data.', 'error');
+            } finally {
+                setDataLoading(false);
+            }
+        }
+
+        async function enforceAdminState(session) {
+            const user = session && session.user ? session.user : null;
+
+            if (!user) {
+                showSignedOutState();
+                return;
+            }
+
+            if (!isAdminUser(user)) {
+                await supabase.auth.signOut();
+                showSignedOutState();
+                setAuthMessage('This account is not allowed to access admin.', 'error');
+                return;
+            }
+
+            showAuthedState(user);
+        }
+
+        adminLoginForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            clearAuthMessage();
+
+            const email = document.getElementById('adminEmail').value.trim().toLowerCase();
+            const password = document.getElementById('adminPassword').value;
+
+            if (!email || !password) {
+                setAuthMessage('Enter your admin email and password.', 'error');
+                return;
+            }
+
+            setLoginLoading(true);
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email: email,
+                password: password
+            });
+            setLoginLoading(false);
+
+            if (error) {
+                setAuthMessage(error.message || 'Unable to sign in right now.', 'error');
+                return;
+            }
+
+            await enforceAdminState(data.session);
+            await loadDashboardData();
+        });
+
+        adminSignOutBtn.addEventListener('click', async function() {
+            await supabase.auth.signOut();
+            showSignedOutState();
+            setAuthMessage('Signed out successfully.', 'success');
+        });
+
+        supabase.auth.onAuthStateChange(async function(_event, session) {
+            await enforceAdminState(session);
+
+            const user = session && session.user ? session.user : null;
+            if (user && isAdminUser(user)) {
+                await loadDashboardData();
+            }
+        });
+
+        (async function initAdminAuth() {
+            const {
+                data: { session }
+            } = await supabase.auth.getSession();
+            await enforceAdminState(session);
+
+            const user = session && session.user ? session.user : null;
+            if (user && isAdminUser(user)) {
+                await loadDashboardData();
+            }
+        })();
+
+        adminFiltersForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            await loadDashboardData();
+        });
     </script>
 </body>
 </html>
