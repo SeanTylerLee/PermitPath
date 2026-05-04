@@ -7,7 +7,7 @@
             try {
                 var u = new URL(window.location.href);
                 if (!u.searchParams.has('v')) {
-                    u.searchParams.set('v', '2');
+                    u.searchParams.set('v', '3');
                     window.location.replace(u.pathname + u.search + u.hash);
                 }
             } catch (_e) {}
@@ -21,9 +21,9 @@
     <meta http-equiv="Expires" content="0" />
     <title>Admin (v1) - PermitPath</title>
     <meta name="robots" content="noindex, nofollow" />
-    <link rel="canonical" href="https://permitpathnav.com/admin.html?v=2" />
+    <link rel="canonical" href="https://permitpathnav.com/admin.html?v=3" />
     <link rel="icon" type="image/png" href="images/pppp.png" />
-    <link rel="stylesheet" href="styles.css?v=2" />
+    <link rel="stylesheet" href="styles.css?v=3" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 </head>
@@ -410,19 +410,35 @@
 
             let res;
             try {
+                // GET with no body: omit Content-Type so the preflight is simpler (Safari-friendly).
                 res = await fetch(url, {
                     method: 'GET',
+                    mode: 'cors',
+                    cache: 'no-store',
                     signal: ctrl.signal,
                     credentials: 'omit',
                     headers: {
                         Authorization: 'Bearer ' + accessToken,
-                        apikey: supabaseAnonKey,
-                        'Content-Type': 'application/json'
+                        apikey: supabaseAnonKey
                     }
                 });
             } catch (err) {
                 if (err && err.name === 'AbortError') {
                     throw new Error('Request timed out. Check your network, Supabase status, or Edge Function cold start.');
+                }
+                const raw = err && err.message ? String(err.message) : '';
+                const low = raw.toLowerCase();
+                if (
+                    low.includes('load failed') ||
+                    low.includes('failed to fetch') ||
+                    low.includes('networkerror') ||
+                    err.name === 'TypeError'
+                ) {
+                    throw new Error(
+                        'Could not reach ' +
+                            url.split('?')[0] +
+                            ' (browser blocked the request before a response). Often: CORS, an ad/content blocker, Private Relay, or offline. Try Chrome, disable extensions for this site, or DevTools → Network → the red admin-data row for details.'
+                    );
                 }
                 throw err;
             } finally {
@@ -483,28 +499,38 @@
                     return;
                 }
 
-                setLoadStatus('Loading profiles…');
-                const profilesUrl = supabaseUrl + '/functions/v1/admin-data/profiles';
-                const profilesData = await fetchJsonWithAuth(profilesUrl, session.access_token);
+                let profilesData;
+                try {
+                    setLoadStatus('Loading profiles…');
+                    const profilesUrl = supabaseUrl + '/functions/v1/admin-data/profiles';
+                    profilesData = await fetchJsonWithAuth(profilesUrl, session.access_token);
+                } catch (pe) {
+                    throw new Error('[profiles] ' + (pe && pe.message ? pe.message : 'unknown error'));
+                }
                 const profilesList =
                     profilesData.profiles ||
                     profilesData.data ||
                     (Array.isArray(profilesData) ? profilesData : []);
                 renderProfiles(profilesList);
 
-                setLoadStatus('Loading usage events…');
-                const usageUrl = new URL(supabaseUrl + '/functions/v1/admin-data/usage-events');
-                const fromValue = document.getElementById('eventsFrom').value;
-                const toValue = document.getElementById('eventsTo').value;
-                const eventTypeValue = document.getElementById('eventsType').value.trim();
-                const fromIso = toIsoStartOfDay(fromValue);
-                const toIso = toIsoEndOfDay(toValue);
+                let usageData;
+                try {
+                    setLoadStatus('Loading usage events…');
+                    const usageUrl = new URL(supabaseUrl + '/functions/v1/admin-data/usage-events');
+                    const fromValue = document.getElementById('eventsFrom').value;
+                    const toValue = document.getElementById('eventsTo').value;
+                    const eventTypeValue = document.getElementById('eventsType').value.trim();
+                    const fromIso = toIsoStartOfDay(fromValue);
+                    const toIso = toIsoEndOfDay(toValue);
 
-                if (fromIso) usageUrl.searchParams.set('from', fromIso);
-                if (toIso) usageUrl.searchParams.set('to', toIso);
-                if (eventTypeValue) usageUrl.searchParams.set('event_type', eventTypeValue);
+                    if (fromIso) usageUrl.searchParams.set('from', fromIso);
+                    if (toIso) usageUrl.searchParams.set('to', toIso);
+                    if (eventTypeValue) usageUrl.searchParams.set('event_type', eventTypeValue);
 
-                const usageData = await fetchJsonWithAuth(usageUrl.toString(), session.access_token);
+                    usageData = await fetchJsonWithAuth(usageUrl.toString(), session.access_token);
+                } catch (ue) {
+                    throw new Error('[usage-events] ' + (ue && ue.message ? ue.message : 'unknown error'));
+                }
                 const eventsList =
                     usageData.usage_events ||
                     usageData.usageEvents ||
