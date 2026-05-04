@@ -127,7 +127,7 @@
         </section>
 
         <p class="reset-support-hint" style="margin-top: 1.25rem;"><a href="index.html">Back to home</a></p>
-        <p style="margin-top:0.35rem;font-size:0.75rem;color:rgba(255,255,255,0.45);text-align:center;">v1</p>
+        <p style="margin-top:0.35rem;font-size:0.75rem;color:rgba(255,255,255,0.45);text-align:center;">v2</p>
     </section>
 
     <footer>
@@ -157,7 +157,6 @@
         const adminDebugProfilesEndpoint = document.getElementById('adminDebugProfilesEndpoint');
         const ADMIN_USER_ID = 'ee962eec-a890-4ce8-9dcc-b9b30d241008';
         const ADMIN_EMAIL_ALLOWLIST = ['support@permitpathnav.com'];
-        const DEV_DEBUG = window.location.hostname === 'localhost' || window.location.search.includes('debug=1');
 
         menuToggle.addEventListener('click', function() {
             dropdownMenu.classList.toggle('active');
@@ -237,7 +236,6 @@
             adminDebugUserId.textContent = user.id || '—';
             adminDebugEmail.textContent = user.email || '—';
             adminDebugProfilesEndpoint.textContent = supabaseUrl + '/functions/v1/admin-data/profiles';
-            console.log('session user id:', user.id);
             clearAuthMessage();
         }
 
@@ -299,11 +297,6 @@
         }
 
         async function fetchJsonWithAuth(url, accessToken) {
-            if (DEV_DEBUG) {
-                console.log('[admin debug] calling endpoint:', url);
-                console.log('[admin debug] Authorization header present:', Boolean(accessToken));
-            }
-
             const res = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -388,15 +381,6 @@
             }
 
             if (!isAdminUser(user)) {
-                if (DEV_DEBUG) {
-                    console.log('[admin debug] rejected admin check', {
-                        detectedUserId: user.id || null,
-                        detectedRole: (user.app_metadata && user.app_metadata.role) || null,
-                        detectedEmail: user.email || null,
-                        comparedAdminUserId: ADMIN_USER_ID,
-                        hasSessionToken: Boolean(session && session.access_token)
-                    });
-                }
                 await supabase.auth.signOut();
                 showSignedOutState();
                 setAuthMessage('This account is not allowed to access admin.', 'error');

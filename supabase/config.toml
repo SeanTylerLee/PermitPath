@@ -1,0 +1,4 @@
+# Supabase CLI project config (minimal for Edge Functions deploy).
+# Link once: supabase link --project-ref bkgdrfyjppjxwnwntcbc
+
+project_id = "bkgdrfyjppjxwnwntcbc"
