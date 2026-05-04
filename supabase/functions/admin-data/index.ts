@@ -18,7 +18,8 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.49.4';
 const corsHeaders: Record<string, string> = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-    'Access-Control-Allow-Methods': 'GET, OPTIONS'
+    // Include POST defensively (preflight / proxies); handler only implements GET.
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
 };
 
 const DEFAULT_ADMIN_USER_ID = 'ee962eec-a890-4ce8-9dcc-b9b30d241008';

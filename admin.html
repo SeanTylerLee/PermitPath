@@ -374,6 +374,7 @@
                 res = await fetch(url, {
                     method: 'GET',
                     signal: ctrl.signal,
+                    credentials: 'omit',
                     headers: {
                         Authorization: 'Bearer ' + accessToken,
                         apikey: supabaseAnonKey,
