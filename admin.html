@@ -7,7 +7,7 @@
             try {
                 var u = new URL(window.location.href);
                 if (!u.searchParams.has('v')) {
-                    u.searchParams.set('v', '12');
+                    u.searchParams.set('v', '13');
                     window.location.replace(u.pathname + u.search + u.hash);
                 }
             } catch (_e) {}
@@ -21,9 +21,9 @@
     <meta http-equiv="Expires" content="0" />
     <title>Admin (v1) - PermitPath</title>
     <meta name="robots" content="noindex, nofollow" />
-    <link rel="canonical" href="https://permitpathnav.com/admin.html?v=12" />
+    <link rel="canonical" href="https://permitpathnav.com/admin.html?v=13" />
     <link rel="icon" type="image/png" href="images/pppp.png" />
-    <link rel="stylesheet" href="styles.css?v=12" />
+    <link rel="stylesheet" href="styles.css?v=13" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 </head>
@@ -407,6 +407,29 @@
             return { title: 'Not subscribed', aria: 'Not subscribed' };
         }
 
+        function profileScalarDisplay(profile, key) {
+            const v = profile[key];
+            if (v === null || v === undefined || v === '') return '—';
+            if (key === 'created_at' || key === 'last_seen_at' || key === 'subscription_expires_at') {
+                return formatDisplayDate(v);
+            }
+            return String(v);
+        }
+
+        function appendProfileExpandTextRow(expandEl, label, text) {
+            const line = document.createElement('p');
+            line.className = 'admin-profile-expand-line admin-profile-expand-line--stack';
+            const lbl = document.createElement('span');
+            lbl.className = 'admin-profile-expand-label';
+            lbl.textContent = label;
+            const val = document.createElement('span');
+            val.className = 'admin-profile-expand-value';
+            val.textContent = text;
+            line.appendChild(lbl);
+            line.appendChild(val);
+            expandEl.appendChild(line);
+        }
+
         function collectEmailsFromProfiles(profiles, filter) {
             const map = new Map();
             (profiles || []).forEach(function(p) {
@@ -546,6 +569,24 @@
             head.appendChild(timeEl);
             item.appendChild(head);
 
+            const evUid =
+                ev.user_id !== null && ev.user_id !== undefined && ev.user_id !== ''
+                    ? String(ev.user_id)
+                    : '';
+            if (evUid) {
+                const uidRow = document.createElement('p');
+                uidRow.className = 'admin-event-uid-row';
+                const uidLbl = document.createElement('span');
+                uidLbl.className = 'admin-event-user-idlabel';
+                uidLbl.textContent = 'User ID: ';
+                const uidCode = document.createElement('code');
+                uidCode.className = 'admin-event-inline-uid';
+                uidCode.textContent = evUid;
+                uidRow.appendChild(uidLbl);
+                uidRow.appendChild(uidCode);
+                item.appendChild(uidRow);
+            }
+
             const meta = ev.metadata;
             const hasMeta =
                 meta !== null &&
@@ -631,8 +672,10 @@
                 const expand = document.createElement('div');
                 expand.className = 'admin-profile-expand';
 
+                appendProfileExpandTextRow(expand, 'Full name', profileScalarDisplay(profile, 'full_name'));
+
                 const uidLine = document.createElement('p');
-                uidLine.className = 'admin-profile-expand-line';
+                uidLine.className = 'admin-profile-expand-line admin-profile-expand-line--stack';
                 const uidLbl = document.createElement('span');
                 uidLbl.className = 'admin-profile-expand-label';
                 uidLbl.textContent = 'User ID';
@@ -641,6 +684,25 @@
                 uidCode.textContent = uid || '—';
                 uidLine.appendChild(uidLbl);
                 uidLine.appendChild(uidCode);
+                expand.appendChild(uidLine);
+
+                appendProfileExpandTextRow(expand, 'Profile created', profileScalarDisplay(profile, 'created_at'));
+                appendProfileExpandTextRow(expand, 'Last seen', profileScalarDisplay(profile, 'last_seen_at'));
+                appendProfileExpandTextRow(
+                    expand,
+                    'Subscription',
+                    isTruthyFlag(profile.subscription_is_active) ? 'Active' : 'Inactive'
+                );
+                appendProfileExpandTextRow(
+                    expand,
+                    'Subscription product ID',
+                    profileScalarDisplay(profile, 'subscription_product_id')
+                );
+                appendProfileExpandTextRow(
+                    expand,
+                    'Subscription expires',
+                    profileScalarDisplay(profile, 'subscription_expires_at')
+                );
 
                 const routesLine = document.createElement('p');
                 routesLine.className = 'admin-profile-expand-line admin-profile-routes-line';
@@ -654,8 +716,6 @@
                     routes === null || routes === undefined ? '—' : String(routes);
                 routesLine.appendChild(routesLbl);
                 routesLine.appendChild(routesVal);
-
-                expand.appendChild(uidLine);
                 expand.appendChild(routesLine);
 
                 det.appendChild(sum);
@@ -731,7 +791,7 @@
                     const hint = document.createElement('p');
                     hint.className = 'admin-event-user-hint';
                     hint.textContent =
-                        'No user id on these rows. Grouping needs user_id on the event or in metadata (user_id, userId, auth_user_id, or uid).';
+                        'No user id on these rows. The API must return user_id (now included) or metadata keys user_id, userId, auth_user_id, uid.';
                     section.appendChild(hint);
                 }
 

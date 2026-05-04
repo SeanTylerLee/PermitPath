@@ -131,7 +131,9 @@ Deno.serve(async (req) => {
         if (route === 'profiles') {
             const { data: profiles, error } = await supabaseAdmin
                 .from('profiles')
-                .select('id, user_id, full_name, email, routes_built_count, subscription_is_active');
+                .select(
+                    'id, user_id, full_name, email, routes_built_count, subscription_is_active, created_at, last_seen_at, subscription_product_id, subscription_expires_at'
+                );
 
             if (error) {
                 console.error('admin-data profiles query:', error.message);
@@ -148,7 +150,7 @@ Deno.serve(async (req) => {
 
             let q = supabaseAdmin
                 .from('usage_events')
-                .select('event_type, created_at, metadata')
+                .select('user_id, event_type, created_at, metadata')
                 .order('created_at', { ascending: false });
 
             if (from) q = q.gte('created_at', from);

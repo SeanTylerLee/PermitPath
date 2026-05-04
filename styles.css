@@ -2740,6 +2740,18 @@ body.admin-page .admin-profile-expand-line:last-child {
     margin-bottom: 0;
 }
 
+body.admin-page .admin-profile-expand-line--stack .admin-profile-expand-label {
+    display: block;
+    margin-bottom: 0.2rem;
+}
+
+body.admin-page .admin-profile-expand-value {
+    display: block;
+    color: #1a2332;
+    font-size: 0.88rem;
+    word-break: break-word;
+}
+
 body.admin-page .admin-profile-expand-label {
     display: block;
     font-size: 0.72rem;
@@ -2837,6 +2849,18 @@ body.admin-page .admin-event-user-idlabel {
 }
 
 body.admin-page .admin-event-user-idcode {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
+    font-size: 0.78rem;
+    word-break: break-all;
+}
+
+body.admin-page .admin-event-uid-row {
+    margin: 0.35rem 0 0.15rem;
+    font-size: 0.82rem;
+    color: #3d4f66;
+}
+
+body.admin-page .admin-event-inline-uid {
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
     font-size: 0.78rem;
     word-break: break-all;
