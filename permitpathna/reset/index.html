@@ -111,7 +111,13 @@
         })();
     </script>
 
-    <!-- Recovery: ?token_hash → verifyOtp on load; submit → updateUser. ?code only (PKCE) cannot finish here—see lib/supabaseClient.js -->
+    <!--
+      Flow: ?token_hash + type → verifyOtp on load; submit → updateUser. detectSessionInUrl: false — lib/supabaseClient.js
+
+      Reset password email: use token_hash (not only {{ .ConfirmationURL }}). Link shape depends on whether redirectTo already has ?:
+      - No query string on redirectTo (recommended): href="{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=recovery"
+      - RedirectTo already has ?foo=… : append with & → href="{{ .RedirectTo }}&token_hash={{ .TokenHash }}&type=recovery"
+    -->
     <script type="module">
         import { supabase } from '../../lib/supabaseClient.js';
 
@@ -288,7 +294,7 @@
 
             if (params.get('code')) {
                 showInvalid(
-                    'This link uses a sign-in code that does not work when opened from email (missing PKCE data). Use a reset link that lands on this page with token_hash in the URL, or request a new reset from the app.'
+                    'This link arrived with a short “code” (PKCE) instead of a reset token. Change the Supabase Reset password email to use token_hash (see HTML comment at the top of this page source), then request a new reset email.'
                 );
                 return;
             }

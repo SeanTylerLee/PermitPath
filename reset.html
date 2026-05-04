@@ -117,7 +117,12 @@
         })();
     </script>
 
-    <!-- Recovery: ?token_hash → verifyOtp on load; submit → updateUser. Keys in ./lib/supabaseClient.js -->
+    <!--
+      ?token_hash → verifyOtp on load; submit → updateUser. Keys: ./lib/supabaseClient.js
+
+      Reset email link: if {{ .RedirectTo }} has no ?, use ?token_hash=…; if it already has ?, use &token_hash=…:
+      {{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=recovery   OR   {{ .RedirectTo }}&token_hash={{ .TokenHash }}&type=recovery
+    -->
     <script type="module">
         import { supabase } from './lib/supabaseClient.js';
 
@@ -308,7 +313,7 @@
 
             if (params.get('code')) {
                 showInvalid(
-                    'This link cannot finish password reset in the browser (wrong link type). Request a new reset email from the app and open that link.'
+                    'This link arrived with a short “code” (PKCE) instead of a reset token. Update the Supabase Reset password email template to use token_hash (see comment in this page’s HTML source), then request a new reset email.'
                 );
                 return;
             }

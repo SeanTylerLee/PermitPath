@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Admin - PermitPath</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="canonical" href="https://permitpathnav.com/admin.html" />
+    <link rel="icon" type="image/png" href="images/pppp.png" />
+    <link rel="stylesheet" href="styles.css" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+</head>
+<body class="contact-page">
+
+    <header>
+        <a href="index.html"><img src="images/websitehead.png" alt="PermitPath" class="logo" width="200" height="50" /></a>
+        <div class="menu-container">
+            <button class="menu-toggle" aria-label="Toggle menu" id="menuToggle">
+                <span class="menu-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+            </button>
+            <nav class="dropdown-menu" id="dropdownMenu">
+                <a href="index.html">Home</a>
+                <a href="features.html">Features</a>
+                <a href="pricing.html">Pricing</a>
+                <a href="oversize-routing.html">Oversize Routing</a>
+                <a href="contact.html">Contact</a>
+                <a href="privacy.html">Privacy</a>
+                <a href="terms.html">Terms</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="info">
+        <h2><span class="highlight">Admin</span></h2>
+        <p>This page is a placeholder. Add your admin tools or authentication here when you are ready.</p>
+        <p class="reset-support-hint" style="margin-top: 1.25rem;"><a href="index.html">Back to home</a></p>
+    </section>
+
+    <footer>
+        <p>© 2026 PermitPath. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        menuToggle.addEventListener('click', function() {
+            dropdownMenu.classList.toggle('active');
+            menuToggle.classList.toggle('active');
+        });
+        document.addEventListener('click', function(event) {
+            if (!dropdownMenu.contains(event.target) && !menuToggle.contains(event.target)) {
+                dropdownMenu.classList.remove('active');
+                menuToggle.classList.remove('active');
+            }
+        });
+        (function() {
+            var header = document.querySelector('header');
+            var scrollDown = 100;
+            var scrollUp = 40;
+            var compact = false;
+            window.addEventListener('scroll', function() {
+                var y = window.scrollY;
+                if (!compact && y > scrollDown) {
+                    compact = true;
+                    header.classList.add('header--compact');
+                } else if (compact && y < scrollUp) {
+                    compact = false;
+                    header.classList.remove('header--compact');
+                }
+            }, { passive: true });
+        })();
+    </script>
+</body>
+</html>
