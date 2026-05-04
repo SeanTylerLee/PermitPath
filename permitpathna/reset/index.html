@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title>Reset password - PermitPath</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="canonical" href="https://permitpathnav.com/permitpathna/reset" />
+
+    <link rel="icon" type="image/png" sizes="32x32" href="../../images/pppp.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../../images/pppp.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="../../images/pppp.png" />
+    <link rel="icon" type="image/png" href="../../images/pppp.png" />
+
+    <link rel="stylesheet" href="../../styles.css" />
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+</head>
+
+<body class="reset-page">
+
+    <header>
+        <a href="../../index.html"><img src="../../images/websitehead.png" alt="PermitPath" class="logo" width="200" height="50" /></a>
+        <div class="menu-container">
+            <button class="menu-toggle" aria-label="Toggle menu" id="menuToggle">
+                <span class="menu-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+            </button>
+            <nav class="dropdown-menu" id="dropdownMenu">
+                <a href="../../index.html">Home</a>
+                <a href="../../features.html">Features</a>
+                <a href="../../pricing.html">Pricing</a>
+                <a href="../../oversize-routing.html">Oversize Routing</a>
+                <a href="../../contact.html">Contact</a>
+                <a href="../../privacy.html">Privacy</a>
+                <a href="../../terms.html">Terms</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="info" id="resetLeadSection">
+        <h2>Reset your <span class="highlight">password</span></h2>
+        <p id="resetIntro">Enter a new password for your PermitPath account.</p>
+    </section>
+
+    <section class="info" id="resetInvalidWrap" hidden>
+        <h2>We couldn’t open your <span class="highlight">reset link</span></h2>
+        <p id="resetInvalidText" role="alert"></p>
+        <p class="reset-support-hint">Need help? Contact <a href="mailto:support@permitpathnav.com">support@permitpathnav.com</a>.</p>
+    </section>
+
+    <section class="info" id="resetFormWrap" hidden>
+        <form class="contact-form" id="resetPasswordForm" novalidate>
+            <div class="form-group">
+                <label for="newPassword">New password</label>
+                <input type="password" id="newPassword" name="newPassword" autocomplete="new-password" required minlength="6" maxlength="128" aria-describedby="passwordHint" />
+                <small id="passwordHint" class="reset-field-hint">At least 6 characters.</small>
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Confirm new password</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" autocomplete="new-password" required minlength="6" maxlength="128" />
+            </div>
+            <button type="submit" class="button" id="resetSubmitBtn">Update password</button>
+            <div class="form-message" id="resetFormMessage" aria-live="polite"></div>
+        </form>
+    </section>
+
+    <section class="info" id="resetSuccessWrap" hidden>
+        <h2>Password <span class="highlight">successfully changed</span></h2>
+        <p class="reset-success-lead" role="status">You can close this page and sign in again in the PermitPath app.</p>
+    </section>
+
+    <footer>
+        <p>© 2026 PermitPath. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        menuToggle.addEventListener('click', function() {
+            dropdownMenu.classList.toggle('active');
+            menuToggle.classList.toggle('active');
+        });
+        document.addEventListener('click', function(event) {
+            if (!dropdownMenu.contains(event.target) && !menuToggle.contains(event.target)) {
+                dropdownMenu.classList.remove('active');
+                menuToggle.classList.remove('active');
+            }
+        });
+        (function() {
+            var header = document.querySelector('header');
+            var scrollDown = 100;
+            var scrollUp = 40;
+            var compact = false;
+            window.addEventListener('scroll', function() {
+                var y = window.scrollY;
+                if (!compact && y > scrollDown) {
+                    compact = true;
+                    header.classList.add('header--compact');
+                } else if (compact && y < scrollUp) {
+                    compact = false;
+                    header.classList.remove('header--compact');
+                }
+            }, { passive: true });
+        })();
+    </script>
+
+    <!--
+      Supabase Auth: add Redirect URL (exact path your host uses), e.g.
+      https://permitpathnav.com/permitpathna/reset
+      Reset emails should include ?token_hash=... (and optional &type=recovery).
+    -->
+    <script type="module">
+        import { supabase } from '../../lib/supabaseClient.js';
+
+        const leadSection = document.getElementById('resetLeadSection');
+        const introEl = document.getElementById('resetIntro');
+        const invalidWrap = document.getElementById('resetInvalidWrap');
+        const invalidText = document.getElementById('resetInvalidText');
+        const formWrap = document.getElementById('resetFormWrap');
+        const successWrap = document.getElementById('resetSuccessWrap');
+        const form = document.getElementById('resetPasswordForm');
+        const msgEl = document.getElementById('resetFormMessage');
+        const submitBtn = document.getElementById('resetSubmitBtn');
+
+        function readQueryParams() {
+            return new URLSearchParams(window.location.search);
+        }
+
+        function otpTypeFromUrl() {
+            const t = readQueryParams().get('type');
+            return t && t.length ? t : 'recovery';
+        }
+
+        function showInvalid(message) {
+            leadSection.hidden = true;
+            invalidText.textContent = message;
+            invalidWrap.hidden = false;
+            formWrap.hidden = true;
+            successWrap.hidden = true;
+        }
+
+        function showForm() {
+            leadSection.hidden = false;
+            introEl.textContent = 'Enter a new password for your PermitPath account.';
+            invalidWrap.hidden = true;
+            formWrap.hidden = false;
+            successWrap.hidden = true;
+        }
+
+        function showSuccess() {
+            leadSection.hidden = true;
+            invalidWrap.hidden = true;
+            formWrap.hidden = true;
+            successWrap.hidden = false;
+        }
+
+        function setInlineMessage(text, kind) {
+            msgEl.textContent = text;
+            msgEl.className = 'form-message ' + (kind === 'success' ? 'success' : 'error');
+        }
+
+        function clearInlineMessage() {
+            msgEl.textContent = '';
+            msgEl.className = 'form-message';
+        }
+
+        function setLoading(loading) {
+            submitBtn.disabled = loading;
+            submitBtn.textContent = loading ? 'Updating…' : 'Update password';
+        }
+
+        const params = readQueryParams();
+        const urlError = params.get('error');
+        const urlErrorDesc = params.get('error_description');
+
+        if (urlError) {
+            const decoded = urlErrorDesc ? decodeURIComponent(urlErrorDesc.replace(/\+/g, ' ')) : '';
+            showInvalid(decoded || 'This reset link is invalid or has expired.');
+        } else if (!readQueryParams().get('token_hash')) {
+            showInvalid(
+                'This page needs a reset link from your email (missing token). Open the PermitPath app, request a password reset, and use the link from the message.'
+            );
+        } else {
+            showForm();
+
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                clearInlineMessage();
+
+                const p1 = document.getElementById('newPassword').value;
+                const p2 = document.getElementById('confirmPassword').value;
+
+                if (p1 !== p2) {
+                    setInlineMessage('The two passwords do not match.', 'error');
+                    return;
+                }
+                if (p1.length < 6) {
+                    setInlineMessage('Use at least 6 characters.', 'error');
+                    return;
+                }
+
+                const qs = readQueryParams();
+                const token_hash = qs.get('token_hash');
+                if (!token_hash) {
+                    setInlineMessage('Reset link is missing the token. Open the link from your email again.', 'error');
+                    return;
+                }
+
+                const type = otpTypeFromUrl();
+
+                setLoading(true);
+                const { error: verifyError } = await supabase.auth.verifyOtp({
+                    type: type,
+                    token_hash: token_hash
+                });
+
+                if (verifyError) {
+                    setLoading(false);
+                    setInlineMessage(
+                        verifyError.message ||
+                            'This reset link is invalid or has expired. Request a new password reset from the app.',
+                        'error'
+                    );
+                    return;
+                }
+
+                const { error: updateError } = await supabase.auth.updateUser({ password: p1 });
+                setLoading(false);
+
+                if (updateError) {
+                    const msg = (updateError.message || '').toLowerCase();
+                    if (msg.includes('same') && msg.includes('password')) {
+                        setInlineMessage('Choose a new password that is different from your current one.', 'error');
+                    } else if (msg.includes('weak') || msg.includes('least')) {
+                        setInlineMessage('That password is too weak. Try a longer mix of letters and numbers.', 'error');
+                    } else {
+                        setInlineMessage(
+                            updateError.message || 'Something went wrong. Please try again or request a new reset link.',
+                            'error'
+                        );
+                    }
+                    return;
+                }
+
+                await supabase.auth.signOut();
+                showSuccess();
+            });
+        }
+    </script>
+
+</body>
+</html>

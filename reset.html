@@ -117,18 +117,14 @@
     </script>
 
     <!--
-      Supabase Auth password reset (same project as the PermitPath app):
-      1. Supabase Dashboard → Authentication → URL Configuration → add Redirect URL:
-         https://permitpathnav.com/reset.html
-      2. When calling resetPasswordForEmail (or equivalent) from the app, pass the same redirectTo.
-      3. Set PERMITPATH_SUPABASE below to your project URL and anon (public) key
-         (Project Settings → API).
+      Supabase Auth (PKCE / code or session-in-URL): this page — reset.html
+      token_hash + verifyOtp flow: /permitpathna/reset/ (see that folder’s index.html).
+      Dashboard → Auth → URL Configuration → Redirect URLs, add both:
+      https://permitpathnav.com/reset.html  and  https://permitpathnav.com/permitpathna/reset
+      Keys: /lib/supabaseClient.js (publishable key only).
     -->
     <script type="module">
-        const PERMITPATH_SUPABASE = {
-            url: '',
-            anonKey: ''
-        };
+        import { supabase } from './lib/supabaseClient.js';
 
         const leadSection = document.getElementById('resetLeadSection');
         const introEl = document.getElementById('resetIntro');
@@ -173,18 +169,7 @@
             msgEl.className = 'form-message';
         }
 
-        if (!PERMITPATH_SUPABASE.url || !PERMITPATH_SUPABASE.anonKey) {
-            showInvalid('Password reset is temporarily unavailable. Please try again later or contact support.');
-        } else {
-            const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2.49.4');
-            const supabase = createClient(PERMITPATH_SUPABASE.url, PERMITPATH_SUPABASE.anonKey, {
-                auth: {
-                    detectSessionInUrl: true,
-                    persistSession: true,
-                    autoRefreshToken: true
-                }
-            });
-
+        {
             const params = new URLSearchParams(window.location.search);
             const urlError = params.get('error');
             const urlErrorDesc = params.get('error_description');
