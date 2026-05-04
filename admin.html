@@ -142,6 +142,14 @@
     <script type="module">
         import { supabase, supabaseUrl, supabaseAnonKey } from './lib/supabaseClient.js';
 
+        // Safari (and others) can restore an old in-memory snapshot of this page from the
+        // back-forward cache — wrong footer version + stale session UI. Force a real reload.
+        window.addEventListener('pageshow', function(ev) {
+            if (ev.persisted) {
+                window.location.reload();
+            }
+        });
+
         const menuToggle = document.getElementById('menuToggle');
         const dropdownMenu = document.getElementById('dropdownMenu');
         const adminLoginWrap = document.getElementById('adminLoginWrap');
