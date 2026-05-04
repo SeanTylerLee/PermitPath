@@ -86,6 +86,7 @@
                         <input type="text" id="eventsType" name="event_type" placeholder="route_built" maxlength="100" />
                     </div>
                     <button type="submit" class="button" id="adminLoadBtn">Load</button>
+                    <p id="adminLoadStatus" style="margin-top:0.75rem;font-size:0.85rem;color:rgba(255,255,255,0.65);text-align:center;min-height:1.35em;"></p>
                     <div class="form-message" id="adminDataMessage" aria-live="polite"></div>
                 </form>
 
@@ -127,7 +128,7 @@
         </section>
 
         <p class="reset-support-hint" style="margin-top: 1.25rem;"><a href="index.html">Back to home</a></p>
-        <p style="margin-top:0.35rem;font-size:0.75rem;color:rgba(255,255,255,0.45);text-align:center;">v4</p>
+        <p style="margin-top:0.35rem;font-size:0.75rem;color:rgba(255,255,255,0.45);text-align:center;">v5</p>
     </section>
 
     <footer>
@@ -150,6 +151,7 @@
         const adminFiltersForm = document.getElementById('adminFiltersForm');
         const adminLoadBtn = document.getElementById('adminLoadBtn');
         const adminDataMessage = document.getElementById('adminDataMessage');
+        const adminLoadStatus = document.getElementById('adminLoadStatus');
         const profilesBody = document.getElementById('profilesBody');
         const eventsBody = document.getElementById('eventsBody');
         const adminDebugUserId = document.getElementById('adminDebugUserId');
@@ -205,6 +207,16 @@
             adminDataMessage.className = 'form-message';
         }
 
+        function setLoadStatus(text) {
+            if (adminLoadStatus) adminLoadStatus.textContent = text || '';
+        }
+
+        function clearLoadStatus() {
+            setLoadStatus('');
+        }
+
+        let latestDashboardLoadId = 0;
+
         function setLoginLoading(isLoading) {
             adminLoginBtn.disabled = isLoading;
             adminLoginBtn.textContent = isLoading ? 'Signing in…' : 'Sign in';
@@ -244,6 +256,7 @@
             adminAuthedWrap.hidden = true;
             adminIntroText.textContent = 'Sign in with your admin account to access this page.';
             clearDataMessage();
+            clearLoadStatus();
             profilesBody.innerHTML = '';
             eventsBody.innerHTML = '';
             adminDebugUserId.textContent = '—';
@@ -399,9 +412,13 @@
 
             if (!res.ok) {
                 if (res.status === 403) {
-                    throw new Error('Not authorized');
+                    throw new Error('Not authorized (403). Check Edge Function admin id and deploy.');
                 }
-                throw new Error(body.error || body.message || 'Request failed with status ' + res.status);
+                const detail =
+                    body && (body.error || body.message)
+                        ? body.error || body.message
+                        : res.statusText || 'no body';
+                throw new Error('HTTP ' + res.status + ': ' + detail);
             }
 
             return body;
@@ -418,24 +435,31 @@
         }
 
         async function loadDashboardData() {
+            const loadId = ++latestDashboardLoadId;
             clearDataMessage();
+            clearLoadStatus();
             setDataLoading(true);
 
-            const {
-                data: { session }
-            } = await supabase.auth.getSession();
-
-            if (!session || !session.access_token) {
-                setDataLoading(false);
-                setDataMessage('Please sign in again.', 'error');
-                return;
-            }
-
             try {
+                const {
+                    data: { session }
+                } = await supabase.auth.getSession();
+
+                if (!session || !session.access_token) {
+                    setDataMessage('Please sign in again.', 'error');
+                    return;
+                }
+
+                setLoadStatus('Loading profiles…');
                 const profilesUrl = supabaseUrl + '/functions/v1/admin-data/profiles';
                 const profilesData = await fetchJsonWithAuth(profilesUrl, session.access_token);
-                renderProfiles(profilesData.profiles || []);
+                const profilesList =
+                    profilesData.profiles ||
+                    profilesData.data ||
+                    (Array.isArray(profilesData) ? profilesData : []);
+                renderProfiles(profilesList);
 
+                setLoadStatus('Loading usage events…');
                 const usageUrl = new URL(supabaseUrl + '/functions/v1/admin-data/usage-events');
                 const fromValue = document.getElementById('eventsFrom').value;
                 const toValue = document.getElementById('eventsTo').value;
@@ -448,12 +472,23 @@
                 if (eventTypeValue) usageUrl.searchParams.set('event_type', eventTypeValue);
 
                 const usageData = await fetchJsonWithAuth(usageUrl.toString(), session.access_token);
-                renderEvents(usageData.usage_events || []);
+                const eventsList =
+                    usageData.usage_events ||
+                    usageData.usageEvents ||
+                    usageData.data ||
+                    (Array.isArray(usageData) ? usageData : []);
+                renderEvents(eventsList);
+                clearLoadStatus();
                 setDataMessage('Dashboard loaded.', 'success');
             } catch (err) {
-                setDataMessage(err.message || 'Unable to load dashboard data.', 'error');
+                clearLoadStatus();
+                const msg = err && err.message ? err.message : 'Unable to load dashboard data.';
+                setDataMessage(msg, 'error');
+                setLoadStatus('Stopped: ' + msg);
             } finally {
-                setDataLoading(false);
+                if (loadId === latestDashboardLoadId) {
+                    setDataLoading(false);
+                }
             }
         }
 
@@ -509,13 +544,18 @@
             await performSignOut();
         });
 
-        supabase.auth.onAuthStateChange(async function(_event, session) {
+        supabase.auth.onAuthStateChange(async function(event, session) {
             await enforceAdminState(session);
 
             const user = session && session.user ? session.user : null;
-            if (user && isAdminUser(user)) {
-                await loadDashboardData();
+            if (!user || !isAdminUser(user)) {
+                return;
             }
+            // Avoid double-fetch on first paint: initAdminAuth already loads once.
+            if (event === 'INITIAL_SESSION') {
+                return;
+            }
+            await loadDashboardData();
         });
 
         (async function initAdminAuth() {
