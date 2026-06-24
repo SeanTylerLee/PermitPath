@@ -7,7 +7,7 @@
             try {
                 var u = new URL(window.location.href);
                 if (!u.searchParams.has('v')) {
-                    u.searchParams.set('v', '19');
+                    u.searchParams.set('v', '25');
                     window.location.replace(u.pathname + u.search + u.hash);
                 }
             } catch (_e) {}
@@ -19,11 +19,11 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
-    <title>Admin (v1) - PermitPath</title>
+    <title>Admin Dashboard - PermitPath</title>
     <meta name="robots" content="noindex, nofollow" />
-    <link rel="canonical" href="https://permitpathnav.com/admin.html?v=19" />
+    <link rel="canonical" href="https://permitpathnav.com/admin.html?v=25" />
     <link rel="icon" type="image/png" href="images/pppp.png" />
-    <link rel="stylesheet" href="styles.css?v=18" />
+    <link rel="stylesheet" href="styles.css?v=22" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 </head>
@@ -51,74 +51,83 @@
         </div>
     </header>
 
-    <section class="info">
-        <h2><span class="highlight">Admin</span></h2>
-        <p id="adminIntroText">Sign in with your admin account to access this page.</p>
-
-        <section id="adminLoginWrap">
-            <form class="contact-form" id="adminLoginForm" novalidate>
-                <div class="form-group">
-                    <label for="adminEmail">Admin email</label>
-                    <input type="email" id="adminEmail" name="email" autocomplete="email" required maxlength="254" />
-                </div>
-                <div class="form-group">
-                    <label for="adminPassword">Password</label>
-                    <input type="password" id="adminPassword" name="password" autocomplete="current-password" required minlength="6" maxlength="128" />
-                </div>
-                <button type="submit" class="button" id="adminLoginBtn">Sign in</button>
-                <div class="form-message" id="adminAuthMessage" aria-live="polite"></div>
-            </form>
+    <section class="info admin-shell">
+        <section id="adminLoginWrap" class="admin-login-wrap">
+            <h2 class="admin-login-heading"><span class="highlight">Admin</span></h2>
+            <p id="adminIntroText" class="admin-login-intro">Sign in with your admin account to continue.</p>
+            <div class="admin-login-card">
+                <form class="contact-form admin-login-form" id="adminLoginForm" novalidate>
+                    <div class="form-group">
+                        <label for="adminEmail">Email</label>
+                        <input type="email" id="adminEmail" name="email" autocomplete="email" required maxlength="254" />
+                    </div>
+                    <div class="form-group">
+                        <label for="adminPassword">Password</label>
+                        <input type="password" id="adminPassword" name="password" autocomplete="current-password" required minlength="6" maxlength="128" />
+                    </div>
+                    <button type="submit" class="button admin-login-submit" id="adminLoginBtn">Sign in</button>
+                    <div class="form-message" id="adminAuthMessage" aria-live="polite"></div>
+                </form>
+            </div>
         </section>
 
-        <section id="adminAuthedWrap" hidden>
-            <div class="admin-email-tools-nav" role="toolbar" aria-label="Email lists">
-                <button type="button" class="button admin-tool-nav-btn" id="adminBtnMassEmail">Mass Email</button>
-                <button type="button" class="button admin-tool-nav-btn" id="adminBtnSubscribedEmails">Subscribed emails</button>
-                <button type="button" class="button admin-tool-nav-btn" id="adminBtnUnsubscribedEmails">Not subscribed</button>
-            </div>
-
-            <div id="adminMainView">
-            <section class="admin-dashboard-section">
-                <h3 class="admin-dashboard-title">Usage Dashboard</h3>
-
-                <details class="admin-filters-details">
-                    <summary class="admin-filters-summary">Search: from, to, event type</summary>
-                    <div class="admin-filters-panel">
-                        <form class="contact-form" id="adminFiltersForm" novalidate>
-                            <div class="form-group">
-                                <label for="eventsFrom">From</label>
-                                <input type="date" id="eventsFrom" name="from" />
-                            </div>
-                            <div class="form-group">
-                                <label for="eventsTo">To</label>
-                                <input type="date" id="eventsTo" name="to" />
-                            </div>
-                            <div class="form-group">
-                                <label for="eventsType">Event type (optional)</label>
-                                <input type="text" id="eventsType" name="event_type" placeholder="route_built" maxlength="100" />
-                            </div>
-                            <button type="submit" class="button" id="adminLoadBtn">Load</button>
-                            <p id="adminLoadStatus" class="admin-load-status"></p>
-                            <div class="form-message" id="adminDataMessage" aria-live="polite"></div>
-                        </form>
-                    </div>
-                </details>
-
-                <div class="admin-block-spaced">
-                    <div class="admin-section-head">
-                        <h4>Profiles</h4>
-                        <span id="profilesCount" class="admin-count-pill" hidden aria-live="polite"></span>
-                    </div>
-                    <p class="admin-profile-legend">
-                        <span class="admin-profile-legend-item"><span class="admin-profile-sub-dot admin-profile-sub-dot--active admin-profile-sub-dot--legend"></span> Subscribed</span>
-                        <span class="admin-profile-legend-item"><span class="admin-profile-sub-dot admin-profile-sub-dot--inactive admin-profile-sub-dot--legend"></span> Not subscribed</span>
-                    </p>
-                    <div id="profilesWrap" class="admin-profile-list"></div>
+        <section id="adminAuthedWrap" class="admin-authed-wrap" hidden>
+            <div class="admin-topbar">
+                <div class="admin-topbar-brand">
+                    <p class="admin-topbar-kicker">PermitPath</p>
+                    <h2 class="admin-topbar-title">Admin Dashboard</h2>
+                    <p id="adminSignedInAs" class="admin-topbar-signed-in" hidden></p>
                 </div>
-            </section>
+                <div class="admin-topbar-actions">
+                    <button type="button" class="button button-secondary admin-refresh-btn" id="adminRefreshBtn">Refresh</button>
+                    <button type="button" class="button button-secondary" id="adminSignOutBtn">Sign out</button>
+                </div>
             </div>
 
-            <div id="adminEmailToolView" class="admin-email-tool-view" hidden>
+            <div class="admin-panel admin-email-panel">
+                <p class="admin-panel-label">Email lists</p>
+                <div class="admin-email-tools-nav" role="toolbar" aria-label="Email lists">
+                    <button type="button" class="button admin-tool-nav-btn" id="adminBtnMassEmail" data-email-filter="all">All users</button>
+                    <button type="button" class="button admin-tool-nav-btn" id="adminBtnSubscribedEmails" data-email-filter="subscribed">Subscribed</button>
+                    <button type="button" class="button admin-tool-nav-btn" id="adminBtnUnsubscribedEmails" data-email-filter="unsubscribed">Not subscribed</button>
+                </div>
+            </div>
+
+            <div id="adminMainView" class="admin-main-view">
+                <section class="admin-dashboard-section">
+                    <div id="adminOverviewStats" class="admin-overview-stats" aria-live="polite"></div>
+
+                    <div class="admin-panel admin-stats-panel">
+                        <div class="admin-section-head admin-stats-head">
+                            <h3 class="admin-panel-title">Platform activity</h3>
+                            <p id="adminEventTotalsSub" class="admin-stats-sub"></p>
+                        </div>
+                        <div id="adminEventTotals" class="admin-event-totals" aria-live="polite">
+                            <div id="adminEventTotalsInner" class="admin-event-totals-inner"></div>
+                        </div>
+                    </div>
+
+                    <div class="admin-status-strip" aria-live="polite">
+                        <p id="adminLoadStatus" class="admin-load-status"></p>
+                        <div class="form-message admin-data-message" id="adminDataMessage"></div>
+                    </div>
+
+                    <div class="admin-panel admin-users-panel admin-block-spaced">
+                        <div class="admin-section-head">
+                            <h3 class="admin-panel-title">Users</h3>
+                            <span id="profilesCount" class="admin-count-pill" hidden aria-live="polite"></span>
+                        </div>
+                        <p class="admin-profile-legend">
+                            <span class="admin-profile-legend-item"><span class="admin-profile-sub-dot admin-profile-sub-dot--active admin-profile-sub-dot--legend"></span> Subscribed</span>
+                            <span class="admin-profile-legend-item"><span class="admin-profile-sub-dot admin-profile-sub-dot--inactive admin-profile-sub-dot--legend"></span> Not subscribed</span>
+                            <span class="admin-profile-legend-item admin-profile-legend-item--hint">Pin users to keep them at the top; others sorted by most recently active</span>
+                        </p>
+                        <div id="profilesWrap" class="admin-profile-list"></div>
+                    </div>
+                </section>
+            </div>
+
+            <div id="adminEmailToolView" class="admin-email-tool-view admin-panel" hidden>
                 <h3 id="adminEmailToolTitle" class="admin-email-tool-title"></h3>
                 <p class="admin-email-tool-hint">Select all (⌘/Ctrl+A) or use Copy all, then paste into your email app.</p>
                 <textarea id="adminEmailToolTextarea" class="admin-email-tool-textarea" readonly rows="14" spellcheck="false" aria-label="Email addresses"></textarea>
@@ -128,17 +137,9 @@
                     <button type="button" class="button button-secondary" id="adminEmailToolBack">Back to dashboard</button>
                 </div>
             </div>
-
-            <div class="admin-signout-footer">
-                <div id="adminEventTotals" class="admin-event-totals" aria-live="polite">
-                    <div id="adminEventTotalsInner" class="admin-event-totals-inner"></div>
-                </div>
-                <button type="button" class="button button-secondary" id="adminSignOutBtn">Sign out</button>
-            </div>
         </section>
 
         <p class="reset-support-hint admin-back-hint"><a href="index.html">Back to home</a></p>
-        <p class="admin-page-version">v1</p>
     </section>
 
     <footer>
@@ -166,8 +167,6 @@
         const adminSignOutBtn = document.getElementById('adminSignOutBtn');
         const adminEventTotalsInner = document.getElementById('adminEventTotalsInner');
         const adminAuthMessage = document.getElementById('adminAuthMessage');
-        const adminFiltersForm = document.getElementById('adminFiltersForm');
-        const adminLoadBtn = document.getElementById('adminLoadBtn');
         const adminDataMessage = document.getElementById('adminDataMessage');
         const adminLoadStatus = document.getElementById('adminLoadStatus');
         const profilesWrap = document.getElementById('profilesWrap');
@@ -182,8 +181,27 @@
         const adminBtnUnsubscribedEmails = document.getElementById('adminBtnUnsubscribedEmails');
         const adminEmailToolCopy = document.getElementById('adminEmailToolCopy');
         const adminEmailToolBack = document.getElementById('adminEmailToolBack');
+        const adminOverviewStats = document.getElementById('adminOverviewStats');
+        const adminEventTotalsSub = document.getElementById('adminEventTotalsSub');
+        const adminSignedInAs = document.getElementById('adminSignedInAs');
+        const adminRefreshBtn = document.getElementById('adminRefreshBtn');
+        const adminEmailNavButtons = [
+            adminBtnMassEmail,
+            adminBtnSubscribedEmails,
+            adminBtnUnsubscribedEmails
+        ];
         const ADMIN_USER_ID = 'ee962eec-a890-4ce8-9dcc-b9b30d241008';
         const ADMIN_EMAIL_ALLOWLIST = ['support@permitpathnav.com'];
+        const PROFILE_EVENTS_INITIAL_LIMIT = 15;
+        const USAGE_EVENT_TYPE_LABELS = {
+            app_open: 'App opens',
+            navigation_started: 'Navigations started',
+            route_built: 'Routes built'
+        };
+        const USAGE_EVENT_TYPE_ORDER = ['app_open', 'navigation_started', 'route_built'];
+        const PINNED_USERS_STORAGE_KEY = 'permitpath_admin_pinned_users';
+
+        let pinnedUserKeys = loadPinnedUserKeys();
 
         function withTimeout(promise, ms) {
             return Promise.race([
@@ -235,16 +253,22 @@
 
         function setDataMessage(text, kind) {
             adminDataMessage.textContent = text;
-            adminDataMessage.className = 'form-message ' + (kind === 'success' ? 'success' : 'error');
+            adminDataMessage.className =
+                'form-message admin-data-message' + (kind === 'success' ? ' success' : kind === 'error' ? ' error' : '');
+            adminDataMessage.hidden = !text;
         }
 
         function clearDataMessage() {
             adminDataMessage.textContent = '';
-            adminDataMessage.className = 'form-message';
+            adminDataMessage.className = 'form-message admin-data-message';
+            adminDataMessage.hidden = true;
         }
 
         function setLoadStatus(text) {
-            if (adminLoadStatus) adminLoadStatus.textContent = text || '';
+            if (adminLoadStatus) {
+                adminLoadStatus.textContent = text || '';
+                adminLoadStatus.hidden = !text;
+            }
         }
 
         function clearLoadStatus() {
@@ -256,14 +280,46 @@
         let latestEventsList = [];
         let usageEventTotalsLoading = false;
 
+        function setRefreshLoading(isLoading) {
+            if (!adminRefreshBtn) return;
+            adminRefreshBtn.disabled = isLoading;
+            adminRefreshBtn.textContent = isLoading ? 'Refreshing…' : 'Refresh';
+        }
+
+        function setEmailNavActive(filter) {
+            adminEmailNavButtons.forEach(function(btn) {
+                if (!btn) return;
+                const isActive = btn.getAttribute('data-email-filter') === filter;
+                btn.classList.toggle('admin-tool-nav-btn--active', isActive);
+            });
+        }
+
+        function clearEmailNavActive() {
+            adminEmailNavButtons.forEach(function(btn) {
+                if (btn) btn.classList.remove('admin-tool-nav-btn--active');
+            });
+        }
+
+        function updateSignedInLabel(user) {
+            if (!adminSignedInAs) return;
+            const email = user && user.email ? String(user.email).trim() : '';
+            if (!email) {
+                adminSignedInAs.hidden = true;
+                adminSignedInAs.textContent = '';
+                return;
+            }
+            adminSignedInAs.hidden = false;
+            adminSignedInAs.textContent = 'Signed in as ' + email;
+        }
+
         function setLoginLoading(isLoading) {
             adminLoginBtn.disabled = isLoading;
             adminLoginBtn.textContent = isLoading ? 'Signing in…' : 'Sign in';
         }
 
-        function setDataLoading(isLoading) {
-            adminLoadBtn.disabled = isLoading;
-            adminLoadBtn.textContent = isLoading ? 'Loading…' : 'Load';
+        function clearOverviewStats() {
+            if (adminOverviewStats) adminOverviewStats.innerHTML = '';
+            if (adminEventTotalsSub) adminEventTotalsSub.textContent = '';
         }
 
         function isAdminUser(user) {
@@ -279,24 +335,26 @@
             return ADMIN_EMAIL_ALLOWLIST.includes(email);
         }
 
-        function showAuthedState() {
+        function showAuthedState(user) {
             adminLoginWrap.hidden = true;
             adminAuthedWrap.hidden = false;
-            adminIntroText.hidden = true;
             clearAuthMessage();
+            updateSignedInLabel(user);
         }
 
         function showSignedOutState() {
             adminLoginWrap.hidden = false;
             adminAuthedWrap.hidden = true;
             adminIntroText.hidden = false;
-            adminIntroText.textContent = 'Sign in with your admin account to access this page.';
+            adminIntroText.textContent = 'Sign in with your admin account to continue.';
+            updateSignedInLabel(null);
             latestProfilesList = [];
             latestEventsList = [];
             if (adminMainView && adminEmailToolView) {
                 adminEmailToolView.hidden = true;
                 adminMainView.hidden = false;
             }
+            clearEmailNavActive();
             if (adminEmailToolStatus) adminEmailToolStatus.textContent = '';
             clearDataMessage();
             clearLoadStatus();
@@ -305,6 +363,7 @@
                 profilesCount.hidden = true;
                 profilesCount.textContent = '';
             }
+            clearOverviewStats();
             clearUsageEventTotals();
         }
 
@@ -372,6 +431,32 @@
             return d.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
         }
 
+        function formatRelativeTimeAgo(isoOrStr) {
+            if (isoOrStr === null || isoOrStr === undefined || isoOrStr === '') return '';
+            const then = new Date(isoOrStr);
+            if (Number.isNaN(then.getTime())) return '';
+            let diffMs = Date.now() - then.getTime();
+            if (diffMs < 0) diffMs = 0;
+
+            const totalMinutes = Math.floor(diffMs / 60000);
+            if (totalMinutes < 1) return 'just now';
+
+            const days = Math.floor(totalMinutes / (60 * 24));
+            const hours = Math.floor((totalMinutes % (60 * 24)) / 60);
+            const minutes = totalMinutes % 60;
+            const parts = [];
+
+            if (days > 0) parts.push(days === 1 ? '1 day' : days + ' days');
+            if (hours > 0) parts.push(hours === 1 ? '1 hour' : hours + ' hours');
+            if (days === 0 && hours === 0) {
+                parts.push(minutes === 1 ? '1 minute' : minutes + ' minutes');
+            }
+
+            if (parts.length === 0) return 'just now';
+            if (parts.length === 1) return parts[0] + ' ago';
+            return parts.join(' and ') + ' ago';
+        }
+
         function isoForTitle(isoOrStr) {
             if (!isoOrStr) return '';
             const d = new Date(isoOrStr);
@@ -432,6 +517,15 @@
             } else {
                 val.textContent = text;
             }
+            if (cellOpts.relativeAgoFrom) {
+                const ago = formatRelativeTimeAgo(cellOpts.relativeAgoFrom);
+                if (ago) {
+                    const note = document.createElement('span');
+                    note.className = 'admin-profile-relative-time';
+                    note.textContent = 'Last active: ' + ago;
+                    val.appendChild(note);
+                }
+            }
             cell.appendChild(lbl);
             cell.appendChild(val);
             return cell;
@@ -447,7 +541,8 @@
             row.appendChild(
                 makeProfileExpandCell(rightLabel, rightText, {
                     useCode: opts.rightCode,
-                    routesCount: opts.rightRoutes
+                    routesCount: opts.rightRoutes,
+                    relativeAgoFrom: opts.rightRelativeAgoFrom
                 })
             );
             gridEl.appendChild(row);
@@ -503,6 +598,7 @@
 
             adminMainView.hidden = true;
             adminEmailToolView.hidden = false;
+            setEmailNavActive(filter);
             if (adminEmailToolStatus) adminEmailToolStatus.textContent = '';
             const lines = collectEmailsFromProfiles(latestProfilesList, filter);
             adminEmailToolTextarea.value = lines.join('\n');
@@ -520,6 +616,7 @@
             if (!adminMainView || !adminEmailToolView) return;
             adminEmailToolView.hidden = true;
             adminMainView.hidden = false;
+            clearEmailNavActive();
             if (adminEmailToolStatus) adminEmailToolStatus.textContent = '';
         }
 
@@ -569,7 +666,8 @@
             return '';
         }
 
-        function appendUsageEventItem(container, ev) {
+        function appendUsageEventItem(container, ev, opts) {
+            opts = opts || {};
             const item = document.createElement('article');
             item.className = 'admin-event-item';
 
@@ -579,7 +677,9 @@
             const badge = document.createElement('span');
             badge.className = 'admin-badge admin-badge--event';
             const et = ev.event_type;
-            badge.textContent = et === null || et === undefined || et === '' ? '—' : String(et);
+            const etKey =
+                et === null || et === undefined || String(et).trim() === '' ? '(no type)' : String(et).trim();
+            badge.textContent = humanizeUsageEventType(etKey);
 
             const timeEl = document.createElement('time');
             timeEl.className = 'admin-event-time';
@@ -598,7 +698,7 @@
                 ev.user_id !== null && ev.user_id !== undefined && ev.user_id !== ''
                     ? String(ev.user_id)
                     : '';
-            if (evUid) {
+            if (evUid && !opts.hideUserId) {
                 const uidRow = document.createElement('p');
                 uidRow.className = 'admin-event-uid-row';
                 const uidLbl = document.createElement('span');
@@ -647,6 +747,59 @@
             });
         }
 
+        function humanizeUsageEventType(typeKey) {
+            if (USAGE_EVENT_TYPE_LABELS[typeKey]) return USAGE_EVENT_TYPE_LABELS[typeKey];
+            if (typeKey === '(no type)') return 'Other';
+            return String(typeKey)
+                .replace(/_/g, ' ')
+                .replace(/\b\w/g, function(c) {
+                    return c.toUpperCase();
+                });
+        }
+
+        function sortEventTypeKeysForTicker(keys, counts) {
+            return keys.slice().sort(function(a, b) {
+                const ai = USAGE_EVENT_TYPE_ORDER.indexOf(a);
+                const bi = USAGE_EVENT_TYPE_ORDER.indexOf(b);
+                if (ai !== -1 && bi !== -1) return ai - bi;
+                if (ai !== -1) return -1;
+                if (bi !== -1) return 1;
+                const ca = counts[a];
+                const cb = counts[b];
+                if (cb !== ca) return cb - ca;
+                return a.localeCompare(b);
+            });
+        }
+
+        function renderUsageEventTicker(container, events) {
+            const counts = aggregateUsageEventTypeCounts(events);
+            const keys = sortEventTypeKeysForTicker(Object.keys(counts), counts);
+            const ticker = document.createElement('div');
+            ticker.className = 'admin-profile-events-ticker';
+            ticker.setAttribute('role', 'list');
+            ticker.setAttribute('aria-label', 'Event counts by type');
+
+            keys.forEach(function(key) {
+                const item = document.createElement('div');
+                item.className = 'admin-profile-events-ticker-item';
+                item.setAttribute('role', 'listitem');
+
+                const countEl = document.createElement('span');
+                countEl.className = 'admin-profile-events-ticker-count';
+                countEl.textContent = String(counts[key]);
+
+                const labelEl = document.createElement('span');
+                labelEl.className = 'admin-profile-events-ticker-label';
+                labelEl.textContent = humanizeUsageEventType(key);
+
+                item.appendChild(countEl);
+                item.appendChild(labelEl);
+                ticker.appendChild(item);
+            });
+
+            container.appendChild(ticker);
+        }
+
         function renderEventListInto(container, events) {
             container.innerHTML = '';
             const list = (events || []).slice().sort(function(a, b) {
@@ -657,13 +810,39 @@
             if (list.length === 0) {
                 const p = document.createElement('p');
                 p.className = 'admin-profile-user-events-empty';
-                p.textContent = 'No usage events for this user with the current filters.';
+                p.textContent = 'No usage events for this user.';
                 container.appendChild(p);
                 return;
             }
-            list.forEach(function(ev) {
-                appendUsageEventItem(container, ev);
-            });
+
+            renderUsageEventTicker(container, list);
+
+            const listWrap = document.createElement('div');
+            listWrap.className = 'admin-profile-user-events-list';
+            container.appendChild(listWrap);
+
+            function appendEvents(fromIndex, toIndex) {
+                for (let i = fromIndex; i < toIndex; i++) {
+                    appendUsageEventItem(listWrap, list[i], { hideUserId: true });
+                }
+            }
+
+            const initialEnd = Math.min(PROFILE_EVENTS_INITIAL_LIMIT, list.length);
+            appendEvents(0, initialEnd);
+
+            if (list.length > PROFILE_EVENTS_INITIAL_LIMIT) {
+                const remaining = list.length - PROFILE_EVENTS_INITIAL_LIMIT;
+                const seeAllBtn = document.createElement('button');
+                seeAllBtn.type = 'button';
+                seeAllBtn.className = 'button button-secondary admin-profile-events-see-all';
+                seeAllBtn.textContent =
+                    remaining === 1 ? 'See all (1 more)' : 'See all (' + remaining + ' more)';
+                seeAllBtn.addEventListener('click', function() {
+                    appendEvents(PROFILE_EVENTS_INITIAL_LIMIT, list.length);
+                    seeAllBtn.remove();
+                });
+                container.appendChild(seeAllBtn);
+            }
         }
 
         function jsonForPre(value) {
@@ -678,13 +857,357 @@
             return String(value);
         }
 
+        function renderDashboardOverviewStats(profiles, events) {
+            if (!adminOverviewStats) return;
+            adminOverviewStats.innerHTML = '';
+
+            const list = profiles || [];
+            const eventList = events || [];
+            let subscribed = 0;
+            list.forEach(function(p) {
+                if (isTruthyFlag(p.subscription_is_active)) subscribed++;
+            });
+
+            const cards = [
+                { label: 'Total users', value: list.length, tone: 'default' },
+                { label: 'Subscribed', value: subscribed, tone: 'success' },
+                { label: 'Not subscribed', value: Math.max(0, list.length - subscribed), tone: 'muted' },
+                { label: 'Total events', value: eventList.length, tone: 'default' }
+            ];
+
+            cards.forEach(function(card) {
+                const el = document.createElement('div');
+                el.className = 'admin-overview-stat admin-overview-stat--' + card.tone;
+                const num = document.createElement('span');
+                num.className = 'admin-overview-stat-value';
+                num.textContent = String(card.value);
+                const lbl = document.createElement('span');
+                lbl.className = 'admin-overview-stat-label';
+                lbl.textContent = card.label;
+                el.appendChild(num);
+                el.appendChild(lbl);
+                adminOverviewStats.appendChild(el);
+            });
+        }
+
+        function profileListKey(profile) {
+            if (!profile || typeof profile !== 'object') return '';
+            if (profile.user_id !== null && profile.user_id !== undefined && String(profile.user_id).trim() !== '') {
+                return String(profile.user_id).trim();
+            }
+            if (profile.id !== null && profile.id !== undefined && String(profile.id).trim() !== '') {
+                return 'profile:' + String(profile.id).trim();
+            }
+            if (profile.email !== null && profile.email !== undefined && String(profile.email).trim() !== '') {
+                return 'email:' + String(profile.email).trim().toLowerCase();
+            }
+            return '';
+        }
+
+        function loadPinnedUserKeys() {
+            try {
+                const raw = localStorage.getItem(PINNED_USERS_STORAGE_KEY);
+                if (!raw) return [];
+                const parsed = JSON.parse(raw);
+                if (!Array.isArray(parsed)) return [];
+                return parsed
+                    .map(function(k) {
+                        return k === null || k === undefined ? '' : String(k).trim();
+                    })
+                    .filter(function(k) {
+                        return k !== '';
+                    });
+            } catch (_e) {
+                return [];
+            }
+        }
+
+        function savePinnedUserKeys(keys) {
+            pinnedUserKeys = (keys || []).slice();
+            try {
+                localStorage.setItem(PINNED_USERS_STORAGE_KEY, JSON.stringify(pinnedUserKeys));
+            } catch (_e) {
+                /* ignore quota / private mode */
+            }
+        }
+
+        function isProfilePinned(profile) {
+            const key = profileListKey(profile);
+            return key !== '' && pinnedUserKeys.indexOf(key) !== -1;
+        }
+
+        function toggleProfilePinned(profile) {
+            const key = profileListKey(profile);
+            if (!key) return;
+            const idx = pinnedUserKeys.indexOf(key);
+            if (idx === -1) {
+                savePinnedUserKeys(pinnedUserKeys.concat([key]));
+            } else {
+                const next = pinnedUserKeys.slice();
+                next.splice(idx, 1);
+                savePinnedUserKeys(next);
+            }
+            renderProfiles(latestProfilesList);
+        }
+
+        function sortProfilesByLastSeen(profiles) {
+            return (profiles || []).slice().sort(function(a, b) {
+                const ta = a && a.last_seen_at ? new Date(a.last_seen_at).getTime() : 0;
+                const tb = b && b.last_seen_at ? new Date(b.last_seen_at).getTime() : 0;
+                return tb - ta;
+            });
+        }
+
+        function partitionProfilesForDisplay(profiles) {
+            const byKey = Object.create(null);
+            (profiles || []).forEach(function(profile) {
+                const key = profileListKey(profile);
+                if (key) byKey[key] = profile;
+            });
+
+            const validPinnedKeys = pinnedUserKeys.filter(function(key) {
+                return !!byKey[key];
+            });
+            if (validPinnedKeys.length !== pinnedUserKeys.length) {
+                savePinnedUserKeys(validPinnedKeys);
+            }
+
+            const pinned = validPinnedKeys.map(function(key) {
+                return byKey[key];
+            });
+
+            const pinnedKeySet = Object.create(null);
+            validPinnedKeys.forEach(function(key) {
+                pinnedKeySet[key] = true;
+            });
+
+            const rest = sortProfilesByLastSeen(
+                (profiles || []).filter(function(profile) {
+                    const key = profileListKey(profile);
+                    return key && !pinnedKeySet[key];
+                })
+            );
+
+            return { pinned: pinned, rest: rest };
+        }
+
+        function appendProfileSection(container, title, profiles, sectionClass, rowOpts) {
+            if (!profiles || profiles.length === 0) return;
+
+            const section = document.createElement('section');
+            section.className = 'admin-profile-section' + (sectionClass ? ' ' + sectionClass : '');
+
+            const heading = document.createElement('h4');
+            heading.className = 'admin-profile-section-title';
+            heading.textContent = title + ' (' + profiles.length + ')';
+            section.appendChild(heading);
+
+            const listEl = document.createElement('div');
+            listEl.className = 'admin-profile-section-list';
+
+            profiles.forEach(function(profile) {
+                listEl.appendChild(buildProfileRow(profile, rowOpts));
+            });
+
+            section.appendChild(listEl);
+            container.appendChild(section);
+        }
+
+        function buildProfileRow(profile, rowOpts) {
+            rowOpts = rowOpts || {};
+            const showEmail = rowOpts.showEmail !== false;
+            const em = profile.email && String(profile.email).trim();
+            const fn = profile.full_name && String(profile.full_name).trim();
+            const uid = profile.user_id ? String(profile.user_id) : '';
+            const routes = profile.routes_built_count;
+            const routesStr = routes === null || routes === undefined ? '—' : String(routes);
+            const pinned = isProfilePinned(profile);
+            const pinKey = profileListKey(profile);
+
+            const det = document.createElement('details');
+            det.className = 'admin-profile-row' + (pinned ? ' admin-profile-row--pinned' : '');
+
+            const sum = document.createElement('summary');
+            sum.className = 'admin-profile-email';
+
+            const pinBtn = document.createElement('button');
+            pinBtn.type = 'button';
+            pinBtn.className = 'admin-profile-pin-btn' + (pinned ? ' admin-profile-pin-btn--active' : '');
+            pinBtn.setAttribute('aria-label', pinned ? 'Unpin from top' : 'Pin to top');
+            pinBtn.setAttribute('aria-pressed', pinned ? 'true' : 'false');
+            pinBtn.title = pinned ? 'Unpin from top' : 'Pin to top';
+            pinBtn.textContent = pinned ? '★' : '☆';
+            if (!pinKey) {
+                pinBtn.disabled = true;
+                pinBtn.title = 'Cannot pin this profile (no user id, profile id, or email).';
+            }
+            pinBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                if (!pinKey) return;
+                toggleProfilePinned(profile);
+            });
+
+            const bodyWrap = document.createElement('div');
+            bodyWrap.className = 'admin-profile-summary-body';
+
+            const mainWrap = document.createElement('div');
+            mainWrap.className = 'admin-profile-summary-main';
+            const nameEl = document.createElement('span');
+            nameEl.className = 'admin-profile-summary-name';
+            const subEmail = document.createElement('span');
+            subEmail.className = 'admin-profile-summary-email';
+            if (fn) {
+                nameEl.textContent = fn;
+                if (em && showEmail) {
+                    subEmail.textContent = em;
+                } else {
+                    subEmail.classList.add('admin-profile-summary-email--empty');
+                }
+            } else {
+                nameEl.textContent = em || uid || 'Unknown';
+                subEmail.classList.add('admin-profile-summary-email--empty');
+            }
+            mainWrap.appendChild(nameEl);
+            mainWrap.appendChild(subEmail);
+
+            const asideWrap = document.createElement('div');
+            asideWrap.className = 'admin-profile-summary-aside';
+            const subPill = document.createElement('span');
+            subPill.className =
+                'admin-profile-sub-pill admin-profile-sub-pill--' + subscriptionIndicatorKind(profile);
+            subPill.textContent = isTruthyFlag(profile.subscription_is_active) ? 'Subscribed' : 'Free';
+            asideWrap.appendChild(subPill);
+
+            const ago = formatRelativeTimeAgo(profile.last_seen_at);
+            if (ago) {
+                const activeEl = document.createElement('span');
+                activeEl.className = 'admin-profile-summary-active';
+                activeEl.textContent = 'Active ' + ago;
+                asideWrap.appendChild(activeEl);
+            } else if (routes !== null && routes !== undefined) {
+                const routesEl = document.createElement('span');
+                routesEl.className = 'admin-profile-summary-routes';
+                routesEl.textContent = routes === 1 ? '1 route built' : String(routes) + ' routes built';
+                asideWrap.appendChild(routesEl);
+            }
+
+            bodyWrap.appendChild(mainWrap);
+            bodyWrap.appendChild(asideWrap);
+
+            sum.appendChild(pinBtn);
+            sum.appendChild(bodyWrap);
+
+            const expand = document.createElement('div');
+            expand.className = 'admin-profile-expand';
+
+            const grid = document.createElement('div');
+            grid.className = 'admin-profile-expand-grid';
+            expand.appendChild(grid);
+
+            appendProfileExpandTwoColumnRow(
+                grid,
+                'Full name',
+                profileScalarDisplay(profile, 'full_name'),
+                'Email',
+                em || '—'
+            );
+            appendProfileExpandTwoColumnRow(grid, 'User ID', uid || '—', 'Routes built', routesStr, {
+                leftCode: true,
+                rightRoutes: true
+            });
+            appendProfileExpandTwoColumnRow(
+                grid,
+                'Profile created',
+                profileScalarDisplay(profile, 'created_at'),
+                'Last seen',
+                profileScalarDisplay(profile, 'last_seen_at'),
+                { rightRelativeAgoFrom: profile.last_seen_at }
+            );
+            appendProfileExpandTwoColumnRow(
+                grid,
+                'Subscription',
+                isTruthyFlag(profile.subscription_is_active) ? 'Active' : 'Inactive',
+                'Subscription expires',
+                profileScalarDisplay(profile, 'subscription_expires_at')
+            );
+
+            appendProfileExpandFullRow(
+                expand,
+                'Subscription product ID',
+                profileScalarDisplay(profile, 'subscription_product_id')
+            );
+
+            const eventsSection = document.createElement('div');
+            eventsSection.className = 'admin-profile-user-events-block';
+            const eventsHeading = document.createElement('h5');
+            eventsHeading.className = 'admin-profile-user-events-heading';
+            eventsHeading.textContent = 'Usage events';
+
+            const eventsBtn = document.createElement('button');
+            eventsBtn.type = 'button';
+            eventsBtn.className = 'button button-secondary admin-profile-events-btn';
+            eventsBtn.textContent = 'Show usage events';
+
+            const eventsPanel = document.createElement('div');
+            eventsPanel.className = 'admin-profile-user-events-panel';
+            eventsPanel.hidden = true;
+
+            const profileUserId =
+                profile.user_id !== null && profile.user_id !== undefined && profile.user_id !== ''
+                    ? String(profile.user_id)
+                    : '';
+
+            if (!profileUserId) {
+                eventsBtn.disabled = true;
+                eventsBtn.textContent = 'Usage events (no user id)';
+                eventsBtn.title = 'This profile has no user_id; events cannot be matched.';
+            }
+
+            eventsBtn.addEventListener('click', function() {
+                if (!profileUserId) return;
+                if (eventsPanel.hidden) {
+                    renderEventListInto(eventsPanel, eventsForProfileUserId(latestEventsList, profileUserId));
+                    eventsPanel.hidden = false;
+                    eventsBtn.textContent = 'Hide usage events';
+                } else {
+                    eventsPanel.hidden = true;
+                    eventsBtn.textContent = 'Show usage events';
+                }
+            });
+
+            eventsSection.appendChild(eventsHeading);
+            eventsSection.appendChild(eventsBtn);
+            eventsSection.appendChild(eventsPanel);
+            expand.appendChild(eventsSection);
+
+            det.addEventListener('toggle', function() {
+                if (det.open) {
+                    profilesWrap.querySelectorAll('details.admin-profile-row').forEach(function(other) {
+                        if (other !== det && other.open) {
+                            other.open = false;
+                        }
+                    });
+                } else {
+                    eventsPanel.hidden = true;
+                    if (!eventsBtn.disabled) {
+                        eventsBtn.textContent = 'Show usage events';
+                    }
+                }
+            });
+
+            det.appendChild(sum);
+            det.appendChild(expand);
+            return det;
+        }
+
         function renderProfiles(profiles) {
             profilesWrap.innerHTML = '';
             const list = profiles || [];
             setSectionCount(profilesCount, list.length, 'user', 'users');
 
             if (list.length === 0) {
-                profilesWrap.className = '';
+                profilesWrap.className = 'admin-profile-list admin-profile-list--empty';
                 const empty = document.createElement('div');
                 empty.className = 'admin-empty-state';
                 empty.textContent = 'No profiles found.';
@@ -693,152 +1216,20 @@
             }
 
             profilesWrap.className = 'admin-profile-list';
+            const parts = partitionProfilesForDisplay(list);
 
-            list.forEach(function(profile) {
-                const em = profile.email && String(profile.email).trim();
-                const fn = profile.full_name && String(profile.full_name).trim();
-                const uid = profile.user_id ? String(profile.user_id) : '';
-                const routes = profile.routes_built_count;
-                const routesStr = routes === null || routes === undefined ? '—' : String(routes);
-
-                const det = document.createElement('details');
-                det.className = 'admin-profile-row';
-
-                const sum = document.createElement('summary');
-                sum.className = 'admin-profile-email';
-
-                const textWrap = document.createElement('div');
-                textWrap.className = 'admin-profile-summary-text';
-                const nameEl = document.createElement('span');
-                nameEl.className = 'admin-profile-summary-name';
-                const subEmail = document.createElement('span');
-                subEmail.className = 'admin-profile-summary-email';
-                if (fn) {
-                    nameEl.textContent = fn;
-                    if (em) {
-                        subEmail.textContent = em;
-                    } else {
-                        subEmail.classList.add('admin-profile-summary-email--empty');
-                    }
-                } else {
-                    nameEl.textContent = em || uid || 'Unknown';
-                    subEmail.classList.add('admin-profile-summary-email--empty');
-                }
-                textWrap.appendChild(nameEl);
-                textWrap.appendChild(subEmail);
-
-                const kind = subscriptionIndicatorKind(profile);
-                const meta = subscriptionIndicatorMeta(kind);
-                const dot = document.createElement('span');
-                dot.className = 'admin-profile-sub-dot admin-profile-sub-dot--' + kind;
-                dot.title = meta.title;
-                dot.setAttribute('role', 'img');
-                dot.setAttribute('aria-label', meta.aria);
-
-                sum.appendChild(textWrap);
-                sum.appendChild(dot);
-
-                const expand = document.createElement('div');
-                expand.className = 'admin-profile-expand';
-
-                const grid = document.createElement('div');
-                grid.className = 'admin-profile-expand-grid';
-                expand.appendChild(grid);
-
-                appendProfileExpandTwoColumnRow(
-                    grid,
-                    'Full name',
-                    profileScalarDisplay(profile, 'full_name'),
-                    'Email',
-                    em || '—'
-                );
-                appendProfileExpandTwoColumnRow(grid, 'User ID', uid || '—', 'Routes built', routesStr, {
-                    leftCode: true,
-                    rightRoutes: true
+            if (parts.pinned.length > 0) {
+                appendProfileSection(profilesWrap, 'Pinned', parts.pinned, 'admin-profile-section--pinned', {
+                    showEmail: true
                 });
-                appendProfileExpandTwoColumnRow(
-                    grid,
-                    'Profile created',
-                    profileScalarDisplay(profile, 'created_at'),
-                    'Last seen',
-                    profileScalarDisplay(profile, 'last_seen_at')
-                );
-                appendProfileExpandTwoColumnRow(
-                    grid,
-                    'Subscription',
-                    isTruthyFlag(profile.subscription_is_active) ? 'Active' : 'Inactive',
-                    'Subscription expires',
-                    profileScalarDisplay(profile, 'subscription_expires_at')
-                );
-
-                appendProfileExpandFullRow(
-                    expand,
-                    'Subscription product ID',
-                    profileScalarDisplay(profile, 'subscription_product_id')
-                );
-
-                const eventsSection = document.createElement('div');
-                eventsSection.className = 'admin-profile-user-events-block';
-                const eventsHeading = document.createElement('h5');
-                eventsHeading.className = 'admin-profile-user-events-heading';
-                eventsHeading.textContent = 'Usage events';
-
-                const eventsBtn = document.createElement('button');
-                eventsBtn.type = 'button';
-                eventsBtn.className = 'button button-secondary admin-profile-events-btn';
-                eventsBtn.textContent = 'Show usage events';
-
-                const eventsPanel = document.createElement('div');
-                eventsPanel.className = 'admin-profile-user-events-panel';
-                eventsPanel.hidden = true;
-
-                const profileUserId =
-                    profile.user_id !== null && profile.user_id !== undefined && profile.user_id !== ''
-                        ? String(profile.user_id)
-                        : '';
-
-                if (!profileUserId) {
-                    eventsBtn.disabled = true;
-                    eventsBtn.textContent = 'Usage events (no user id)';
-                    eventsBtn.title = 'This profile has no user_id; events cannot be matched.';
-                }
-
-                eventsBtn.addEventListener('click', function() {
-                    if (!profileUserId) return;
-                    if (eventsPanel.hidden) {
-                        renderEventListInto(eventsPanel, eventsForProfileUserId(latestEventsList, profileUserId));
-                        eventsPanel.hidden = false;
-                        eventsBtn.textContent = 'Hide usage events';
-                    } else {
-                        eventsPanel.hidden = true;
-                        eventsBtn.textContent = 'Show usage events';
-                    }
+                appendProfileSection(profilesWrap, 'All other users', parts.rest, 'admin-profile-section--rest', {
+                    showEmail: false
                 });
-
-                eventsSection.appendChild(eventsHeading);
-                eventsSection.appendChild(eventsBtn);
-                eventsSection.appendChild(eventsPanel);
-                expand.appendChild(eventsSection);
-
-                det.addEventListener('toggle', function() {
-                    if (det.open) {
-                        profilesWrap.querySelectorAll('details.admin-profile-row').forEach(function(other) {
-                            if (other !== det && other.open) {
-                                other.open = false;
-                            }
-                        });
-                    } else {
-                        eventsPanel.hidden = true;
-                        if (!eventsBtn.disabled) {
-                            eventsBtn.textContent = 'Show usage events';
-                        }
-                    }
+            } else {
+                appendProfileSection(profilesWrap, 'All users', parts.rest, 'admin-profile-section--all', {
+                    showEmail: false
                 });
-
-                det.appendChild(sum);
-                det.appendChild(expand);
-                profilesWrap.appendChild(det);
-            });
+            }
         }
 
         async function fetchJsonWithAuth(url, accessToken, timeoutMs) {
@@ -906,16 +1297,6 @@
             return body;
         }
 
-        function toIsoStartOfDay(value) {
-            if (!value) return null;
-            return new Date(value + 'T00:00:00.000Z').toISOString();
-        }
-
-        function toIsoEndOfDay(value) {
-            if (!value) return null;
-            return new Date(value + 'T23:59:59.999Z').toISOString();
-        }
-
         function eventTypeLabelFromUsageEvent(ev) {
             if (!ev || typeof ev !== 'object') return '(no type)';
             const et = ev.event_type;
@@ -937,6 +1318,9 @@
             if (adminEventTotalsInner) {
                 adminEventTotalsInner.innerHTML = '';
             }
+            if (adminEventTotalsSub) {
+                adminEventTotalsSub.textContent = '';
+            }
         }
 
         function renderUsageEventTotals() {
@@ -945,61 +1329,61 @@
             if (usageEventTotalsLoading) {
                 const p = document.createElement('p');
                 p.className = 'admin-event-totals-loading';
-                p.textContent = 'Updating event totals…';
+                p.textContent = 'Loading activity…';
                 adminEventTotalsInner.appendChild(p);
+                if (adminEventTotalsSub) adminEventTotalsSub.textContent = '';
                 return;
             }
             const events = latestEventsList || [];
             if (events.length === 0) {
                 const p = document.createElement('p');
                 p.className = 'admin-event-totals-empty';
-                p.textContent = 'No usage events in the current result set.';
+                p.textContent = 'No usage events recorded yet.';
                 adminEventTotalsInner.appendChild(p);
+                if (adminEventTotalsSub) adminEventTotalsSub.textContent = '';
                 return;
             }
-            const title = document.createElement('p');
-            title.className = 'admin-event-totals-title';
-            title.textContent = 'Total events by type (all users)';
 
-            const sub = document.createElement('p');
-            sub.className = 'admin-event-totals-sub';
             const n = events.length;
-            sub.textContent = n === 1 ? '1 event in this load.' : n + ' events in this load.';
+            if (adminEventTotalsSub) {
+                adminEventTotalsSub.textContent =
+                    n === 1 ? '1 event across all users' : n + ' events across all users';
+            }
 
             const counts = aggregateUsageEventTypeCounts(events);
-            const keys = Object.keys(counts).sort(function(a, b) {
-                const ca = counts[a];
-                const cb = counts[b];
-                if (cb !== ca) return cb - ca;
-                return a.localeCompare(b);
-            });
+            const keys = sortEventTypeKeysForTicker(Object.keys(counts), counts);
+            const ticker = document.createElement('div');
+            ticker.className = 'admin-event-totals-ticker';
+            ticker.setAttribute('role', 'list');
+            ticker.setAttribute('aria-label', 'Total events by type');
 
-            const ul = document.createElement('ul');
-            ul.className = 'admin-event-totals-list';
             keys.forEach(function(key) {
-                const li = document.createElement('li');
-                li.className = 'admin-event-totals-row';
-                const name = document.createElement('span');
-                name.className = 'admin-event-totals-type';
-                name.textContent = key;
-                const num = document.createElement('span');
-                num.className = 'admin-event-totals-count';
-                num.textContent = String(counts[key]);
-                li.appendChild(name);
-                li.appendChild(num);
-                ul.appendChild(li);
+                const item = document.createElement('div');
+                item.className = 'admin-event-totals-ticker-item';
+                item.setAttribute('role', 'listitem');
+
+                const countEl = document.createElement('span');
+                countEl.className = 'admin-event-totals-ticker-count';
+                countEl.textContent = String(counts[key]);
+
+                const labelEl = document.createElement('span');
+                labelEl.className = 'admin-event-totals-ticker-label';
+                labelEl.textContent = humanizeUsageEventType(key);
+
+                item.appendChild(countEl);
+                item.appendChild(labelEl);
+                ticker.appendChild(item);
             });
 
-            adminEventTotalsInner.appendChild(title);
-            adminEventTotalsInner.appendChild(sub);
-            adminEventTotalsInner.appendChild(ul);
+            adminEventTotalsInner.appendChild(ticker);
         }
 
         async function loadDashboardData(passedSession) {
             const loadId = ++latestDashboardLoadId;
             clearDataMessage();
             clearLoadStatus();
-            setDataLoading(true);
+            setRefreshLoading(true);
+            clearOverviewStats();
 
             try {
                 let session =
@@ -1048,18 +1432,8 @@
                 let usageData;
                 try {
                     setLoadStatus('Loading usage events…');
-                    const usageUrl = new URL(supabaseUrl + '/functions/v1/admin-data/usage-events');
-                    const fromValue = document.getElementById('eventsFrom').value;
-                    const toValue = document.getElementById('eventsTo').value;
-                    const eventTypeValue = document.getElementById('eventsType').value.trim();
-                    const fromIso = toIsoStartOfDay(fromValue);
-                    const toIso = toIsoEndOfDay(toValue);
-
-                    if (fromIso) usageUrl.searchParams.set('from', fromIso);
-                    if (toIso) usageUrl.searchParams.set('to', toIso);
-                    if (eventTypeValue) usageUrl.searchParams.set('event_type', eventTypeValue);
-
-                    usageData = await fetchJsonWithAuth(usageUrl.toString(), session.access_token);
+                    const usageUrl = supabaseUrl + '/functions/v1/admin-data/usage-events';
+                    usageData = await fetchJsonWithAuth(usageUrl, session.access_token);
                 } catch (ue) {
                     throw new Error('[usage-events] ' + (ue && ue.message ? ue.message : 'unknown error'));
                 }
@@ -1069,8 +1443,9 @@
                     usageData.data ||
                     (Array.isArray(usageData) ? usageData : []);
                 latestEventsList = Array.isArray(eventsList) ? eventsList.slice() : [];
+                renderDashboardOverviewStats(latestProfilesList, latestEventsList);
                 clearLoadStatus();
-                setDataMessage('Dashboard loaded.', 'success');
+                setDataMessage('Dashboard updated.', 'success');
             } catch (err) {
                 clearLoadStatus();
                 latestEventsList = [];
@@ -1081,7 +1456,7 @@
                 if (loadId === latestDashboardLoadId) {
                     usageEventTotalsLoading = false;
                     renderUsageEventTotals();
-                    setDataLoading(false);
+                    setRefreshLoading(false);
                 }
             }
         }
@@ -1105,7 +1480,7 @@
                 return;
             }
 
-            showAuthedState();
+            showAuthedState(user);
         }
 
         adminLoginForm.addEventListener('submit', async function(e) {
@@ -1172,7 +1547,15 @@
             if (user && isAdminUser(user)) {
                 await loadDashboardData();
             }
+            clearDataMessage();
+            clearLoadStatus();
         })();
+
+        if (adminRefreshBtn) {
+            adminRefreshBtn.addEventListener('click', function() {
+                loadDashboardData().catch(function() {});
+            });
+        }
 
         adminBtnMassEmail.addEventListener('click', function() {
             openEmailTool('all').catch(function() {});
@@ -1188,11 +1571,6 @@
         });
         adminEmailToolCopy.addEventListener('click', function() {
             copyAdminEmailList().catch(function() {});
-        });
-
-        adminFiltersForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            await loadDashboardData();
         });
     </script>
 </body>
