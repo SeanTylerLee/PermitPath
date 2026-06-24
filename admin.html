@@ -7,7 +7,7 @@
             try {
                 var u = new URL(window.location.href);
                 if (!u.searchParams.has('v')) {
-                    u.searchParams.set('v', '25');
+                    u.searchParams.set('v', '27');
                     window.location.replace(u.pathname + u.search + u.hash);
                 }
             } catch (_e) {}
@@ -21,9 +21,9 @@
     <meta http-equiv="Expires" content="0" />
     <title>Admin Dashboard - PermitPath</title>
     <meta name="robots" content="noindex, nofollow" />
-    <link rel="canonical" href="https://permitpathnav.com/admin.html?v=25" />
+    <link rel="canonical" href="https://permitpathnav.com/admin.html?v=27" />
     <link rel="icon" type="image/png" href="images/pppp.png" />
-    <link rel="stylesheet" href="styles.css?v=22" />
+    <link rel="stylesheet" href="styles.css?v=24" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 </head>
@@ -90,6 +90,7 @@
                     <button type="button" class="button admin-tool-nav-btn" id="adminBtnMassEmail" data-email-filter="all">All users</button>
                     <button type="button" class="button admin-tool-nav-btn" id="adminBtnSubscribedEmails" data-email-filter="subscribed">Subscribed</button>
                     <button type="button" class="button admin-tool-nav-btn" id="adminBtnUnsubscribedEmails" data-email-filter="unsubscribed">Not subscribed</button>
+                    <button type="button" class="button admin-tool-nav-btn" id="adminBtnLapsedEmails" data-email-filter="lapsed">Lapsed</button>
                 </div>
             </div>
 
@@ -123,6 +124,10 @@
                             <span class="admin-profile-legend-item admin-profile-legend-item--hint">Pin users to keep them at the top; others sorted by most recently active</span>
                         </p>
                         <div id="profilesWrap" class="admin-profile-list"></div>
+                    </div>
+
+                    <div class="admin-panel admin-revenue-panel">
+                        <div id="adminRevenueEstimate" class="admin-revenue-estimate" aria-live="polite"></div>
                     </div>
                 </section>
             </div>
@@ -179,16 +184,19 @@
         const adminBtnMassEmail = document.getElementById('adminBtnMassEmail');
         const adminBtnSubscribedEmails = document.getElementById('adminBtnSubscribedEmails');
         const adminBtnUnsubscribedEmails = document.getElementById('adminBtnUnsubscribedEmails');
+        const adminBtnLapsedEmails = document.getElementById('adminBtnLapsedEmails');
         const adminEmailToolCopy = document.getElementById('adminEmailToolCopy');
         const adminEmailToolBack = document.getElementById('adminEmailToolBack');
         const adminOverviewStats = document.getElementById('adminOverviewStats');
+        const adminRevenueEstimate = document.getElementById('adminRevenueEstimate');
         const adminEventTotalsSub = document.getElementById('adminEventTotalsSub');
         const adminSignedInAs = document.getElementById('adminSignedInAs');
         const adminRefreshBtn = document.getElementById('adminRefreshBtn');
         const adminEmailNavButtons = [
             adminBtnMassEmail,
             adminBtnSubscribedEmails,
-            adminBtnUnsubscribedEmails
+            adminBtnUnsubscribedEmails,
+            adminBtnLapsedEmails
         ];
         const ADMIN_USER_ID = 'ee962eec-a890-4ce8-9dcc-b9b30d241008';
         const ADMIN_EMAIL_ALLOWLIST = ['support@permitpathnav.com'];
@@ -200,6 +208,10 @@
         };
         const USAGE_EVENT_TYPE_ORDER = ['app_open', 'navigation_started', 'route_built'];
         const PINNED_USERS_STORAGE_KEY = 'permitpath_admin_pinned_users';
+        const USAGE_EVENTS_WINDOW_DAYS = 90;
+        const SUBSCRIPTION_PRICE_MONTHLY = 3.99;
+        const APP_STORE_FEE_RATE = 0.15;
+        const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
         let pinnedUserKeys = loadPinnedUserKeys();
 
@@ -315,11 +327,6 @@
         function setLoginLoading(isLoading) {
             adminLoginBtn.disabled = isLoading;
             adminLoginBtn.textContent = isLoading ? 'Signing in…' : 'Sign in';
-        }
-
-        function clearOverviewStats() {
-            if (adminOverviewStats) adminOverviewStats.innerHTML = '';
-            if (adminEventTotalsSub) adminEventTotalsSub.textContent = '';
         }
 
         function isAdminUser(user) {
@@ -571,6 +578,7 @@
                 if (!em) return;
                 if (filter === 'subscribed' && !isTruthyFlag(p.subscription_is_active)) return;
                 if (filter === 'unsubscribed' && isTruthyFlag(p.subscription_is_active)) return;
+                if (filter === 'lapsed' && !isLapsedProfile(p)) return;
                 const key = em.toLowerCase();
                 if (!map.has(key)) map.set(key, em);
             });
@@ -605,7 +613,8 @@
             const titles = {
                 all: 'Mass Email — all addresses on file',
                 subscribed: 'Subscribed — email list',
-                unsubscribed: 'Not subscribed — email list'
+                unsubscribed: 'Not subscribed — email list',
+                lapsed: 'Lapsed subscribers — win-back email list'
             };
             adminEmailToolTitle.textContent = titles[filter] + ' (' + lines.length + ')';
             adminEmailToolTextarea.focus();
@@ -857,37 +866,198 @@
             return String(value);
         }
 
+        function clearOverviewStats() {
+            if (adminOverviewStats) adminOverviewStats.innerHTML = '';
+            if (adminRevenueEstimate) adminRevenueEstimate.innerHTML = '';
+            if (adminEventTotalsSub) adminEventTotalsSub.textContent = '';
+        }
+
+        function profileDate(value) {
+            if (value === null || value === undefined || value === '') return null;
+            const d = new Date(value);
+            return Number.isNaN(d.getTime()) ? null : d;
+        }
+
+        function isWithinPastDays(isoOrStr, days) {
+            const d = profileDate(isoOrStr);
+            if (!d) return false;
+            return Date.now() - d.getTime() <= days * MS_PER_DAY;
+        }
+
+        function isOlderThanDays(isoOrStr, days) {
+            const d = profileDate(isoOrStr);
+            if (!d) return true;
+            return Date.now() - d.getTime() > days * MS_PER_DAY;
+        }
+
+        function isExpiringWithinDays(isoOrStr, days) {
+            const d = profileDate(isoOrStr);
+            if (!d) return false;
+            const now = Date.now();
+            const end = now + days * MS_PER_DAY;
+            const t = d.getTime();
+            return t >= now && t <= end;
+        }
+
+        function isLapsedProfile(profile) {
+            if (!profile || isTruthyFlag(profile.subscription_is_active)) return false;
+            const exp = profileDate(profile.subscription_expires_at);
+            if (!exp) return false;
+            return exp.getTime() < Date.now();
+        }
+
+        function isPayingButInactiveProfile(profile) {
+            if (!profile || !isTruthyFlag(profile.subscription_is_active)) return false;
+            return isOlderThanDays(profile.last_seen_at, 14);
+        }
+
+        function computeProfileMetrics(profiles) {
+            const list = profiles || [];
+            let subscribed = 0;
+            let new7 = 0;
+            let new30 = 0;
+            let active7 = 0;
+            let expiringSoon = 0;
+            let payingInactive = 0;
+            let lapsed = 0;
+
+            list.forEach(function(p) {
+                if (isTruthyFlag(p.subscription_is_active)) subscribed++;
+                if (isWithinPastDays(p.created_at, 7)) new7++;
+                if (isWithinPastDays(p.created_at, 30)) new30++;
+                if (isWithinPastDays(p.last_seen_at, 7)) active7++;
+                if (isTruthyFlag(p.subscription_is_active) && isExpiringWithinDays(p.subscription_expires_at, 7)) {
+                    expiringSoon++;
+                }
+                if (isPayingButInactiveProfile(p)) payingInactive++;
+                if (isLapsedProfile(p)) lapsed++;
+            });
+
+            return {
+                total: list.length,
+                subscribed: subscribed,
+                notSubscribed: Math.max(0, list.length - subscribed),
+                new7: new7,
+                new30: new30,
+                active7: active7,
+                expiringSoon: expiringSoon,
+                payingInactive: payingInactive,
+                lapsed: lapsed
+            };
+        }
+
+        function formatUsd(amount) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(amount);
+        }
+
+        function usageEventsFromIso() {
+            const d = new Date();
+            d.setUTCDate(d.getUTCDate() - USAGE_EVENTS_WINDOW_DAYS);
+            return d.toISOString();
+        }
+
+        function appendOverviewStatCard(container, label, value, tone) {
+            const el = document.createElement('div');
+            el.className = 'admin-overview-stat admin-overview-stat--' + (tone || 'default');
+            const num = document.createElement('span');
+            num.className = 'admin-overview-stat-value';
+            num.textContent = String(value);
+            const lbl = document.createElement('span');
+            lbl.className = 'admin-overview-stat-label';
+            lbl.textContent = label;
+            el.appendChild(num);
+            el.appendChild(lbl);
+            container.appendChild(el);
+        }
+
         function renderDashboardOverviewStats(profiles, events) {
             if (!adminOverviewStats) return;
             adminOverviewStats.innerHTML = '';
 
-            const list = profiles || [];
-            const eventList = events || [];
-            let subscribed = 0;
-            list.forEach(function(p) {
-                if (isTruthyFlag(p.subscription_is_active)) subscribed++;
-            });
+            const metrics = computeProfileMetrics(profiles);
+            const eventCount = (events || []).length;
 
-            const cards = [
-                { label: 'Total users', value: list.length, tone: 'default' },
-                { label: 'Subscribed', value: subscribed, tone: 'success' },
-                { label: 'Not subscribed', value: Math.max(0, list.length - subscribed), tone: 'muted' },
-                { label: 'Total events', value: eventList.length, tone: 'default' }
-            ];
+            appendOverviewStatCard(adminOverviewStats, 'Total users', metrics.total, 'default');
+            appendOverviewStatCard(adminOverviewStats, 'Subscribed', metrics.subscribed, 'success');
+            appendOverviewStatCard(adminOverviewStats, 'Not subscribed', metrics.notSubscribed, 'muted');
+            appendOverviewStatCard(
+                adminOverviewStats,
+                'Events (' + USAGE_EVENTS_WINDOW_DAYS + 'd)',
+                eventCount,
+                'default'
+            );
+            appendOverviewStatCard(adminOverviewStats, 'New (7 days)', metrics.new7, 'default');
+            appendOverviewStatCard(adminOverviewStats, 'New (30 days)', metrics.new30, 'default');
+            appendOverviewStatCard(adminOverviewStats, 'Active (7 days)', metrics.active7, 'success');
+            appendOverviewStatCard(adminOverviewStats, 'Expiring soon', metrics.expiringSoon, 'warning');
+            appendOverviewStatCard(adminOverviewStats, 'Paying, inactive 14d+', metrics.payingInactive, 'danger');
+            appendOverviewStatCard(adminOverviewStats, 'Lapsed', metrics.lapsed, 'muted');
 
-            cards.forEach(function(card) {
-                const el = document.createElement('div');
-                el.className = 'admin-overview-stat admin-overview-stat--' + card.tone;
-                const num = document.createElement('span');
-                num.className = 'admin-overview-stat-value';
-                num.textContent = String(card.value);
-                const lbl = document.createElement('span');
-                lbl.className = 'admin-overview-stat-label';
-                lbl.textContent = card.label;
-                el.appendChild(num);
-                el.appendChild(lbl);
-                adminOverviewStats.appendChild(el);
-            });
+            renderRevenueEstimate(metrics.subscribed);
+        }
+
+        function renderRevenueEstimate(subscribedCount) {
+            if (!adminRevenueEstimate) return;
+            adminRevenueEstimate.innerHTML = '';
+
+            const count = typeof subscribedCount === 'number' ? subscribedCount : 0;
+            const gross = count * SUBSCRIPTION_PRICE_MONTHLY;
+            const storeFees = gross * APP_STORE_FEE_RATE;
+            const net = gross - storeFees;
+            const feePct = Math.round(APP_STORE_FEE_RATE * 100);
+
+            const wrap = document.createElement('div');
+            wrap.className = 'admin-revenue-estimate-inner';
+
+            const title = document.createElement('p');
+            title.className = 'admin-revenue-estimate-title';
+            title.textContent = 'Estimated monthly revenue';
+
+            const main = document.createElement('p');
+            main.className = 'admin-revenue-estimate-net';
+            main.textContent = formatUsd(net) + ' / mo approx.';
+
+            const breakdown = document.createElement('ul');
+            breakdown.className = 'admin-revenue-estimate-breakdown';
+
+            const liGross = document.createElement('li');
+            liGross.textContent =
+                count +
+                ' subscriber' +
+                (count === 1 ? '' : 's') +
+                ' × ' +
+                formatUsd(SUBSCRIPTION_PRICE_MONTHLY) +
+                ' = ' +
+                formatUsd(gross) +
+                ' gross';
+
+            const liFees = document.createElement('li');
+            liFees.textContent =
+                'App store fees (~' + feePct + '%): −' + formatUsd(storeFees);
+
+            const liNet = document.createElement('li');
+            liNet.className = 'admin-revenue-estimate-breakdown-net';
+            liNet.textContent = 'Estimated net: ' + formatUsd(net) + ' / month';
+
+            breakdown.appendChild(liGross);
+            breakdown.appendChild(liFees);
+            breakdown.appendChild(liNet);
+
+            const note = document.createElement('p');
+            note.className = 'admin-revenue-estimate-note';
+            note.textContent =
+                'Estimate only. Assumes all active subscribers pay $3.99/mo and ~15% platform fees. Actual payouts vary by store, region, trials, refunds, and tax.';
+
+            wrap.appendChild(title);
+            wrap.appendChild(main);
+            wrap.appendChild(breakdown);
+            wrap.appendChild(note);
+            adminRevenueEstimate.appendChild(wrap);
         }
 
         function profileListKey(profile) {
@@ -1338,16 +1508,22 @@
             if (events.length === 0) {
                 const p = document.createElement('p');
                 p.className = 'admin-event-totals-empty';
-                p.textContent = 'No usage events recorded yet.';
+                p.textContent = 'No usage events in the last ' + USAGE_EVENTS_WINDOW_DAYS + ' days.';
                 adminEventTotalsInner.appendChild(p);
-                if (adminEventTotalsSub) adminEventTotalsSub.textContent = '';
+                if (adminEventTotalsSub) {
+                    adminEventTotalsSub.textContent =
+                        'Showing activity from the last ' + USAGE_EVENTS_WINDOW_DAYS + ' days only.';
+                }
                 return;
             }
 
             const n = events.length;
             if (adminEventTotalsSub) {
                 adminEventTotalsSub.textContent =
-                    n === 1 ? '1 event across all users' : n + ' events across all users';
+                    (n === 1 ? '1 event' : n + ' events') +
+                    ' in the last ' +
+                    USAGE_EVENTS_WINDOW_DAYS +
+                    ' days. Older events are not loaded (keeps the dashboard fast).';
             }
 
             const counts = aggregateUsageEventTypeCounts(events);
@@ -1432,8 +1608,9 @@
                 let usageData;
                 try {
                     setLoadStatus('Loading usage events…');
-                    const usageUrl = supabaseUrl + '/functions/v1/admin-data/usage-events';
-                    usageData = await fetchJsonWithAuth(usageUrl, session.access_token);
+                    const usageUrl = new URL(supabaseUrl + '/functions/v1/admin-data/usage-events');
+                    usageUrl.searchParams.set('from', usageEventsFromIso());
+                    usageData = await fetchJsonWithAuth(usageUrl.toString(), session.access_token);
                 } catch (ue) {
                     throw new Error('[usage-events] ' + (ue && ue.message ? ue.message : 'unknown error'));
                 }
@@ -1565,6 +1742,9 @@
         });
         adminBtnUnsubscribedEmails.addEventListener('click', function() {
             openEmailTool('unsubscribed').catch(function() {});
+        });
+        adminBtnLapsedEmails.addEventListener('click', function() {
+            openEmailTool('lapsed').catch(function() {});
         });
         adminEmailToolBack.addEventListener('click', function() {
             closeEmailTool();

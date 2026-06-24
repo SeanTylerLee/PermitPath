@@ -2488,8 +2488,8 @@ body.admin-page .admin-email-panel {
 
 body.admin-page .admin-overview-stats {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 0.65rem;
+    grid-template-columns: repeat(auto-fill, minmax(7.25rem, 1fr));
+    gap: 0.55rem;
     margin-bottom: 1rem;
 }
 
@@ -2503,15 +2503,16 @@ body.admin-page .admin-overview-stat {
     display: flex;
     flex-direction: column;
     gap: 0.2rem;
-    padding: 0.85rem 0.9rem;
+    padding: 0.75rem 0.8rem;
     background: rgba(255, 255, 255, 0.96);
     border: 1px solid rgba(26, 35, 50, 0.1);
     border-radius: 12px;
     box-shadow: 0 2px 12px rgba(15, 35, 60, 0.05);
+    min-height: 4.5rem;
 }
 
 body.admin-page .admin-overview-stat-value {
-    font-size: 1.55rem;
+    font-size: 1.35rem;
     font-weight: 800;
     line-height: 1.1;
     color: #1a365d;
@@ -2525,12 +2526,76 @@ body.admin-page .admin-overview-stat--muted .admin-overview-stat-value {
     color: #5a6b80;
 }
 
+body.admin-page .admin-overview-stat--warning .admin-overview-stat-value {
+    color: #9a6700;
+}
+
+body.admin-page .admin-overview-stat--danger .admin-overview-stat-value {
+    color: #b42318;
+}
+
 body.admin-page .admin-overview-stat-label {
-    font-size: 0.72rem;
+    font-size: 0.68rem;
     font-weight: 700;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
     color: #647896;
+    line-height: 1.25;
+}
+
+body.admin-page .admin-revenue-panel {
+    margin-top: 1rem;
+}
+
+body.admin-page .admin-revenue-estimate {
+    margin: 0;
+}
+
+body.admin-page .admin-revenue-estimate-inner {
+    padding: 0;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+}
+
+body.admin-page .admin-revenue-estimate-title {
+    margin: 0 0 0.25rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: #647896;
+}
+
+body.admin-page .admin-revenue-estimate-net {
+    margin: 0 0 0.55rem;
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: #1a365d;
+    line-height: 1.2;
+}
+
+body.admin-page .admin-revenue-estimate-breakdown {
+    list-style: none;
+    margin: 0 0 0.55rem;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.84rem;
+    color: #3d4f66;
+}
+
+body.admin-page .admin-revenue-estimate-breakdown-net {
+    font-weight: 700;
+    color: #1c6d43;
+}
+
+body.admin-page .admin-revenue-estimate-note {
+    margin: 0;
+    font-size: 0.72rem;
+    line-height: 1.45;
+    color: #8899aa;
 }
 
 body.admin-page .admin-stats-panel {
@@ -2605,9 +2670,15 @@ body.admin-page .admin-dashboard-section {
 
 body.admin-page .admin-email-tools-nav {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 0.45rem;
     margin: 0;
+}
+
+@media (min-width: 640px) {
+    body.admin-page .admin-email-tools-nav {
+        grid-template-columns: repeat(4, 1fr);
+    }
 }
 
 @media (max-width: 520px) {

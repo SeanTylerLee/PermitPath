@@ -4,6 +4,7 @@
  * Routes (same function, path suffix):
  *   GET /functions/v1/admin-data/profiles
  *   GET /functions/v1/admin-data/usage-events?from=&to=&event_type=
+ *   (defaults to last 90 days when from/to omitted)
  *
  * Security: resolves caller via JWT (Authorization: Bearer <access_token>),
  * compares auth.users id to ADMIN_USER_ID, then uses service role for reads.
@@ -156,12 +157,19 @@ Deno.serve(async (req) => {
             const to = url.searchParams.get('to');
             const eventType = url.searchParams.get('event_type');
 
+            let fromIso = from;
+            if (!fromIso && !to) {
+                const windowStart = new Date();
+                windowStart.setUTCDate(windowStart.getUTCDate() - 90);
+                fromIso = windowStart.toISOString();
+            }
+
             let q = supabaseAdmin
                 .from('usage_events')
                 .select('user_id, event_type, created_at, metadata')
                 .order('created_at', { ascending: false });
 
-            if (from) q = q.gte('created_at', from);
+            if (fromIso) q = q.gte('created_at', fromIso);
             if (to) q = q.lte('created_at', to);
             if (eventType) q = q.eq('event_type', eventType);
 
@@ -172,7 +180,12 @@ Deno.serve(async (req) => {
                 return json({ error: error.message }, 500);
             }
 
-            return json({ usage_events: usage_events ?? [] });
+            return json({
+                usage_events: usage_events ?? [],
+                window_days: fromIso && !from ? 90 : null,
+                from: fromIso ?? null,
+                to: to ?? null
+            });
         }
 
         return json({ error: 'Not found' }, 404);
