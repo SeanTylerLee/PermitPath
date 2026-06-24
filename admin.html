@@ -7,7 +7,7 @@
             try {
                 var u = new URL(window.location.href);
                 if (!u.searchParams.has('v')) {
-                    u.searchParams.set('v', '27');
+                    u.searchParams.set('v', '30');
                     window.location.replace(u.pathname + u.search + u.hash);
                 }
             } catch (_e) {}
@@ -21,9 +21,9 @@
     <meta http-equiv="Expires" content="0" />
     <title>Admin Dashboard - PermitPath</title>
     <meta name="robots" content="noindex, nofollow" />
-    <link rel="canonical" href="https://permitpathnav.com/admin.html?v=27" />
+    <link rel="canonical" href="https://permitpathnav.com/admin.html?v=30" />
     <link rel="icon" type="image/png" href="images/pppp.png" />
-    <link rel="stylesheet" href="styles.css?v=24" />
+    <link rel="stylesheet" href="styles.css?v=25" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 </head>
@@ -84,20 +84,8 @@
                 </div>
             </div>
 
-            <div class="admin-panel admin-email-panel">
-                <p class="admin-panel-label">Email lists</p>
-                <div class="admin-email-tools-nav" role="toolbar" aria-label="Email lists">
-                    <button type="button" class="button admin-tool-nav-btn" id="adminBtnMassEmail" data-email-filter="all">All users</button>
-                    <button type="button" class="button admin-tool-nav-btn" id="adminBtnSubscribedEmails" data-email-filter="subscribed">Subscribed</button>
-                    <button type="button" class="button admin-tool-nav-btn" id="adminBtnUnsubscribedEmails" data-email-filter="unsubscribed">Not subscribed</button>
-                    <button type="button" class="button admin-tool-nav-btn" id="adminBtnLapsedEmails" data-email-filter="lapsed">Lapsed</button>
-                </div>
-            </div>
-
             <div id="adminMainView" class="admin-main-view">
                 <section class="admin-dashboard-section">
-                    <div id="adminOverviewStats" class="admin-overview-stats" aria-live="polite"></div>
-
                     <div class="admin-panel admin-stats-panel">
                         <div class="admin-section-head admin-stats-head">
                             <h3 class="admin-panel-title">Platform activity</h3>
@@ -107,6 +95,8 @@
                             <div id="adminEventTotalsInner" class="admin-event-totals-inner"></div>
                         </div>
                     </div>
+
+                    <div id="adminOverviewStats" class="admin-overview-stats" aria-live="polite"></div>
 
                     <div class="admin-status-strip" aria-live="polite">
                         <p id="adminLoadStatus" class="admin-load-status"></p>
@@ -118,16 +108,30 @@
                             <h3 class="admin-panel-title">Users</h3>
                             <span id="profilesCount" class="admin-count-pill" hidden aria-live="polite"></span>
                         </div>
+                        <div id="adminUserFilterBar" class="admin-user-filter-bar" hidden>
+                            <span id="adminUserFilterLabel" class="admin-user-filter-label"></span>
+                            <button type="button" class="button button-secondary admin-user-filter-clear" id="adminUserFilterClear">Clear filter</button>
+                        </div>
                         <p class="admin-profile-legend">
                             <span class="admin-profile-legend-item"><span class="admin-profile-sub-dot admin-profile-sub-dot--active admin-profile-sub-dot--legend"></span> Subscribed</span>
                             <span class="admin-profile-legend-item"><span class="admin-profile-sub-dot admin-profile-sub-dot--inactive admin-profile-sub-dot--legend"></span> Not subscribed</span>
-                            <span class="admin-profile-legend-item admin-profile-legend-item--hint">Pin users to keep them at the top; others sorted by most recently active</span>
+                            <span class="admin-profile-legend-item admin-profile-legend-item--hint">Click a stat card above to filter users; pin users to keep them at the top</span>
                         </p>
                         <div id="profilesWrap" class="admin-profile-list"></div>
                     </div>
 
                     <div class="admin-panel admin-revenue-panel">
                         <div id="adminRevenueEstimate" class="admin-revenue-estimate" aria-live="polite"></div>
+                    </div>
+
+                    <div class="admin-panel admin-email-panel">
+                        <p class="admin-panel-label">Email lists</p>
+                        <div class="admin-email-tools-nav" role="toolbar" aria-label="Email lists">
+                            <button type="button" class="button admin-tool-nav-btn" id="adminBtnMassEmail" data-email-filter="all">All users</button>
+                            <button type="button" class="button admin-tool-nav-btn" id="adminBtnSubscribedEmails" data-email-filter="subscribed">Subscribed</button>
+                            <button type="button" class="button admin-tool-nav-btn" id="adminBtnUnsubscribedEmails" data-email-filter="unsubscribed">Not subscribed</button>
+                            <button type="button" class="button admin-tool-nav-btn" id="adminBtnLapsedEmails" data-email-filter="lapsed">Lapsed</button>
+                        </div>
                     </div>
                 </section>
             </div>
@@ -189,6 +193,10 @@
         const adminEmailToolBack = document.getElementById('adminEmailToolBack');
         const adminOverviewStats = document.getElementById('adminOverviewStats');
         const adminRevenueEstimate = document.getElementById('adminRevenueEstimate');
+        const adminUsersPanel = document.querySelector('.admin-users-panel');
+        const adminUserFilterBar = document.getElementById('adminUserFilterBar');
+        const adminUserFilterLabel = document.getElementById('adminUserFilterLabel');
+        const adminUserFilterClear = document.getElementById('adminUserFilterClear');
         const adminEventTotalsSub = document.getElementById('adminEventTotalsSub');
         const adminSignedInAs = document.getElementById('adminSignedInAs');
         const adminRefreshBtn = document.getElementById('adminRefreshBtn');
@@ -214,6 +222,19 @@
         const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
         let pinnedUserKeys = loadPinnedUserKeys();
+        let activeUserFilter = null;
+
+        const USER_FILTER_META = {
+            all: { label: 'All users' },
+            subscribed: { label: 'Subscribed' },
+            not_subscribed: { label: 'Not subscribed' },
+            new7: { label: 'New (7 days)' },
+            new30: { label: 'New (30 days)' },
+            active7: { label: 'Active (7 days)' },
+            expiring_soon: { label: 'Expiring soon' },
+            paying_inactive: { label: 'Paying, inactive 14d+' },
+            lapsed: { label: 'Lapsed' }
+        };
 
         function withTimeout(promise, ms) {
             return Promise.race([
@@ -357,6 +378,8 @@
             updateSignedInLabel(null);
             latestProfilesList = [];
             latestEventsList = [];
+            activeUserFilter = null;
+            updateUserFilterBar();
             if (adminMainView && adminEmailToolView) {
                 adminEmailToolView.hidden = true;
                 adminMainView.hidden = false;
@@ -961,9 +984,94 @@
             return d.toISOString();
         }
 
-        function appendOverviewStatCard(container, label, value, tone) {
+        function profileMatchesUserFilter(profile, filterKey) {
+            if (!filterKey || filterKey === 'all') return true;
+            if (filterKey === 'subscribed') return isTruthyFlag(profile.subscription_is_active);
+            if (filterKey === 'not_subscribed') return !isTruthyFlag(profile.subscription_is_active);
+            if (filterKey === 'new7') return isWithinPastDays(profile.created_at, 7);
+            if (filterKey === 'new30') return isWithinPastDays(profile.created_at, 30);
+            if (filterKey === 'active7') return isWithinPastDays(profile.last_seen_at, 7);
+            if (filterKey === 'expiring_soon') {
+                return (
+                    isTruthyFlag(profile.subscription_is_active) &&
+                    isExpiringWithinDays(profile.subscription_expires_at, 7)
+                );
+            }
+            if (filterKey === 'paying_inactive') return isPayingButInactiveProfile(profile);
+            if (filterKey === 'lapsed') return isLapsedProfile(profile);
+            return true;
+        }
+
+        function applyUserFilter(profiles) {
+            if (!activeUserFilter) return (profiles || []).slice();
+            return (profiles || []).filter(function(profile) {
+                return profileMatchesUserFilter(profile, activeUserFilter);
+            });
+        }
+
+        function updateUserFilterBar() {
+            if (!adminUserFilterBar || !adminUserFilterLabel) return;
+            if (!activeUserFilter) {
+                adminUserFilterBar.hidden = true;
+                adminUserFilterLabel.textContent = '';
+                return;
+            }
+            const meta = USER_FILTER_META[activeUserFilter];
+            adminUserFilterBar.hidden = false;
+            adminUserFilterLabel.textContent = 'Showing: ' + (meta ? meta.label : activeUserFilter);
+        }
+
+        function setUserFilter(filterKey) {
+            if (!filterKey || filterKey === 'all') {
+                activeUserFilter = null;
+            } else if (activeUserFilter === filterKey) {
+                activeUserFilter = null;
+            } else {
+                activeUserFilter = filterKey;
+            }
+            updateUserFilterBar();
+            renderProfiles(latestProfilesList);
+            syncOverviewStatFilterHighlight();
+            if (activeUserFilter && adminUsersPanel) {
+                adminUsersPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+        function syncOverviewStatFilterHighlight() {
+            if (!adminOverviewStats) return;
+            adminOverviewStats.querySelectorAll('.admin-overview-stat--clickable').forEach(function(el) {
+                const key = el.dataset.userFilter || '';
+                el.classList.toggle('admin-overview-stat--active-filter', key === activeUserFilter);
+            });
+        }
+
+        function appendOverviewStatCard(container, label, value, tone, opts) {
+            opts = opts || {};
             const el = document.createElement('div');
             el.className = 'admin-overview-stat admin-overview-stat--' + (tone || 'default');
+
+            if (opts.filterKey) {
+                el.classList.add('admin-overview-stat--clickable');
+                el.setAttribute('role', 'button');
+                el.setAttribute('tabindex', '0');
+                el.dataset.userFilter = opts.filterKey;
+                el.title = opts.filterKey === 'all' ? 'Show all users' : 'Filter users list: ' + label;
+                if (activeUserFilter === opts.filterKey) {
+                    el.classList.add('admin-overview-stat--active-filter');
+                }
+                el.addEventListener('click', function() {
+                    setUserFilter(opts.filterKey);
+                });
+                el.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setUserFilter(opts.filterKey);
+                    }
+                });
+            } else {
+                el.classList.add('admin-overview-stat--static');
+            }
+
             const num = document.createElement('span');
             num.className = 'admin-overview-stat-value';
             num.textContent = String(value);
@@ -982,21 +1090,39 @@
             const metrics = computeProfileMetrics(profiles);
             const eventCount = (events || []).length;
 
-            appendOverviewStatCard(adminOverviewStats, 'Total users', metrics.total, 'default');
-            appendOverviewStatCard(adminOverviewStats, 'Subscribed', metrics.subscribed, 'success');
-            appendOverviewStatCard(adminOverviewStats, 'Not subscribed', metrics.notSubscribed, 'muted');
+            appendOverviewStatCard(adminOverviewStats, 'Total users', metrics.total, 'default', {
+                filterKey: 'all'
+            });
+            appendOverviewStatCard(adminOverviewStats, 'Subscribed', metrics.subscribed, 'success', {
+                filterKey: 'subscribed'
+            });
+            appendOverviewStatCard(adminOverviewStats, 'Not subscribed', metrics.notSubscribed, 'muted', {
+                filterKey: 'not_subscribed'
+            });
             appendOverviewStatCard(
                 adminOverviewStats,
                 'Events (' + USAGE_EVENTS_WINDOW_DAYS + 'd)',
                 eventCount,
                 'default'
             );
-            appendOverviewStatCard(adminOverviewStats, 'New (7 days)', metrics.new7, 'default');
-            appendOverviewStatCard(adminOverviewStats, 'New (30 days)', metrics.new30, 'default');
-            appendOverviewStatCard(adminOverviewStats, 'Active (7 days)', metrics.active7, 'success');
-            appendOverviewStatCard(adminOverviewStats, 'Expiring soon', metrics.expiringSoon, 'warning');
-            appendOverviewStatCard(adminOverviewStats, 'Paying, inactive 14d+', metrics.payingInactive, 'danger');
-            appendOverviewStatCard(adminOverviewStats, 'Lapsed', metrics.lapsed, 'muted');
+            appendOverviewStatCard(adminOverviewStats, 'New (7 days)', metrics.new7, 'default', {
+                filterKey: 'new7'
+            });
+            appendOverviewStatCard(adminOverviewStats, 'New (30 days)', metrics.new30, 'default', {
+                filterKey: 'new30'
+            });
+            appendOverviewStatCard(adminOverviewStats, 'Active (7 days)', metrics.active7, 'success', {
+                filterKey: 'active7'
+            });
+            appendOverviewStatCard(adminOverviewStats, 'Expiring soon', metrics.expiringSoon, 'warning', {
+                filterKey: 'expiring_soon'
+            });
+            appendOverviewStatCard(adminOverviewStats, 'Paying, inactive 14d+', metrics.payingInactive, 'danger', {
+                filterKey: 'paying_inactive'
+            });
+            appendOverviewStatCard(adminOverviewStats, 'Lapsed', metrics.lapsed, 'muted', {
+                filterKey: 'lapsed'
+            });
 
             renderRevenueEstimate(metrics.subscribed);
         }
@@ -1373,14 +1499,35 @@
 
         function renderProfiles(profiles) {
             profilesWrap.innerHTML = '';
-            const list = profiles || [];
-            setSectionCount(profilesCount, list.length, 'user', 'users');
+            const all = profiles || [];
+            const list = applyUserFilter(all);
+
+            if (profilesCount) {
+                if (activeUserFilter) {
+                    profilesCount.hidden = false;
+                    profilesCount.textContent =
+                        list.length + ' of ' + all.length + ' users match filter';
+                } else {
+                    setSectionCount(profilesCount, all.length, 'user', 'users');
+                }
+            }
+
+            if (all.length === 0) {
+                profilesWrap.className = 'admin-profile-list admin-profile-list--empty';
+                const empty = document.createElement('div');
+                empty.className = 'admin-empty-state';
+                empty.textContent = 'No profiles found.';
+                profilesWrap.appendChild(empty);
+                return;
+            }
 
             if (list.length === 0) {
                 profilesWrap.className = 'admin-profile-list admin-profile-list--empty';
                 const empty = document.createElement('div');
                 empty.className = 'admin-empty-state';
-                empty.textContent = 'No profiles found.';
+                const meta = USER_FILTER_META[activeUserFilter];
+                empty.textContent =
+                    'No users match “' + (meta ? meta.label : activeUserFilter) + '”. Try another filter or clear it.';
                 profilesWrap.appendChild(empty);
                 return;
             }
@@ -1392,13 +1539,21 @@
                 appendProfileSection(profilesWrap, 'Pinned', parts.pinned, 'admin-profile-section--pinned', {
                     showEmail: true
                 });
-                appendProfileSection(profilesWrap, 'All other users', parts.rest, 'admin-profile-section--rest', {
-                    showEmail: false
-                });
+                appendProfileSection(
+                    profilesWrap,
+                    activeUserFilter ? 'Matching users' : 'All other users',
+                    parts.rest,
+                    'admin-profile-section--rest',
+                    { showEmail: false }
+                );
             } else {
-                appendProfileSection(profilesWrap, 'All users', parts.rest, 'admin-profile-section--all', {
-                    showEmail: false
-                });
+                appendProfileSection(
+                    profilesWrap,
+                    activeUserFilter ? 'Matching users' : 'All users',
+                    parts.rest,
+                    'admin-profile-section--all',
+                    { showEmail: false }
+                );
             }
         }
 
@@ -1621,6 +1776,8 @@
                     (Array.isArray(usageData) ? usageData : []);
                 latestEventsList = Array.isArray(eventsList) ? eventsList.slice() : [];
                 renderDashboardOverviewStats(latestProfilesList, latestEventsList);
+                syncOverviewStatFilterHighlight();
+                updateUserFilterBar();
                 clearLoadStatus();
                 setDataMessage('Dashboard updated.', 'success');
             } catch (err) {
@@ -1727,6 +1884,12 @@
             clearDataMessage();
             clearLoadStatus();
         })();
+
+        if (adminUserFilterClear) {
+            adminUserFilterClear.addEventListener('click', function() {
+                setUserFilter('all');
+            });
+        }
 
         if (adminRefreshBtn) {
             adminRefreshBtn.addEventListener('click', function() {

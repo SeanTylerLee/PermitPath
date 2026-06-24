@@ -2482,7 +2482,7 @@ body.admin-page .admin-panel-label {
 }
 
 body.admin-page .admin-email-panel {
-    margin-bottom: 1rem;
+    margin-top: 1rem;
     padding: 0.85rem 1rem;
 }
 
@@ -2541,6 +2541,61 @@ body.admin-page .admin-overview-stat-label {
     text-transform: uppercase;
     color: #647896;
     line-height: 1.25;
+}
+
+body.admin-page .admin-overview-stat--clickable {
+    cursor: pointer;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+body.admin-page .admin-overview-stat--clickable:hover {
+    border-color: rgba(44, 82, 130, 0.35);
+    box-shadow: 0 4px 16px rgba(44, 82, 130, 0.12);
+}
+
+body.admin-page .admin-overview-stat--clickable:focus-visible {
+    outline: none;
+    border-color: #2c5282;
+    box-shadow: 0 0 0 3px rgba(44, 82, 130, 0.25);
+}
+
+body.admin-page .admin-overview-stat--active-filter {
+    border-color: #2c5282;
+    box-shadow: 0 0 0 2px rgba(44, 82, 130, 0.2);
+    background: rgba(44, 82, 130, 0.06);
+}
+
+body.admin-page .admin-overview-stat--static {
+    opacity: 0.92;
+}
+
+body.admin-page .admin-user-filter-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin: 0 0 0.75rem;
+    padding: 0.55rem 0.75rem;
+    background: rgba(44, 82, 130, 0.08);
+    border: 1px solid rgba(44, 82, 130, 0.2);
+    border-radius: 10px;
+}
+
+body.admin-page .admin-user-filter-bar[hidden] {
+    display: none !important;
+}
+
+body.admin-page .admin-user-filter-label {
+    font-size: 0.86rem;
+    font-weight: 600;
+    color: #1a365d;
+}
+
+body.admin-page .admin-user-filter-clear {
+    font-size: 0.82rem;
+    padding: 0.35rem 0.75rem;
+    min-height: auto;
 }
 
 body.admin-page .admin-revenue-panel {
