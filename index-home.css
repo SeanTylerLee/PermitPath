@@ -326,7 +326,7 @@ header.index-header .logo {
 }
 
 .index-hero__phone {
-    width: min(100%, 560px);
+    width: min(100%, 920px);
     border-radius: 0;
     box-shadow: none;
 }
@@ -820,7 +820,7 @@ html {
     }
 
     .index-hero__phone {
-        width: min(92%, 520px);
+        width: min(96%, 760px);
     }
 
     .index-trust-bar__grid,
