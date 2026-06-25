@@ -687,6 +687,41 @@ body.index-store-modal-open {
 .index-social__wrap {
     display: flex;
     justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.index-social .social-button {
+    display: inline-block;
+    transition: transform 0.3s ease;
+    text-decoration: none;
+    line-height: 0;
+}
+
+.index-social .social-button:hover {
+    transform: translateY(-3px);
+}
+
+.index-social .social-button:active {
+    transform: translateY(0);
+}
+
+.index-social .social-button img {
+    display: block;
+    width: 60px;
+    height: 60px;
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.index-social .facebook-button img {
+    width: 52px;
+    height: 52px;
+}
+
+.index-social .social-button:hover img {
+    filter: brightness(1.1);
+    transform: scale(1.02);
 }
 
 .index-cta {
