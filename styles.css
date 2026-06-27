@@ -3687,6 +3687,138 @@ body.admin-page .admin-block-spaced {
     }
 }
 
+body.admin-page .admin-profile-danger-zone {
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(248, 113, 113, 0.25);
+}
+
+body.admin-page .admin-profile-delete-btn {
+    background: rgba(185, 28, 28, 0.85);
+    border-color: rgba(248, 113, 113, 0.45);
+    color: #fff;
+    min-height: 44px;
+}
+
+body.admin-page .admin-profile-delete-btn:hover:not(:disabled) {
+    background: rgba(220, 38, 38, 0.95);
+    border-color: rgba(252, 165, 165, 0.55);
+}
+
+body.admin-page .admin-profile-delete-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+body.admin-page .admin-deleted-hint {
+    margin: 0 0 1rem;
+    font-size: 0.9rem;
+    color: rgba(226, 232, 240, 0.72);
+    line-height: 1.45;
+}
+
+body.admin-page .admin-deleted-filter-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+body.admin-page .admin-deleted-filter-btn--active {
+    background: rgba(0, 180, 255, 0.22);
+    border-color: rgba(0, 180, 255, 0.45);
+}
+
+body.admin-page .admin-deleted-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+}
+
+body.admin-page .admin-deleted-list--empty {
+    min-height: 4rem;
+}
+
+body.admin-page .admin-deleted-row {
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 10px;
+    background: rgba(12, 26, 45, 0.55);
+    overflow: hidden;
+}
+
+body.admin-page .admin-deleted-summary {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.85rem 1rem;
+    cursor: pointer;
+    list-style: none;
+}
+
+body.admin-page .admin-deleted-summary::-webkit-details-marker {
+    display: none;
+}
+
+body.admin-page .admin-deleted-summary-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 0;
+}
+
+body.admin-page .admin-deleted-summary-name {
+    font-weight: 600;
+    color: #f1f5f9;
+    word-break: break-word;
+}
+
+body.admin-page .admin-deleted-summary-sub {
+    font-size: 0.82rem;
+    color: rgba(203, 213, 225, 0.75);
+    word-break: break-all;
+}
+
+body.admin-page .admin-deleted-summary-aside {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.35rem;
+    flex-shrink: 0;
+}
+
+body.admin-page .admin-deleted-source-pill {
+    display: inline-block;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+
+body.admin-page .admin-deleted-source-pill--self {
+    background: rgba(148, 163, 184, 0.2);
+    color: #cbd5e1;
+    border: 1px solid rgba(148, 163, 184, 0.35);
+}
+
+body.admin-page .admin-deleted-source-pill--admin {
+    background: rgba(248, 113, 113, 0.15);
+    color: #fca5a5;
+    border: 1px solid rgba(248, 113, 113, 0.35);
+}
+
+body.admin-page .admin-deleted-summary-when {
+    font-size: 0.78rem;
+    color: rgba(148, 163, 184, 0.9);
+}
+
+body.admin-page .admin-deleted-expand {
+    padding: 0 1rem 1rem;
+    border-top: 1px solid rgba(148, 163, 184, 0.12);
+}
+
 /* Smooth Scrolling */
 html {
     scroll-behavior: smooth;

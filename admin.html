@@ -7,7 +7,7 @@
             try {
                 var u = new URL(window.location.href);
                 if (!u.searchParams.has('v')) {
-                    u.searchParams.set('v', '30');
+                    u.searchParams.set('v', '31');
                     window.location.replace(u.pathname + u.search + u.hash);
                 }
             } catch (_e) {}
@@ -21,9 +21,9 @@
     <meta http-equiv="Expires" content="0" />
     <title>Admin Dashboard - PermitPath</title>
     <meta name="robots" content="noindex, nofollow" />
-    <link rel="canonical" href="https://permitpathnav.com/admin.html?v=30" />
+    <link rel="canonical" href="https://permitpathnav.com/admin.html?v=31" />
     <link rel="icon" type="image/png" href="images/pppp.png" />
-    <link rel="stylesheet" href="styles.css?v=25" />
+    <link rel="stylesheet" href="styles.css?v=26" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 </head>
@@ -120,6 +120,20 @@
                         <div id="profilesWrap" class="admin-profile-list"></div>
                     </div>
 
+                    <div class="admin-panel admin-deleted-panel admin-block-spaced">
+                        <div class="admin-section-head">
+                            <h3 class="admin-panel-title">Deleted accounts</h3>
+                            <span id="deletedAccountsCount" class="admin-count-pill" hidden aria-live="polite"></span>
+                        </div>
+                        <p class="admin-deleted-hint">Users who deleted themselves in the app, or accounts you removed from this dashboard.</p>
+                        <div class="admin-deleted-filter-nav" role="toolbar" aria-label="Deleted account filters">
+                            <button type="button" class="button admin-tool-nav-btn admin-deleted-filter-btn admin-deleted-filter-btn--active" data-deletion-filter="all">All</button>
+                            <button type="button" class="button admin-tool-nav-btn admin-deleted-filter-btn" data-deletion-filter="self">Self-deleted</button>
+                            <button type="button" class="button admin-tool-nav-btn admin-deleted-filter-btn" data-deletion-filter="admin">Removed by admin</button>
+                        </div>
+                        <div id="deletedAccountsWrap" class="admin-deleted-list"></div>
+                    </div>
+
                     <div class="admin-panel admin-revenue-panel">
                         <div id="adminRevenueEstimate" class="admin-revenue-estimate" aria-live="polite"></div>
                     </div>
@@ -180,6 +194,9 @@
         const adminLoadStatus = document.getElementById('adminLoadStatus');
         const profilesWrap = document.getElementById('profilesWrap');
         const profilesCount = document.getElementById('profilesCount');
+        const deletedAccountsWrap = document.getElementById('deletedAccountsWrap');
+        const deletedAccountsCount = document.getElementById('deletedAccountsCount');
+        const deletedFilterButtons = document.querySelectorAll('.admin-deleted-filter-btn');
         const adminMainView = document.getElementById('adminMainView');
         const adminEmailToolView = document.getElementById('adminEmailToolView');
         const adminEmailToolTitle = document.getElementById('adminEmailToolTitle');
@@ -311,6 +328,8 @@
         let latestDashboardLoadId = 0;
         let latestProfilesList = [];
         let latestEventsList = [];
+        let latestDeletedList = [];
+        let activeDeletionFilter = 'all';
         let usageEventTotalsLoading = false;
 
         function setRefreshLoading(isLoading) {
@@ -1477,6 +1496,25 @@
             eventsSection.appendChild(eventsPanel);
             expand.appendChild(eventsSection);
 
+            const dangerZone = document.createElement('div');
+            dangerZone.className = 'admin-profile-danger-zone';
+            const deleteBtn = document.createElement('button');
+            deleteBtn.type = 'button';
+            deleteBtn.className = 'button admin-profile-delete-btn';
+            deleteBtn.textContent = 'Delete user';
+            if (!profileUserId) {
+                deleteBtn.disabled = true;
+                deleteBtn.title = 'This profile has no user id.';
+            } else if (profileUserId === ADMIN_USER_ID) {
+                deleteBtn.disabled = true;
+                deleteBtn.title = 'Cannot delete the admin account.';
+            }
+            deleteBtn.addEventListener('click', function() {
+                handleDeleteUser(profile);
+            });
+            dangerZone.appendChild(deleteBtn);
+            expand.appendChild(dangerZone);
+
             det.addEventListener('toggle', function() {
                 if (det.open) {
                     profilesWrap.querySelectorAll('details.admin-profile-row').forEach(function(other) {
@@ -1557,26 +1595,263 @@
             }
         }
 
-        async function fetchJsonWithAuth(url, accessToken, timeoutMs) {
-            const ms = typeof timeoutMs === 'number' && timeoutMs > 0 ? timeoutMs : 45000;
+        function deletionSourceLabel(source) {
+            if (source === 'self') return 'Self-deleted';
+            if (source === 'admin') return 'Removed by admin';
+            return source ? String(source) : 'Unknown';
+        }
+
+        function applyDeletionFilter(records) {
+            if (activeDeletionFilter === 'self' || activeDeletionFilter === 'admin') {
+                return (records || []).filter(function(row) {
+                    return row.deletion_source === activeDeletionFilter;
+                });
+            }
+            return (records || []).slice();
+        }
+
+        function syncDeletionFilterButtons() {
+            deletedFilterButtons.forEach(function(btn) {
+                const filter = btn.getAttribute('data-deletion-filter');
+                btn.classList.toggle('admin-deleted-filter-btn--active', filter === activeDeletionFilter);
+            });
+        }
+
+        function buildDeletedAccountRow(record) {
+            const row = document.createElement('details');
+            row.className = 'admin-deleted-row';
+
+            const em = record.email && String(record.email).trim();
+            const fn = record.full_name && String(record.full_name).trim();
+            const uid = record.user_id ? String(record.user_id) : '';
+            const title = fn || em || uid || 'Unknown account';
+
+            const sum = document.createElement('summary');
+            sum.className = 'admin-deleted-summary';
+
+            const main = document.createElement('div');
+            main.className = 'admin-deleted-summary-main';
+            const nameEl = document.createElement('span');
+            nameEl.className = 'admin-deleted-summary-name';
+            nameEl.textContent = title;
+            const subEl = document.createElement('span');
+            subEl.className = 'admin-deleted-summary-sub';
+            if (fn && em) {
+                subEl.textContent = em;
+            } else if (uid) {
+                subEl.textContent = uid;
+            }
+            main.appendChild(nameEl);
+            if (subEl.textContent) main.appendChild(subEl);
+
+            const aside = document.createElement('div');
+            aside.className = 'admin-deleted-summary-aside';
+            const sourcePill = document.createElement('span');
+            sourcePill.className =
+                'admin-deleted-source-pill admin-deleted-source-pill--' +
+                (record.deletion_source === 'admin' ? 'admin' : 'self');
+            sourcePill.textContent = deletionSourceLabel(record.deletion_source);
+            aside.appendChild(sourcePill);
+
+            const deletedAgo = formatRelativeTimeAgo(record.deleted_at);
+            if (deletedAgo) {
+                const whenEl = document.createElement('span');
+                whenEl.className = 'admin-deleted-summary-when';
+                whenEl.textContent = deletedAgo;
+                aside.appendChild(whenEl);
+            }
+
+            sum.appendChild(main);
+            sum.appendChild(aside);
+
+            const expand = document.createElement('div');
+            expand.className = 'admin-deleted-expand';
+            const grid = document.createElement('div');
+            grid.className = 'admin-profile-expand-grid';
+            expand.appendChild(grid);
+
+            appendProfileExpandTwoColumnRow(grid, 'Email', em || '—', 'User ID', uid || '—', {
+                rightCode: true
+            });
+            appendProfileExpandTwoColumnRow(
+                grid,
+                'Deletion type',
+                deletionSourceLabel(record.deletion_source),
+                'Deleted',
+                profileScalarDisplay(record, 'deleted_at'),
+                { rightRelativeAgoFrom: record.deleted_at }
+            );
+            appendProfileExpandTwoColumnRow(
+                grid,
+                'Profile created',
+                profileScalarDisplay(record, 'profile_created_at'),
+                'Last seen',
+                profileScalarDisplay(record, 'last_seen_at'),
+                { rightRelativeAgoFrom: record.last_seen_at }
+            );
+            appendProfileExpandTwoColumnRow(
+                grid,
+                'Routes built',
+                record.routes_built_count === null || record.routes_built_count === undefined
+                    ? '—'
+                    : String(record.routes_built_count),
+                'Was subscribed',
+                isTruthyFlag(record.subscription_is_active) ? 'Yes' : 'No'
+            );
+            appendProfileExpandFullRow(
+                expand,
+                'Subscription product ID',
+                profileScalarDisplay(record, 'subscription_product_id')
+            );
+
+            row.appendChild(sum);
+            row.appendChild(expand);
+            return row;
+        }
+
+        function renderDeletedAccounts() {
+            if (!deletedAccountsWrap) return;
+            deletedAccountsWrap.innerHTML = '';
+            const all = latestDeletedList || [];
+            const list = applyDeletionFilter(all);
+
+            if (deletedAccountsCount) {
+                if (activeDeletionFilter !== 'all') {
+                    deletedAccountsCount.hidden = false;
+                    deletedAccountsCount.textContent =
+                        list.length + ' of ' + all.length + ' deletions match filter';
+                } else {
+                    setSectionCount(deletedAccountsCount, all.length, 'deletion', 'deletions');
+                }
+            }
+
+            if (all.length === 0) {
+                deletedAccountsWrap.className = 'admin-deleted-list admin-deleted-list--empty';
+                const empty = document.createElement('div');
+                empty.className = 'admin-empty-state';
+                empty.textContent = 'No deleted accounts yet.';
+                deletedAccountsWrap.appendChild(empty);
+                return;
+            }
+
+            if (list.length === 0) {
+                deletedAccountsWrap.className = 'admin-deleted-list admin-deleted-list--empty';
+                const empty = document.createElement('div');
+                empty.className = 'admin-empty-state';
+                empty.textContent = 'No deletions match this filter.';
+                deletedAccountsWrap.appendChild(empty);
+                return;
+            }
+
+            deletedAccountsWrap.className = 'admin-deleted-list';
+            list.forEach(function(record) {
+                deletedAccountsWrap.appendChild(buildDeletedAccountRow(record));
+            });
+        }
+
+        async function handleDeleteUser(profile) {
+            const uid =
+                profile && profile.user_id !== null && profile.user_id !== undefined
+                    ? String(profile.user_id).trim()
+                    : '';
+            if (!uid) {
+                setDataMessage('Cannot delete: this profile has no user id.', 'error');
+                return;
+            }
+            if (uid === ADMIN_USER_ID) {
+                setDataMessage('Cannot delete the admin account.', 'error');
+                return;
+            }
+
+            const label =
+                (profile.email && String(profile.email).trim()) ||
+                (profile.full_name && String(profile.full_name).trim()) ||
+                uid;
+            const ok = window.confirm(
+                'Permanently delete this user?\n\n' +
+                    label +
+                    '\n\nTheir profile and usage data will be removed. This cannot be undone.'
+            );
+            if (!ok) return;
+
+            const { data: sessWrap, error: sessErr } = await supabase.auth.getSession();
+            if (sessErr || !sessWrap || !sessWrap.session || !sessWrap.session.access_token) {
+                setDataMessage('Please sign in again.', 'error');
+                return;
+            }
+            const session = sessWrap.session;
+
+            try {
+                setDataMessage('Deleting user…', '');
+                const deleteUrl = supabaseUrl + '/functions/v1/admin-data/delete-user';
+                await fetchJsonWithAuth(deleteUrl, session.access_token, {
+                    method: 'POST',
+                    body: { user_id: uid }
+                });
+
+                const pinKey = profileListKey(profile);
+                if (pinKey && pinnedUserKeys.indexOf(pinKey) !== -1) {
+                    pinnedUserKeys = pinnedUserKeys.filter(function(k) {
+                        return k !== pinKey;
+                    });
+                    savePinnedUserKeys(pinnedUserKeys);
+                }
+
+                latestProfilesList = latestProfilesList.filter(function(p) {
+                    return String(p.user_id || '') !== uid;
+                });
+                latestEventsList = latestEventsList.filter(function(ev) {
+                    return String(ev.user_id || '') !== uid;
+                });
+
+                renderProfiles(latestProfilesList);
+                renderDashboardOverviewStats(latestProfilesList, latestEventsList);
+                syncOverviewStatFilterHighlight();
+                updateUserFilterBar();
+                renderUsageEventTotals();
+
+                const deletedUrl = supabaseUrl + '/functions/v1/admin-data/deleted-accounts?limit=500';
+                const deletedData = await fetchJsonWithAuth(deletedUrl, session.access_token);
+                latestDeletedList = Array.isArray(deletedData.deleted_accounts)
+                    ? deletedData.deleted_accounts.slice()
+                    : [];
+                renderDeletedAccounts();
+
+                setDataMessage('User deleted.', 'success');
+            } catch (err) {
+                const msg = err && err.message ? err.message : 'Delete failed.';
+                setDataMessage(msg, 'error');
+            }
+        }
+
+        async function fetchJsonWithAuth(url, accessToken, options) {
+            const opts = options && typeof options === 'object' ? options : {};
+            const method = opts.method || 'GET';
+            const body = opts.body;
+            const timeoutMs = typeof opts.timeoutMs === 'number' && opts.timeoutMs > 0 ? opts.timeoutMs : 45000;
             const ctrl = new AbortController();
             const timer = setTimeout(function() {
                 ctrl.abort();
-            }, ms);
+            }, timeoutMs);
+
+            const headers = {
+                Authorization: 'Bearer ' + accessToken,
+                apikey: supabaseAnonKey
+            };
+            if (body !== undefined) {
+                headers['Content-Type'] = 'application/json';
+            }
 
             let res;
             try {
-                // GET with no body: omit Content-Type so the preflight is simpler (Safari-friendly).
                 res = await fetch(url, {
-                    method: 'GET',
+                    method: method,
                     mode: 'cors',
                     cache: 'no-store',
                     signal: ctrl.signal,
                     credentials: 'omit',
-                    headers: {
-                        Authorization: 'Bearer ' + accessToken,
-                        apikey: supabaseAnonKey
-                    }
+                    headers: headers,
+                    body: body !== undefined ? JSON.stringify(body) : undefined
                 });
             } catch (err) {
                 if (err && err.name === 'AbortError') {
@@ -1744,11 +2019,12 @@
 
                 latestProfilesList = [];
                 latestEventsList = [];
+                latestDeletedList = [];
 
                 let profilesData;
                 try {
                     setLoadStatus('Loading profiles…');
-                    const profilesUrl = supabaseUrl + '/functions/v1/admin-data/profiles';
+                    const profilesUrl = supabaseUrl + '/functions/v1/admin-data/profiles?limit=2000';
                     profilesData = await fetchJsonWithAuth(profilesUrl, session.access_token);
                 } catch (pe) {
                     throw new Error('[profiles] ' + (pe && pe.message ? pe.message : 'unknown error'));
@@ -1775,6 +2051,28 @@
                     usageData.data ||
                     (Array.isArray(usageData) ? usageData : []);
                 latestEventsList = Array.isArray(eventsList) ? eventsList.slice() : [];
+
+                let deletedData;
+                try {
+                    setLoadStatus('Loading deleted accounts…');
+                    const deletedUrl = supabaseUrl + '/functions/v1/admin-data/deleted-accounts?limit=500';
+                    deletedData = await fetchJsonWithAuth(deletedUrl, session.access_token);
+                    latestDeletedList = Array.isArray(deletedData.deleted_accounts)
+                        ? deletedData.deleted_accounts.slice()
+                        : [];
+                } catch (de) {
+                    latestDeletedList = [];
+                    const delMsg = de && de.message ? de.message : 'unknown error';
+                    console.warn('deleted-accounts:', delMsg);
+                    if (adminDataMessage && !adminDataMessage.textContent) {
+                        setDataMessage(
+                            'Deleted accounts could not be loaded. Run supabase/account_deletions.sql in Supabase, then redeploy admin-data.',
+                            'error'
+                        );
+                    }
+                }
+                renderDeletedAccounts();
+
                 renderDashboardOverviewStats(latestProfilesList, latestEventsList);
                 syncOverviewStatFilterHighlight();
                 updateUserFilterBar();
@@ -1914,6 +2212,15 @@
         });
         adminEmailToolCopy.addEventListener('click', function() {
             copyAdminEmailList().catch(function() {});
+        });
+
+        deletedFilterButtons.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                const filter = btn.getAttribute('data-deletion-filter') || 'all';
+                activeDeletionFilter = filter;
+                syncDeletionFilterButtons();
+                renderDeletedAccounts();
+            });
         });
     </script>
 </body>
