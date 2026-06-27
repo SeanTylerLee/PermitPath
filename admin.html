@@ -7,7 +7,7 @@
             try {
                 var u = new URL(window.location.href);
                 if (!u.searchParams.has('v')) {
-                    u.searchParams.set('v', '31');
+                    u.searchParams.set('v', '32');
                     window.location.replace(u.pathname + u.search + u.hash);
                 }
             } catch (_e) {}
@@ -21,7 +21,7 @@
     <meta http-equiv="Expires" content="0" />
     <title>Admin Dashboard - PermitPath</title>
     <meta name="robots" content="noindex, nofollow" />
-    <link rel="canonical" href="https://permitpathnav.com/admin.html?v=31" />
+    <link rel="canonical" href="https://permitpathnav.com/admin.html?v=32" />
     <link rel="icon" type="image/png" href="images/pppp.png" />
     <link rel="stylesheet" href="styles.css?v=26" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -1827,7 +1827,7 @@
         async function fetchJsonWithAuth(url, accessToken, options) {
             const opts = options && typeof options === 'object' ? options : {};
             const method = opts.method || 'GET';
-            const body = opts.body;
+            const requestBody = opts.body;
             const timeoutMs = typeof opts.timeoutMs === 'number' && opts.timeoutMs > 0 ? opts.timeoutMs : 45000;
             const ctrl = new AbortController();
             const timer = setTimeout(function() {
@@ -1838,7 +1838,7 @@
                 Authorization: 'Bearer ' + accessToken,
                 apikey: supabaseAnonKey
             };
-            if (body !== undefined) {
+            if (requestBody !== undefined) {
                 headers['Content-Type'] = 'application/json';
             }
 
@@ -1851,7 +1851,7 @@
                     signal: ctrl.signal,
                     credentials: 'omit',
                     headers: headers,
-                    body: body !== undefined ? JSON.stringify(body) : undefined
+                    body: requestBody !== undefined ? JSON.stringify(requestBody) : undefined
                 });
             } catch (err) {
                 if (err && err.name === 'AbortError') {
