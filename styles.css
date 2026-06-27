@@ -3710,6 +3710,59 @@ body.admin-page .admin-profile-delete-btn:disabled {
     cursor: not-allowed;
 }
 
+body.admin-page .admin-profile-sub-periods-block {
+    margin-top: 1rem;
+    padding-top: 0.85rem;
+    border-top: 1px solid rgba(26, 35, 50, 0.08);
+}
+
+body.admin-page .admin-profile-sub-periods-empty {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #5a6b80;
+    line-height: 1.45;
+}
+
+body.admin-page .admin-profile-sub-periods-list {
+    list-style: none;
+    margin: 0.5rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+body.admin-page .admin-profile-sub-period {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding: 0.65rem 0.75rem;
+    border-radius: 8px;
+    border: 1px solid rgba(26, 35, 50, 0.1);
+    background: rgba(244, 247, 252, 0.9);
+}
+
+body.admin-page .admin-profile-sub-period--active {
+    border-color: rgba(28, 109, 67, 0.25);
+    background: rgba(236, 253, 245, 0.85);
+}
+
+body.admin-page .admin-profile-sub-period--lapsed {
+    border-color: rgba(90, 107, 128, 0.2);
+    background: rgba(248, 250, 252, 0.95);
+}
+
+body.admin-page .admin-profile-sub-period-title {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #1a2332;
+}
+
+body.admin-page .admin-profile-sub-period-meta {
+    font-size: 0.78rem;
+    color: #5a6b80;
+}
+
 body.admin-page .admin-deleted-panel {
     margin-top: 1.75rem;
 }

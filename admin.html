@@ -7,7 +7,7 @@
             try {
                 var u = new URL(window.location.href);
                 if (!u.searchParams.has('v')) {
-                    u.searchParams.set('v', '33');
+                    u.searchParams.set('v', '34');
                     window.location.replace(u.pathname + u.search + u.hash);
                 }
             } catch (_e) {}
@@ -21,9 +21,9 @@
     <meta http-equiv="Expires" content="0" />
     <title>Admin Dashboard - PermitPath</title>
     <meta name="robots" content="noindex, nofollow" />
-    <link rel="canonical" href="https://permitpathnav.com/admin.html?v=33" />
+    <link rel="canonical" href="https://permitpathnav.com/admin.html?v=34" />
     <link rel="icon" type="image/png" href="images/pppp.png" />
-    <link rel="stylesheet" href="styles.css?v=27" />
+    <link rel="stylesheet" href="styles.css?v=28" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 </head>
@@ -329,6 +329,7 @@
         let latestProfilesList = [];
         let latestEventsList = [];
         let latestDeletedList = [];
+        let latestSubscriptionPeriodsByUser = Object.create(null);
         let activeDeletionFilter = 'all';
         let usageEventTotalsLoading = false;
 
@@ -1331,6 +1332,112 @@
             return { pinned: pinned, rest: rest };
         }
 
+        function approximateMonthsSubscribed(startIso, endIso) {
+            if (!startIso) return 0;
+            const start = new Date(startIso);
+            const end = endIso ? new Date(endIso) : new Date();
+            if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) return 0;
+            const ms = Math.max(0, end.getTime() - start.getTime());
+            const days = ms / MS_PER_DAY;
+            if (days < 1) return 0;
+            return Math.max(1, Math.round(days / 30.44));
+        }
+
+        function formatMonthsLabel(months) {
+            if (!months || months <= 0) return '';
+            return months === 1 ? '~1 month' : '~' + months + ' months';
+        }
+
+        function indexSubscriptionPeriodsByUser(periods) {
+            const map = Object.create(null);
+            (periods || []).forEach(function(period) {
+                const uid =
+                    period.user_id !== null && period.user_id !== undefined
+                        ? String(period.user_id)
+                        : '';
+                if (!uid) return;
+                if (!map[uid]) map[uid] = [];
+                map[uid].push(period);
+            });
+            return map;
+        }
+
+        function subscriptionPeriodsForUser(userId) {
+            const list = latestSubscriptionPeriodsByUser[userId] || [];
+            return list.slice().sort(function(a, b) {
+                return new Date(b.started_at).getTime() - new Date(a.started_at).getTime();
+            });
+        }
+
+        function appendSubscriptionPeriodsBlock(expandEl, userId, isCurrentlySubscribed) {
+            const block = document.createElement('div');
+            block.className = 'admin-profile-sub-periods-block';
+
+            const heading = document.createElement('h5');
+            heading.className = 'admin-profile-user-events-heading';
+            heading.textContent = 'Subscription history';
+            block.appendChild(heading);
+
+            const periods = subscriptionPeriodsForUser(userId);
+            if (periods.length === 0) {
+                const empty = document.createElement('p');
+                empty.className = 'admin-profile-sub-periods-empty';
+                if (isCurrentlySubscribed) {
+                    empty.textContent =
+                        'No periods logged yet. They will appear after the user opens the app once (or run subscription_periods.sql in Supabase).';
+                } else {
+                    empty.textContent = 'No subscription periods recorded.';
+                }
+                block.appendChild(empty);
+                expandEl.appendChild(block);
+                return;
+            }
+
+            const list = document.createElement('ul');
+            list.className = 'admin-profile-sub-periods-list';
+
+            periods.forEach(function(period, index) {
+                const isOpen = !period.ended_at;
+                const months = approximateMonthsSubscribed(period.started_at, period.ended_at);
+                const monthsLabel = formatMonthsLabel(months);
+
+                const li = document.createElement('li');
+                li.className =
+                    'admin-profile-sub-period' +
+                    (isOpen ? ' admin-profile-sub-period--active' : ' admin-profile-sub-period--lapsed');
+
+                const title = document.createElement('span');
+                title.className = 'admin-profile-sub-period-title';
+                if (isOpen) {
+                    title.textContent = 'Subscribed since ' + formatDisplayDate(period.started_at);
+                } else {
+                    title.textContent =
+                        formatDisplayDate(period.started_at) +
+                        ' – ' +
+                        formatDisplayDate(period.ended_at);
+                }
+
+                const meta = document.createElement('span');
+                meta.className = 'admin-profile-sub-period-meta';
+                const parts = [];
+                if (monthsLabel) parts.push(monthsLabel);
+                parts.push(isOpen ? 'Active' : 'Lapsed');
+                if (periods.length > 1 && index === 0 && !isOpen && isCurrentlySubscribed) {
+                    parts.push('(prior period)');
+                } else if (periods.length > 1 && isOpen && index === 0) {
+                    parts.push('(current)');
+                }
+                meta.textContent = parts.join(' · ');
+
+                li.appendChild(title);
+                li.appendChild(meta);
+                list.appendChild(li);
+            });
+
+            block.appendChild(list);
+            expandEl.appendChild(block);
+        }
+
         function appendProfileSection(container, title, profiles, sectionClass, rowOpts) {
             if (!profiles || profiles.length === 0) return;
 
@@ -1477,6 +1584,14 @@
                 'Subscription product ID',
                 profileScalarDisplay(profile, 'subscription_product_id')
             );
+
+            if (uid) {
+                appendSubscriptionPeriodsBlock(
+                    expand,
+                    uid,
+                    isTruthyFlag(profile.subscription_is_active)
+                );
+            }
 
             const eventsSection = document.createElement('div');
             eventsSection.className = 'admin-profile-user-events-block';
@@ -2046,6 +2161,7 @@
                 latestProfilesList = [];
                 latestEventsList = [];
                 latestDeletedList = [];
+                latestSubscriptionPeriodsByUser = Object.create(null);
 
                 let profilesData;
                 try {
@@ -2060,7 +2176,19 @@
                     profilesData.data ||
                     (Array.isArray(profilesData) ? profilesData : []);
                 latestProfilesList = Array.isArray(profilesList) ? profilesList.slice() : [];
-                renderProfiles(profilesList);
+
+                try {
+                    setLoadStatus('Loading subscription history…');
+                    const periodsUrl =
+                        supabaseUrl + '/functions/v1/admin-data/subscription-periods?limit=5000';
+                    const periodsData = await fetchJsonWithAuth(periodsUrl, session.access_token);
+                    latestSubscriptionPeriodsByUser = indexSubscriptionPeriodsByUser(
+                        periodsData.subscription_periods || []
+                    );
+                } catch (spe) {
+                    latestSubscriptionPeriodsByUser = Object.create(null);
+                    console.warn('subscription-periods:', spe && spe.message ? spe.message : spe);
+                }
 
                 let usageData;
                 try {
@@ -2077,6 +2205,7 @@
                     usageData.data ||
                     (Array.isArray(usageData) ? usageData : []);
                 latestEventsList = Array.isArray(eventsList) ? eventsList.slice() : [];
+                renderProfiles(latestProfilesList);
 
                 let deletedData;
                 try {

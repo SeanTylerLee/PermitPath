@@ -6,6 +6,7 @@
  *   GET  /functions/v1/admin-data/profiles?email=&subscription_active=&limit=&offset=
  *   GET  /functions/v1/admin-data/usage-events?from=&to=&event_type=&user_id=&limit=&offset=
  *   GET  /functions/v1/admin-data/deleted-accounts?deletion_source=&limit=&offset=
+ *   GET  /functions/v1/admin-data/subscription-periods?user_id=&limit=&offset=
  *   POST /functions/v1/admin-data/delete-user   body: { "user_id": "<uuid>" }
  *
  * Security: resolves caller via JWT (Authorization: Bearer <access_token>),
@@ -28,6 +29,9 @@ const USAGE_EVENT_SELECT = 'id, user_id, event_type, created_at, metadata';
 
 const DELETION_SELECT =
     'id, user_id, email, full_name, routes_built_count, subscription_is_active, subscription_product_id, subscription_expires_at, profile_created_at, last_seen_at, deleted_at, deletion_source';
+
+const SUBSCRIPTION_PERIOD_SELECT =
+    'id, user_id, started_at, ended_at, product_id, original_transaction_id, created_at';
 
 const KNOWN_EVENT_TYPES = [
     'app_open',
@@ -416,6 +420,41 @@ Deno.serve(async (req) => {
                 offset,
                 count: (deleted_accounts ?? []).length,
                 total: total ?? (deleted_accounts ?? []).length
+            });
+        }
+
+        if (route === 'subscription-periods' && req.method === 'GET') {
+            const userId = url.searchParams.get('user_id');
+            const limit = parseLimit(url.searchParams.get('limit'), 2000, 5000);
+            const offset = parseOffset(url.searchParams.get('offset'));
+
+            if (userId && !isUuid(userId)) {
+                return json({ error: 'Invalid user_id' }, 400);
+            }
+
+            let q = supabaseAdmin
+                .from('subscription_periods')
+                .select(SUBSCRIPTION_PERIOD_SELECT, { count: 'exact' })
+                .order('started_at', { ascending: false })
+                .range(offset, offset + limit - 1);
+
+            if (userId) {
+                q = q.eq('user_id', userId);
+            }
+
+            const { data: subscription_periods, error, count: total } = await q;
+
+            if (error) {
+                console.error('admin-data subscription-periods query:', error.message);
+                return json({ error: error.message }, 500);
+            }
+
+            return json({
+                subscription_periods: subscription_periods ?? [],
+                limit,
+                offset,
+                count: (subscription_periods ?? []).length,
+                total: total ?? (subscription_periods ?? []).length
             });
         }
 
