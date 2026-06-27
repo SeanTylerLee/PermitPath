@@ -7,7 +7,7 @@
             try {
                 var u = new URL(window.location.href);
                 if (!u.searchParams.has('v')) {
-                    u.searchParams.set('v', '32');
+                    u.searchParams.set('v', '33');
                     window.location.replace(u.pathname + u.search + u.hash);
                 }
             } catch (_e) {}
@@ -21,9 +21,9 @@
     <meta http-equiv="Expires" content="0" />
     <title>Admin Dashboard - PermitPath</title>
     <meta name="robots" content="noindex, nofollow" />
-    <link rel="canonical" href="https://permitpathnav.com/admin.html?v=32" />
+    <link rel="canonical" href="https://permitpathnav.com/admin.html?v=33" />
     <link rel="icon" type="image/png" href="images/pppp.png" />
-    <link rel="stylesheet" href="styles.css?v=26" />
+    <link rel="stylesheet" href="styles.css?v=27" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 </head>
@@ -442,6 +442,31 @@
                     /* ignore */
                 }
             });
+        }
+
+        /** Prefer a server-validated session; refresh if the cached access token expired. */
+        async function getValidSession(passedSession) {
+            let session =
+                passedSession && passedSession.access_token ? passedSession : null;
+            if (!session) {
+                const { data: sessWrap } = await supabase.auth.getSession();
+                session = sessWrap && sessWrap.session ? sessWrap.session : null;
+            }
+            if (!session || !session.access_token) {
+                return null;
+            }
+
+            const { error: userError } = await supabase.auth.getUser(session.access_token);
+            if (!userError) {
+                return session;
+            }
+
+            const { data: refreshed, error: refreshError } = await supabase.auth.refreshSession();
+            if (!refreshError && refreshed && refreshed.session && refreshed.session.access_token) {
+                return refreshed.session;
+            }
+
+            return null;
         }
 
         async function performSignOut() {
@@ -1779,7 +1804,11 @@
                 setDataMessage('Please sign in again.', 'error');
                 return;
             }
-            const session = sessWrap.session;
+            const session = await getValidSession(sessWrap.session);
+            if (!session || !session.access_token) {
+                setDataMessage('Session expired. Please sign out and sign in again.', 'error');
+                return;
+            }
 
             try {
                 setDataMessage('Deleting user…', '');
@@ -1884,6 +1913,11 @@
             }
 
             if (!res.ok) {
+                if (res.status === 401) {
+                    throw new Error(
+                        'Session expired or invalid (401). Sign out, sign in again, then refresh.'
+                    );
+                }
                 if (res.status === 403) {
                     throw new Error('Not authorized (403). Check Edge Function admin id and deploy.');
                 }
@@ -1992,19 +2026,11 @@
             clearOverviewStats();
 
             try {
-                let session =
-                    passedSession && passedSession.access_token ? passedSession : null;
-                if (!session) {
-                    const { data: sessWrap, error: sessErr } = await supabase.auth.getSession();
-                    if (sessErr) {
-                        setDataMessage(sessErr.message || 'Could not read session.', 'error');
-                        return;
-                    }
-                    session = sessWrap && sessWrap.session ? sessWrap.session : null;
-                }
+                let session = await getValidSession(passedSession);
 
                 if (!session || !session.access_token) {
-                    setDataMessage('Please sign in again.', 'error');
+                    setDataMessage('Session expired. Please sign out and sign in again.', 'error');
+                    await enforceAdminState(null);
                     return;
                 }
 

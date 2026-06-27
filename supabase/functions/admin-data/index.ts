@@ -196,26 +196,24 @@ Deno.serve(async (req) => {
         return json({ error: 'Missing or invalid Authorization header' }, 401);
     }
 
-    const supabaseUser = createClient(supabaseUrl, anonKey, {
-        global: { headers: { Authorization: authHeader } }
+    const supabaseAdmin = createClient(supabaseUrl, serviceKey, {
+        auth: { persistSession: false, autoRefreshToken: false }
     });
 
+    const accessToken = authHeader.replace(/^Bearer\s+/i, '').trim();
     const {
         data: { user },
         error: userError
-    } = await supabaseUser.auth.getUser();
+    } = await supabaseAdmin.auth.getUser(accessToken);
 
     if (userError || !user) {
+        console.error('admin-data auth:', userError?.message || 'no user');
         return json({ error: 'Invalid session' }, 401);
     }
 
     if (user.id !== adminUserId) {
         return json({ error: 'Forbidden' }, 403);
     }
-
-    const supabaseAdmin = createClient(supabaseUrl, serviceKey, {
-        auth: { persistSession: false, autoRefreshToken: false }
-    });
 
     const url = new URL(req.url);
     const route = routeFromUrl(url);

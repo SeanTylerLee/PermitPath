@@ -3710,6 +3710,10 @@ body.admin-page .admin-profile-delete-btn:disabled {
     cursor: not-allowed;
 }
 
+body.admin-page .admin-deleted-panel {
+    margin-top: 1.75rem;
+}
+
 body.admin-page .admin-deleted-hint {
     margin: 0 0 1rem;
     font-size: 0.9rem;
