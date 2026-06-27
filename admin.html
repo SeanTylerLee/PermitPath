@@ -7,7 +7,7 @@
             try {
                 var u = new URL(window.location.href);
                 if (!u.searchParams.has('v')) {
-                    u.searchParams.set('v', '34');
+                    u.searchParams.set('v', '43');
                     window.location.replace(u.pathname + u.search + u.hash);
                 }
             } catch (_e) {}
@@ -21,9 +21,9 @@
     <meta http-equiv="Expires" content="0" />
     <title>Admin Dashboard - PermitPath</title>
     <meta name="robots" content="noindex, nofollow" />
-    <link rel="canonical" href="https://permitpathnav.com/admin.html?v=34" />
+    <link rel="canonical" href="https://permitpathnav.com/admin.html?v=43" />
     <link rel="icon" type="image/png" href="images/pppp.png" />
-    <link rel="stylesheet" href="styles.css?v=28" />
+    <link rel="stylesheet" href="styles.css?v=31" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 </head>
@@ -89,7 +89,6 @@
                     <div class="admin-panel admin-stats-panel">
                         <div class="admin-section-head admin-stats-head">
                             <h3 class="admin-panel-title">Platform activity</h3>
-                            <p id="adminEventTotalsSub" class="admin-stats-sub"></p>
                         </div>
                         <div id="adminEventTotals" class="admin-event-totals" aria-live="polite">
                             <div id="adminEventTotalsInner" class="admin-event-totals-inner"></div>
@@ -146,6 +145,21 @@
                             <button type="button" class="button admin-tool-nav-btn" id="adminBtnUnsubscribedEmails" data-email-filter="unsubscribed">Not subscribed</button>
                             <button type="button" class="button admin-tool-nav-btn" id="adminBtnLapsedEmails" data-email-filter="lapsed">Lapsed</button>
                         </div>
+                        <div class="admin-email-templates">
+                            <p class="admin-email-templates-label">Notice templates</p>
+                            <button type="button" class="admin-email-template-card" id="adminBtnRemovedByAdminNotice" data-notice-template="removed_by_admin">
+                                <span class="admin-email-template-card-title">Removed by admin</span>
+                                <span class="admin-email-template-card-desc">Deletion notice — edit, then copy into your email app</span>
+                            </button>
+                            <button type="button" class="admin-email-template-card" id="adminBtnLapsedSubscriberNotice" data-notice-template="lapsed_subscriber">
+                                <span class="admin-email-template-card-title">Former subscriber</span>
+                                <span class="admin-email-template-card-desc">Win-back message — resubscribe help and feedback request</span>
+                            </button>
+                            <button type="button" class="admin-email-template-card" id="adminBtnSelfDeletedNotice" data-notice-template="self_deleted">
+                                <span class="admin-email-template-card-title">Self-deleted account</span>
+                                <span class="admin-email-template-card-desc">Personal follow-up — ask what we can improve</span>
+                            </button>
+                        </div>
                     </div>
                 </section>
             </div>
@@ -158,6 +172,22 @@
                 <div class="admin-email-tool-actions">
                     <button type="button" class="button" id="adminEmailToolCopy">Copy all</button>
                     <button type="button" class="button button-secondary" id="adminEmailToolBack">Back to dashboard</button>
+                </div>
+            </div>
+
+            <div id="adminNoticeEmailView" class="admin-email-tool-view admin-notice-email-view admin-panel" hidden>
+                <h3 id="adminNoticeEmailTitle" class="admin-email-tool-title"></h3>
+                <p class="admin-email-tool-hint">Edit the message below, then copy it into your email platform.</p>
+                <div class="admin-notice-email-form">
+                    <div class="form-group">
+                        <label for="adminNoticeBody">Message</label>
+                        <textarea id="adminNoticeBody" class="admin-notice-email-field admin-notice-email-body" rows="12" spellcheck="true" aria-label="Email message body"></textarea>
+                    </div>
+                </div>
+                <p id="adminNoticeEmailStatus" class="admin-email-tool-status" aria-live="polite"></p>
+                <div class="admin-email-tool-actions">
+                    <button type="button" class="button" id="adminNoticeCopy">Copy message</button>
+                    <button type="button" class="button button-secondary" id="adminNoticeEmailBack">Back to dashboard</button>
                 </div>
             </div>
         </section>
@@ -208,13 +238,21 @@
         const adminBtnLapsedEmails = document.getElementById('adminBtnLapsedEmails');
         const adminEmailToolCopy = document.getElementById('adminEmailToolCopy');
         const adminEmailToolBack = document.getElementById('adminEmailToolBack');
+        const adminBtnRemovedByAdminNotice = document.getElementById('adminBtnRemovedByAdminNotice');
+        const adminBtnLapsedSubscriberNotice = document.getElementById('adminBtnLapsedSubscriberNotice');
+        const adminBtnSelfDeletedNotice = document.getElementById('adminBtnSelfDeletedNotice');
+        const adminNoticeEmailView = document.getElementById('adminNoticeEmailView');
+        const adminNoticeEmailTitle = document.getElementById('adminNoticeEmailTitle');
+        const adminNoticeBody = document.getElementById('adminNoticeBody');
+        const adminNoticeEmailStatus = document.getElementById('adminNoticeEmailStatus');
+        const adminNoticeCopy = document.getElementById('adminNoticeCopy');
+        const adminNoticeEmailBack = document.getElementById('adminNoticeEmailBack');
         const adminOverviewStats = document.getElementById('adminOverviewStats');
         const adminRevenueEstimate = document.getElementById('adminRevenueEstimate');
         const adminUsersPanel = document.querySelector('.admin-users-panel');
         const adminUserFilterBar = document.getElementById('adminUserFilterBar');
         const adminUserFilterLabel = document.getElementById('adminUserFilterLabel');
         const adminUserFilterClear = document.getElementById('adminUserFilterClear');
-        const adminEventTotalsSub = document.getElementById('adminEventTotalsSub');
         const adminSignedInAs = document.getElementById('adminSignedInAs');
         const adminRefreshBtn = document.getElementById('adminRefreshBtn');
         const adminEmailNavButtons = [
@@ -225,18 +263,57 @@
         ];
         const ADMIN_USER_ID = 'ee962eec-a890-4ce8-9dcc-b9b30d241008';
         const ADMIN_EMAIL_ALLOWLIST = ['support@permitpathnav.com'];
-        const PROFILE_EVENTS_INITIAL_LIMIT = 15;
         const USAGE_EVENT_TYPE_LABELS = {
             app_open: 'App opens',
             navigation_started: 'Navigations started',
             route_built: 'Routes built'
         };
         const USAGE_EVENT_TYPE_ORDER = ['app_open', 'navigation_started', 'route_built'];
+        const DISPLAYED_USAGE_EVENT_TYPES = USAGE_EVENT_TYPE_ORDER.slice();
         const PINNED_USERS_STORAGE_KEY = 'permitpath_admin_pinned_users';
         const USAGE_EVENTS_WINDOW_DAYS = 90;
         const SUBSCRIPTION_PRICE_MONTHLY = 3.99;
         const APP_STORE_FEE_RATE = 0.15;
         const MS_PER_DAY = 24 * 60 * 60 * 1000;
+
+        const ADMIN_NOTICE_TEMPLATES = {
+            removed_by_admin: {
+                title: 'Removed by admin — notice email',
+                body:
+                    'Dear PermitPath user,\n\n' +
+                    'Your PermitPath account has been removed due to inactivity, overuse, or misuse of the software, in accordance with our Terms of Service.\n\n' +
+                    'If you believe this was done in error, please contact us at support@permitpathnav.com.\n\n' +
+                    'Thank you,\n' +
+                    'PermitPath Support\n' +
+                    'https://permitpathnav.com'
+            },
+            lapsed_subscriber: {
+                title: 'Former subscriber — outreach email',
+                body:
+                    'Hi,\n\n' +
+                    "I'm the owner of PermitPath. I noticed your subscription is no longer active, and I wanted to reach out personally.\n\n" +
+                    "Your account is still there — you can keep using the app on the free plan — but premium features like unlimited routing are turned off until you subscribe again. To resubscribe, open PermitPath and go to Settings → Subscription.\n\n" +
+                    "I'm building this for truckers, and I don't want to lose drivers who counted on us. If something fell short — missing features, bugs, pricing, or anything else — I'd genuinely like to hear it. What could I change so PermitPath is worth staying subscribed to?\n\n" +
+                    'Just reply to this email. I read every message, and your feedback goes straight into what we build next.\n\n' +
+                    'Thank you for giving PermitPath a try.\n\n' +
+                    '— The PermitPath team\n' +
+                    'https://permitpathnav.com'
+            },
+            self_deleted: {
+                title: 'Self-deleted account — outreach email',
+                body:
+                    'Hi,\n\n' +
+                    "I'm the owner of PermitPath. We noticed you recently deleted your account, and I wanted to reach out personally.\n\n" +
+                    "First, I'm sorry we didn't earn your continued trust. If you're open to it, I'd love to know what happened — was something broken, missing, or frustrating? Are there changes in the app you'd like to see, or issues we could fix?\n\n" +
+                    "I'm actively improving PermitPath for oversize and permit routing, and honest feedback from drivers like you shapes what we build next. If you'd ever consider coming back, we'd welcome you — and if not, your input still helps us do better for the next person.\n\n" +
+                    'Just reply to this email — I read every message.\n\n' +
+                    'Thank you for trying PermitPath.\n\n' +
+                    '— The PermitPath team\n' +
+                    'https://permitpathnav.com'
+            }
+        };
+
+        let activeNoticeTemplateId = null;
 
         let pinnedUserKeys = loadPinnedUserKeys();
         let activeUserFilter = null;
@@ -404,7 +481,11 @@
                 adminEmailToolView.hidden = true;
                 adminMainView.hidden = false;
             }
+            if (adminNoticeEmailView) {
+                adminNoticeEmailView.hidden = true;
+            }
             clearEmailNavActive();
+            clearNoticeTemplateActive();
             if (adminEmailToolStatus) adminEmailToolStatus.textContent = '';
             clearDataMessage();
             clearLoadStatus();
@@ -637,6 +718,92 @@
             expandEl.appendChild(row);
         }
 
+        function clearNoticeTemplateActive() {
+            document.querySelectorAll('.admin-email-template-card').forEach(function(btn) {
+                btn.classList.remove('admin-email-template-card--active');
+            });
+            activeNoticeTemplateId = null;
+        }
+
+        function setNoticeTemplateActive(templateId) {
+            clearEmailNavActive();
+            clearNoticeTemplateActive();
+            activeNoticeTemplateId = templateId;
+            const btn = document.querySelector(
+                '.admin-email-template-card[data-notice-template="' + templateId + '"]'
+            );
+            if (btn) btn.classList.add('admin-email-template-card--active');
+        }
+
+        function setNoticeEmailStatus(text) {
+            if (adminNoticeEmailStatus) adminNoticeEmailStatus.textContent = text || '';
+        }
+
+        async function copyTextToClipboard(text, emptyMessage) {
+            const t = text || '';
+            if (!t.trim()) {
+                setNoticeEmailStatus(emptyMessage || 'Nothing to copy.');
+                return false;
+            }
+            try {
+                await navigator.clipboard.writeText(t);
+                return true;
+            } catch (_e) {
+                return false;
+            }
+        }
+
+        async function openAdminNoticeTool(templateId) {
+            const template = ADMIN_NOTICE_TEMPLATES[templateId];
+            if (!template || !adminMainView || !adminNoticeEmailView || !adminNoticeBody) {
+                return;
+            }
+            try {
+                const { data: wrap } = await supabase.auth.getSession();
+                const session = wrap && wrap.session ? wrap.session : null;
+                const user = session && session.user ? session.user : null;
+                if (!user || !isAdminUser(user)) {
+                    closeAdminNoticeEmailTool();
+                    await enforceAdminState(session);
+                    return;
+                }
+            } catch (_e) {
+                closeAdminNoticeEmailTool();
+                return;
+            }
+
+            if (adminEmailToolView) adminEmailToolView.hidden = true;
+            adminMainView.hidden = true;
+            adminNoticeEmailView.hidden = false;
+            setNoticeTemplateActive(templateId);
+            setNoticeEmailStatus('');
+
+            if (adminNoticeEmailTitle) {
+                adminNoticeEmailTitle.textContent = template.title;
+            }
+            adminNoticeBody.value = template.body;
+            adminNoticeBody.focus();
+        }
+
+        function closeAdminNoticeEmailTool() {
+            if (adminNoticeEmailView) adminNoticeEmailView.hidden = true;
+            if (adminMainView) adminMainView.hidden = false;
+            clearNoticeTemplateActive();
+            setNoticeEmailStatus('');
+        }
+
+        async function copyAdminNoticeMessage() {
+            const text = adminNoticeBody ? adminNoticeBody.value.trim() : '';
+            if (!text) {
+                setNoticeEmailStatus('No message to copy.');
+                return;
+            }
+            const ok = await copyTextToClipboard(text);
+            setNoticeEmailStatus(
+                ok ? 'Message copied.' : 'Copy blocked — select the message and press ⌘/Ctrl+C.'
+            );
+        }
+
         function collectEmailsFromProfiles(profiles, filter) {
             const map = new Map();
             (profiles || []).forEach(function(p) {
@@ -674,6 +841,8 @@
 
             adminMainView.hidden = true;
             adminEmailToolView.hidden = false;
+            if (adminNoticeEmailView) adminNoticeEmailView.hidden = true;
+            clearNoticeTemplateActive();
             setEmailNavActive(filter);
             if (adminEmailToolStatus) adminEmailToolStatus.textContent = '';
             const lines = collectEmailsFromProfiles(latestProfilesList, filter);
@@ -693,7 +862,9 @@
             if (!adminMainView || !adminEmailToolView) return;
             adminEmailToolView.hidden = true;
             adminMainView.hidden = false;
+            if (adminNoticeEmailView) adminNoticeEmailView.hidden = true;
             clearEmailNavActive();
+            clearNoticeTemplateActive();
             if (adminEmailToolStatus) adminEmailToolStatus.textContent = '';
         }
 
@@ -743,201 +914,72 @@
             return '';
         }
 
-        function appendUsageEventItem(container, ev, opts) {
-            opts = opts || {};
-            const item = document.createElement('article');
-            item.className = 'admin-event-item';
-
-            const head = document.createElement('div');
-            head.className = 'admin-event-head';
-
-            const badge = document.createElement('span');
-            badge.className = 'admin-badge admin-badge--event';
-            const et = ev.event_type;
-            const etKey =
-                et === null || et === undefined || String(et).trim() === '' ? '(no type)' : String(et).trim();
-            badge.textContent = humanizeUsageEventType(etKey);
-
-            const timeEl = document.createElement('time');
-            timeEl.className = 'admin-event-time';
-            const raw = ev.created_at;
-            if (raw) {
-                timeEl.dateTime = String(raw);
-                timeEl.title = isoForTitle(raw);
-            }
-            timeEl.textContent = formatDisplayDate(raw);
-
-            head.appendChild(badge);
-            head.appendChild(timeEl);
-            item.appendChild(head);
-
-            const evUid =
-                ev.user_id !== null && ev.user_id !== undefined && ev.user_id !== ''
-                    ? String(ev.user_id)
-                    : '';
-            if (evUid && !opts.hideUserId) {
-                const uidRow = document.createElement('p');
-                uidRow.className = 'admin-event-uid-row';
-                const uidLbl = document.createElement('span');
-                uidLbl.className = 'admin-event-user-idlabel';
-                uidLbl.textContent = 'User ID: ';
-                const uidCode = document.createElement('code');
-                uidCode.className = 'admin-event-inline-uid';
-                uidCode.textContent = evUid;
-                uidRow.appendChild(uidLbl);
-                uidRow.appendChild(uidCode);
-                item.appendChild(uidRow);
-            }
-
-            const meta = ev.metadata;
-            const hasMeta =
-                meta !== null &&
-                meta !== undefined &&
-                !(typeof meta === 'object' && meta !== null && Object.keys(meta).length === 0);
-
-            if (hasMeta) {
-                const details = document.createElement('details');
-                details.className = 'admin-meta';
-                const summary = document.createElement('summary');
-                summary.textContent = 'Metadata';
-                const pre = document.createElement('pre');
-                pre.className = 'admin-json-pre';
-                pre.textContent = jsonForPre(meta);
-                details.appendChild(summary);
-                details.appendChild(pre);
-                item.appendChild(details);
-            } else {
-                const muted = document.createElement('p');
-                muted.className = 'admin-event-muted';
-                muted.textContent = 'No metadata';
-                item.appendChild(muted);
-            }
-
-            container.appendChild(item);
-        }
-
-        function eventsForProfileUserId(allEvents, profileUserId) {
-            if (!profileUserId) return [];
-            const want = String(profileUserId);
-            return (allEvents || []).filter(function(ev) {
-                return userIdFromUsageEvent(ev) === want;
+        function countProfileActivity(userId, allEvents) {
+            const counts = Object.create(null);
+            DISPLAYED_USAGE_EVENT_TYPES.forEach(function(typeKey) {
+                counts[typeKey] = 0;
             });
-        }
-
-        function humanizeUsageEventType(typeKey) {
-            if (USAGE_EVENT_TYPE_LABELS[typeKey]) return USAGE_EVENT_TYPE_LABELS[typeKey];
-            if (typeKey === '(no type)') return 'Other';
-            return String(typeKey)
-                .replace(/_/g, ' ')
-                .replace(/\b\w/g, function(c) {
-                    return c.toUpperCase();
-                });
-        }
-
-        function sortEventTypeKeysForTicker(keys, counts) {
-            return keys.slice().sort(function(a, b) {
-                const ai = USAGE_EVENT_TYPE_ORDER.indexOf(a);
-                const bi = USAGE_EVENT_TYPE_ORDER.indexOf(b);
-                if (ai !== -1 && bi !== -1) return ai - bi;
-                if (ai !== -1) return -1;
-                if (bi !== -1) return 1;
-                const ca = counts[a];
-                const cb = counts[b];
-                if (cb !== ca) return cb - ca;
-                return a.localeCompare(b);
+            if (!userId) return counts;
+            const want = String(userId);
+            (allEvents || []).forEach(function(ev) {
+                if (userIdFromUsageEvent(ev) !== want) return;
+                const typeKey = eventTypeLabelFromUsageEvent(ev);
+                if (counts[typeKey] !== undefined) {
+                    counts[typeKey]++;
+                }
             });
+            return counts;
         }
 
-        function renderUsageEventTicker(container, events) {
-            const counts = aggregateUsageEventTypeCounts(events);
-            const keys = sortEventTypeKeysForTicker(Object.keys(counts), counts);
+        function appendProfileActivityBlock(expandEl, userId) {
+            const block = document.createElement('div');
+            block.className = 'admin-profile-activity-block';
+
+            const heading = document.createElement('h5');
+            heading.className = 'admin-profile-user-events-heading';
+            heading.textContent = 'Activity (last ' + USAGE_EVENTS_WINDOW_DAYS + ' days)';
+            block.appendChild(heading);
+
+            if (!userId) {
+                const empty = document.createElement('p');
+                empty.className = 'admin-profile-activity-empty';
+                empty.textContent = 'No user id — activity cannot be matched.';
+                block.appendChild(empty);
+                expandEl.appendChild(block);
+                return;
+            }
+
+            const counts = countProfileActivity(userId, latestEventsList);
             const ticker = document.createElement('div');
             ticker.className = 'admin-profile-events-ticker';
             ticker.setAttribute('role', 'list');
-            ticker.setAttribute('aria-label', 'Event counts by type');
+            ticker.setAttribute('aria-label', 'User activity totals');
 
-            keys.forEach(function(key) {
+            DISPLAYED_USAGE_EVENT_TYPES.forEach(function(typeKey) {
                 const item = document.createElement('div');
                 item.className = 'admin-profile-events-ticker-item';
                 item.setAttribute('role', 'listitem');
 
                 const countEl = document.createElement('span');
                 countEl.className = 'admin-profile-events-ticker-count';
-                countEl.textContent = String(counts[key]);
+                countEl.textContent = String(counts[typeKey] || 0);
 
                 const labelEl = document.createElement('span');
                 labelEl.className = 'admin-profile-events-ticker-label';
-                labelEl.textContent = humanizeUsageEventType(key);
+                labelEl.textContent = USAGE_EVENT_TYPE_LABELS[typeKey] || typeKey;
 
                 item.appendChild(countEl);
                 item.appendChild(labelEl);
                 ticker.appendChild(item);
             });
 
-            container.appendChild(ticker);
-        }
-
-        function renderEventListInto(container, events) {
-            container.innerHTML = '';
-            const list = (events || []).slice().sort(function(a, b) {
-                const ta = a && a.created_at ? new Date(a.created_at).getTime() : 0;
-                const tb = b && b.created_at ? new Date(b.created_at).getTime() : 0;
-                return tb - ta;
-            });
-            if (list.length === 0) {
-                const p = document.createElement('p');
-                p.className = 'admin-profile-user-events-empty';
-                p.textContent = 'No usage events for this user.';
-                container.appendChild(p);
-                return;
-            }
-
-            renderUsageEventTicker(container, list);
-
-            const listWrap = document.createElement('div');
-            listWrap.className = 'admin-profile-user-events-list';
-            container.appendChild(listWrap);
-
-            function appendEvents(fromIndex, toIndex) {
-                for (let i = fromIndex; i < toIndex; i++) {
-                    appendUsageEventItem(listWrap, list[i], { hideUserId: true });
-                }
-            }
-
-            const initialEnd = Math.min(PROFILE_EVENTS_INITIAL_LIMIT, list.length);
-            appendEvents(0, initialEnd);
-
-            if (list.length > PROFILE_EVENTS_INITIAL_LIMIT) {
-                const remaining = list.length - PROFILE_EVENTS_INITIAL_LIMIT;
-                const seeAllBtn = document.createElement('button');
-                seeAllBtn.type = 'button';
-                seeAllBtn.className = 'button button-secondary admin-profile-events-see-all';
-                seeAllBtn.textContent =
-                    remaining === 1 ? 'See all (1 more)' : 'See all (' + remaining + ' more)';
-                seeAllBtn.addEventListener('click', function() {
-                    appendEvents(PROFILE_EVENTS_INITIAL_LIMIT, list.length);
-                    seeAllBtn.remove();
-                });
-                container.appendChild(seeAllBtn);
-            }
-        }
-
-        function jsonForPre(value) {
-            if (value === null || value === undefined) return '—';
-            if (typeof value === 'object') {
-                try {
-                    return JSON.stringify(value, null, 2);
-                } catch (_e) {
-                    return String(value);
-                }
-            }
-            return String(value);
+            block.appendChild(ticker);
+            expandEl.appendChild(block);
         }
 
         function clearOverviewStats() {
             if (adminOverviewStats) adminOverviewStats.innerHTML = '';
             if (adminRevenueEstimate) adminRevenueEstimate.innerHTML = '';
-            if (adminEventTotalsSub) adminEventTotalsSub.textContent = '';
         }
 
         function profileDate(value) {
@@ -1133,7 +1175,7 @@
             adminOverviewStats.innerHTML = '';
 
             const metrics = computeProfileMetrics(profiles);
-            const eventCount = (events || []).length;
+            const activityCounts = aggregateDisplayedUsageEventCounts(events);
 
             appendOverviewStatCard(adminOverviewStats, 'Total users', metrics.total, 'default', {
                 filterKey: 'all'
@@ -1146,8 +1188,20 @@
             });
             appendOverviewStatCard(
                 adminOverviewStats,
-                'Events (' + USAGE_EVENTS_WINDOW_DAYS + 'd)',
-                eventCount,
+                'App opens (' + USAGE_EVENTS_WINDOW_DAYS + 'd)',
+                activityCounts.app_open || 0,
+                'default'
+            );
+            appendOverviewStatCard(
+                adminOverviewStats,
+                'Routes built (' + USAGE_EVENTS_WINDOW_DAYS + 'd)',
+                activityCounts.route_built || 0,
+                'default'
+            );
+            appendOverviewStatCard(
+                adminOverviewStats,
+                'Navigations (' + USAGE_EVENTS_WINDOW_DAYS + 'd)',
+                activityCounts.navigation_started || 0,
                 'default'
             );
             appendOverviewStatCard(adminOverviewStats, 'New (7 days)', metrics.new7, 'default', {
@@ -1332,20 +1386,28 @@
             return { pinned: pinned, rest: rest };
         }
 
-        function approximateMonthsSubscribed(startIso, endIso) {
-            if (!startIso) return 0;
+        function billingMonthsSubscribed(startIso, endIso) {
+            if (!startIso) return 1;
             const start = new Date(startIso);
             const end = endIso ? new Date(endIso) : new Date();
-            if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) return 0;
+            if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) return 1;
             const ms = Math.max(0, end.getTime() - start.getTime());
             const days = ms / MS_PER_DAY;
-            if (days < 1) return 0;
+            if (days < 30.44) return 1;
             return Math.max(1, Math.round(days / 30.44));
         }
 
-        function formatMonthsLabel(months) {
-            if (!months || months <= 0) return '';
-            return months === 1 ? '~1 month' : '~' + months + ' months';
+        function formatBillingMonthsLabel(months) {
+            const n = months && months > 0 ? months : 1;
+            return n === 1 ? '1 month' : n + ' months';
+        }
+
+        function estimateSubscriptionNetRevenue(months) {
+            const billedMonths = months && months > 0 ? months : 1;
+            const gross = billedMonths * SUBSCRIPTION_PRICE_MONTHLY;
+            const fees = gross * APP_STORE_FEE_RATE;
+            const net = gross - fees;
+            return { billedMonths, gross, fees, net };
         }
 
         function indexSubscriptionPeriodsByUser(periods) {
@@ -1396,10 +1458,15 @@
             const list = document.createElement('ul');
             list.className = 'admin-profile-sub-periods-list';
 
+            let totalBilledMonths = 0;
+            let totalNetRevenue = 0;
+
             periods.forEach(function(period, index) {
                 const isOpen = !period.ended_at;
-                const months = approximateMonthsSubscribed(period.started_at, period.ended_at);
-                const monthsLabel = formatMonthsLabel(months);
+                const months = billingMonthsSubscribed(period.started_at, period.ended_at);
+                const revenue = estimateSubscriptionNetRevenue(months);
+                totalBilledMonths += revenue.billedMonths;
+                totalNetRevenue += revenue.net;
 
                 const li = document.createElement('li');
                 li.className =
@@ -1419,9 +1486,11 @@
 
                 const meta = document.createElement('span');
                 meta.className = 'admin-profile-sub-period-meta';
-                const parts = [];
-                if (monthsLabel) parts.push(monthsLabel);
-                parts.push(isOpen ? 'Active' : 'Lapsed');
+                const parts = [
+                    formatBillingMonthsLabel(revenue.billedMonths),
+                    'Est. net ' + formatUsd(revenue.net),
+                    isOpen ? 'Active' : 'Lapsed'
+                ];
                 if (periods.length > 1 && index === 0 && !isOpen && isCurrentlySubscribed) {
                     parts.push('(prior period)');
                 } else if (periods.length > 1 && isOpen && index === 0) {
@@ -1435,6 +1504,25 @@
             });
 
             block.appendChild(list);
+
+            if (periods.length > 0) {
+                const total = document.createElement('p');
+                total.className = 'admin-profile-sub-periods-total';
+                total.textContent =
+                    'Est. total from this user: ' +
+                    formatUsd(totalNetRevenue) +
+                    ' net (' +
+                    totalBilledMonths +
+                    ' billed month' +
+                    (totalBilledMonths === 1 ? '' : 's') +
+                    ' across ' +
+                    periods.length +
+                    ' period' +
+                    (periods.length === 1 ? '' : 's') +
+                    ')';
+                block.appendChild(total);
+            }
+
             expandEl.appendChild(block);
         }
 
@@ -1593,48 +1681,12 @@
                 );
             }
 
-            const eventsSection = document.createElement('div');
-            eventsSection.className = 'admin-profile-user-events-block';
-            const eventsHeading = document.createElement('h5');
-            eventsHeading.className = 'admin-profile-user-events-heading';
-            eventsHeading.textContent = 'Usage events';
-
-            const eventsBtn = document.createElement('button');
-            eventsBtn.type = 'button';
-            eventsBtn.className = 'button button-secondary admin-profile-events-btn';
-            eventsBtn.textContent = 'Show usage events';
-
-            const eventsPanel = document.createElement('div');
-            eventsPanel.className = 'admin-profile-user-events-panel';
-            eventsPanel.hidden = true;
+            appendProfileActivityBlock(expand, uid);
 
             const profileUserId =
                 profile.user_id !== null && profile.user_id !== undefined && profile.user_id !== ''
                     ? String(profile.user_id)
                     : '';
-
-            if (!profileUserId) {
-                eventsBtn.disabled = true;
-                eventsBtn.textContent = 'Usage events (no user id)';
-                eventsBtn.title = 'This profile has no user_id; events cannot be matched.';
-            }
-
-            eventsBtn.addEventListener('click', function() {
-                if (!profileUserId) return;
-                if (eventsPanel.hidden) {
-                    renderEventListInto(eventsPanel, eventsForProfileUserId(latestEventsList, profileUserId));
-                    eventsPanel.hidden = false;
-                    eventsBtn.textContent = 'Hide usage events';
-                } else {
-                    eventsPanel.hidden = true;
-                    eventsBtn.textContent = 'Show usage events';
-                }
-            });
-
-            eventsSection.appendChild(eventsHeading);
-            eventsSection.appendChild(eventsBtn);
-            eventsSection.appendChild(eventsPanel);
-            expand.appendChild(eventsSection);
 
             const dangerZone = document.createElement('div');
             dangerZone.className = 'admin-profile-danger-zone';
@@ -1662,11 +1714,6 @@
                             other.open = false;
                         }
                     });
-                } else {
-                    eventsPanel.hidden = true;
-                    if (!eventsBtn.disabled) {
-                        eventsBtn.textContent = 'Show usage events';
-                    }
                 }
             });
 
@@ -2053,11 +2100,16 @@
             return String(et).trim();
         }
 
-        function aggregateUsageEventTypeCounts(events) {
+        function aggregateDisplayedUsageEventCounts(events) {
             const counts = Object.create(null);
+            DISPLAYED_USAGE_EVENT_TYPES.forEach(function(typeKey) {
+                counts[typeKey] = 0;
+            });
             (events || []).forEach(function(ev) {
                 const key = eventTypeLabelFromUsageEvent(ev);
-                counts[key] = (counts[key] || 0) + 1;
+                if (counts[key] !== undefined) {
+                    counts[key]++;
+                }
             });
             return counts;
         }
@@ -2066,9 +2118,6 @@
             usageEventTotalsLoading = false;
             if (adminEventTotalsInner) {
                 adminEventTotalsInner.innerHTML = '';
-            }
-            if (adminEventTotalsSub) {
-                adminEventTotalsSub.textContent = '';
             }
         }
 
@@ -2080,50 +2129,27 @@
                 p.className = 'admin-event-totals-loading';
                 p.textContent = 'Loading activity…';
                 adminEventTotalsInner.appendChild(p);
-                if (adminEventTotalsSub) adminEventTotalsSub.textContent = '';
-                return;
-            }
-            const events = latestEventsList || [];
-            if (events.length === 0) {
-                const p = document.createElement('p');
-                p.className = 'admin-event-totals-empty';
-                p.textContent = 'No usage events in the last ' + USAGE_EVENTS_WINDOW_DAYS + ' days.';
-                adminEventTotalsInner.appendChild(p);
-                if (adminEventTotalsSub) {
-                    adminEventTotalsSub.textContent =
-                        'Showing activity from the last ' + USAGE_EVENTS_WINDOW_DAYS + ' days only.';
-                }
                 return;
             }
 
-            const n = events.length;
-            if (adminEventTotalsSub) {
-                adminEventTotalsSub.textContent =
-                    (n === 1 ? '1 event' : n + ' events') +
-                    ' in the last ' +
-                    USAGE_EVENTS_WINDOW_DAYS +
-                    ' days. Older events are not loaded (keeps the dashboard fast).';
-            }
-
-            const counts = aggregateUsageEventTypeCounts(events);
-            const keys = sortEventTypeKeysForTicker(Object.keys(counts), counts);
+            const counts = aggregateDisplayedUsageEventCounts(latestEventsList || []);
             const ticker = document.createElement('div');
             ticker.className = 'admin-event-totals-ticker';
             ticker.setAttribute('role', 'list');
-            ticker.setAttribute('aria-label', 'Total events by type');
+            ticker.setAttribute('aria-label', 'Platform activity totals');
 
-            keys.forEach(function(key) {
+            DISPLAYED_USAGE_EVENT_TYPES.forEach(function(typeKey) {
                 const item = document.createElement('div');
                 item.className = 'admin-event-totals-ticker-item';
                 item.setAttribute('role', 'listitem');
 
                 const countEl = document.createElement('span');
                 countEl.className = 'admin-event-totals-ticker-count';
-                countEl.textContent = String(counts[key]);
+                countEl.textContent = String(counts[typeKey] || 0);
 
                 const labelEl = document.createElement('span');
                 labelEl.className = 'admin-event-totals-ticker-label';
-                labelEl.textContent = humanizeUsageEventType(key);
+                labelEl.textContent = USAGE_EVENT_TYPE_LABELS[typeKey] || typeKey;
 
                 item.appendChild(countEl);
                 item.appendChild(labelEl);
@@ -2368,6 +2394,32 @@
         adminEmailToolCopy.addEventListener('click', function() {
             copyAdminEmailList().catch(function() {});
         });
+
+        if (adminBtnRemovedByAdminNotice) {
+            adminBtnRemovedByAdminNotice.addEventListener('click', function() {
+                openAdminNoticeTool('removed_by_admin').catch(function() {});
+            });
+        }
+        if (adminBtnLapsedSubscriberNotice) {
+            adminBtnLapsedSubscriberNotice.addEventListener('click', function() {
+                openAdminNoticeTool('lapsed_subscriber').catch(function() {});
+            });
+        }
+        if (adminBtnSelfDeletedNotice) {
+            adminBtnSelfDeletedNotice.addEventListener('click', function() {
+                openAdminNoticeTool('self_deleted').catch(function() {});
+            });
+        }
+        if (adminNoticeEmailBack) {
+            adminNoticeEmailBack.addEventListener('click', function() {
+                closeAdminNoticeEmailTool();
+            });
+        }
+        if (adminNoticeCopy) {
+            adminNoticeCopy.addEventListener('click', function() {
+                copyAdminNoticeMessage().catch(function() {});
+            });
+        }
 
         deletedFilterButtons.forEach(function(btn) {
             btn.addEventListener('click', function() {

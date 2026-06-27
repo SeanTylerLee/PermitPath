@@ -2486,6 +2486,90 @@ body.admin-page .admin-email-panel {
     padding: 0.85rem 1rem;
 }
 
+body.admin-page .admin-email-templates {
+    margin-top: 1.15rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(26, 35, 50, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+}
+
+body.admin-page .admin-email-templates-label {
+    margin: 0 0 0.65rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #647896;
+}
+
+body.admin-page .admin-email-template-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.3rem;
+    width: 100%;
+    text-align: left;
+    padding: 0.85rem 1rem;
+    border-radius: 12px;
+    border: 1px solid rgba(26, 35, 50, 0.12);
+    background: rgba(248, 250, 252, 0.95);
+    cursor: pointer;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+body.admin-page .admin-email-template-card:hover {
+    border-color: rgba(0, 180, 255, 0.35);
+    box-shadow: 0 4px 16px rgba(15, 35, 60, 0.06);
+}
+
+body.admin-page .admin-email-template-card--active {
+    border-color: rgba(0, 180, 255, 0.45);
+    background: rgba(0, 180, 255, 0.08);
+}
+
+body.admin-page .admin-email-template-card-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1a2332;
+}
+
+body.admin-page .admin-email-template-card-desc {
+    font-size: 0.82rem;
+    color: #5a6b80;
+    line-height: 1.4;
+}
+
+body.admin-page .admin-notice-email-view .admin-notice-email-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    margin-top: 0.5rem;
+}
+
+body.admin-page .admin-notice-email-field {
+    width: 100%;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: 0.9rem;
+    line-height: 1.45;
+    color: #1a2332;
+    background: #fff;
+    border: 1px solid rgba(26, 35, 50, 0.14);
+    border-radius: 10px;
+    padding: 0.7rem 0.8rem;
+    resize: vertical;
+}
+
+body.admin-page .admin-notice-email-subject {
+    resize: none;
+}
+
+body.admin-page .admin-notice-email-body {
+    min-height: 12rem;
+}
+
 body.admin-page .admin-overview-stats {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(7.25rem, 1fr));
@@ -3710,6 +3794,18 @@ body.admin-page .admin-profile-delete-btn:disabled {
     cursor: not-allowed;
 }
 
+body.admin-page .admin-profile-activity-block {
+    margin-top: 1rem;
+    padding-top: 0.85rem;
+    border-top: 1px solid rgba(26, 35, 50, 0.08);
+}
+
+body.admin-page .admin-profile-activity-empty {
+    margin: 0.35rem 0 0;
+    font-size: 0.85rem;
+    color: #5a6b80;
+}
+
 body.admin-page .admin-profile-sub-periods-block {
     margin-top: 1rem;
     padding-top: 0.85rem;
@@ -3761,6 +3857,21 @@ body.admin-page .admin-profile-sub-period-title {
 body.admin-page .admin-profile-sub-period-meta {
     font-size: 0.78rem;
     color: #5a6b80;
+}
+
+body.admin-page .admin-profile-sub-period-breakdown {
+    font-size: 0.74rem;
+    color: #647896;
+    line-height: 1.35;
+}
+
+body.admin-page .admin-profile-sub-periods-total {
+    margin: 0.75rem 0 0;
+    padding-top: 0.65rem;
+    border-top: 1px solid rgba(26, 35, 50, 0.08);
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: #1a365d;
 }
 
 body.admin-page .admin-deleted-panel {
