@@ -7,7 +7,7 @@
             try {
                 var u = new URL(window.location.href);
                 if (!u.searchParams.has('v')) {
-                    u.searchParams.set('v', '52');
+                    u.searchParams.set('v', '53');
                     window.location.replace(u.pathname + u.search + u.hash);
                 }
             } catch (_e) {}
@@ -21,7 +21,7 @@
     <meta http-equiv="Expires" content="0" />
     <title>Admin Dashboard - PermitPath</title>
     <meta name="robots" content="noindex, nofollow" />
-    <link rel="canonical" href="https://permitpathnav.com/admin.html?v=52" />
+    <link rel="canonical" href="https://permitpathnav.com/admin.html?v=53" />
     <link rel="icon" type="image/png" href="images/pppp.png" />
     <link rel="stylesheet" href="styles.css?v=35" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -224,6 +224,11 @@
 
     <script type="module">
         import { supabase, supabaseUrl, supabaseAnonKey } from './lib/supabaseClient.js';
+
+        // Admin loads data on demand only — disable background JWT refresh timer (reduces /auth/v1/* traffic).
+        if (typeof supabase.auth.stopAutoRefresh === 'function') {
+            supabase.auth.stopAutoRefresh();
+        }
 
         // Safari (and others) can restore an old in-memory snapshot of this page from the
         // back-forward cache — wrong footer version + stale session UI. Force a real reload.
@@ -430,6 +435,8 @@
         }
 
         let latestDashboardLoadId = 0;
+        let dashboardLoadInFlight = false;
+        let sessionRefreshInFlight = null;
         let latestProfilesList = [];
         let latestEventsList = [];
         let latestDeletedList = [];
@@ -556,7 +563,18 @@
             });
         }
 
-        /** Prefer a server-validated session; refresh if the cached access token expired. */
+        function sessionExpiresAtMs(session) {
+            if (!session || !session.expires_at) return 0;
+            return session.expires_at * 1000;
+        }
+
+        function sessionStillFresh(session, skewMs) {
+            const exp = sessionExpiresAtMs(session);
+            if (!exp) return true;
+            return exp > Date.now() + (typeof skewMs === 'number' ? skewMs : 60000);
+        }
+
+        /** Use cached session when still valid; refresh only when near expiry (no getUser round-trip). */
         async function getValidSession(passedSession) {
             let session =
                 passedSession && passedSession.access_token ? passedSession : null;
@@ -568,17 +586,27 @@
                 return null;
             }
 
-            const { error: userError } = await supabase.auth.getUser(session.access_token);
-            if (!userError) {
+            if (sessionStillFresh(session, 60000)) {
                 return session;
             }
 
-            const { data: refreshed, error: refreshError } = await supabase.auth.refreshSession();
-            if (!refreshError && refreshed && refreshed.session && refreshed.session.access_token) {
-                return refreshed.session;
+            if (sessionRefreshInFlight) {
+                return sessionRefreshInFlight;
             }
 
-            return null;
+            sessionRefreshInFlight = (async function() {
+                try {
+                    const { data: refreshed, error: refreshError } = await supabase.auth.refreshSession();
+                    if (!refreshError && refreshed && refreshed.session && refreshed.session.access_token) {
+                        return refreshed.session;
+                    }
+                    return sessionStillFresh(session, 0) ? session : null;
+                } finally {
+                    sessionRefreshInFlight = null;
+                }
+            })();
+
+            return sessionRefreshInFlight;
         }
 
         async function performSignOut() {
@@ -2958,7 +2986,13 @@
             adminEventTotalsInner.appendChild(ticker);
         }
 
-        async function loadDashboardData(passedSession) {
+        async function loadDashboardData(passedSession, opts) {
+            opts = opts && typeof opts === 'object' ? opts : {};
+            if (dashboardLoadInFlight) {
+                return;
+            }
+            dashboardLoadInFlight = true;
+
             const loadId = ++latestDashboardLoadId;
             clearDataMessage();
             clearLoadStatus();
@@ -3065,6 +3099,7 @@
                 setDataMessage(msg, 'error');
                 setLoadStatus('Stopped: ' + msg);
             } finally {
+                dashboardLoadInFlight = false;
                 if (loadId === latestDashboardLoadId) {
                     usageEventTotalsLoading = false;
                     renderUsageEventTotals();
@@ -3175,7 +3210,8 @@
 
         if (adminRefreshBtn) {
             adminRefreshBtn.addEventListener('click', function() {
-                loadDashboardData().catch(function() {});
+                if (dashboardLoadInFlight) return;
+                loadDashboardData(undefined, { force: true }).catch(function() {});
             });
         }
         if (adminExportPdfBtn) {
