@@ -7,7 +7,7 @@
             try {
                 var u = new URL(window.location.href);
                 if (!u.searchParams.has('v')) {
-                    u.searchParams.set('v', '44');
+                    u.searchParams.set('v', '49');
                     window.location.replace(u.pathname + u.search + u.hash);
                 }
             } catch (_e) {}
@@ -21,9 +21,9 @@
     <meta http-equiv="Expires" content="0" />
     <title>Admin Dashboard - PermitPath</title>
     <meta name="robots" content="noindex, nofollow" />
-    <link rel="canonical" href="https://permitpathnav.com/admin.html?v=44" />
+    <link rel="canonical" href="https://permitpathnav.com/admin.html?v=49" />
     <link rel="icon" type="image/png" href="images/pppp.png" />
-    <link rel="stylesheet" href="styles.css?v=32" />
+    <link rel="stylesheet" href="styles.css?v=33" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 </head>
@@ -80,7 +80,7 @@
                 </div>
                 <div class="admin-topbar-actions">
                     <button type="button" class="button button-secondary admin-refresh-btn" id="adminRefreshBtn">Refresh</button>
-                    <button type="button" class="button button-secondary" id="adminExportPdfBtn">Export PDF</button>
+                    <button type="button" class="button button-secondary" id="adminExportPdfBtn" title="Download a PDF report for the current calendar month">Export PDF</button>
                     <button type="button" class="button button-secondary" id="adminSignOutBtn">Sign out</button>
                 </div>
             </div>
@@ -273,7 +273,6 @@
         const USAGE_EVENT_TYPE_ORDER = ['app_open', 'navigation_started', 'route_built'];
         const DISPLAYED_USAGE_EVENT_TYPES = USAGE_EVENT_TYPE_ORDER.slice();
         const PINNED_USERS_STORAGE_KEY = 'permitpath_admin_pinned_users';
-        const USER_NOTES_STORAGE_KEY = 'permitpath_admin_user_notes';
         const USAGE_EVENTS_WINDOW_DAYS = 90;
         const SUBSCRIPTION_PRICE_MONTHLY = 3.99;
         const APP_STORE_FEE_RATE = 0.15;
@@ -319,7 +318,6 @@
         let activeNoticeTemplateId = null;
 
         let pinnedUserKeys = loadPinnedUserKeys();
-        let userNotesByKey = loadUserNotesByKey();
         let activeUserFilter = null;
 
         const USER_FILTER_META = {
@@ -1289,17 +1287,32 @@
             adminRevenueEstimate.appendChild(wrap);
         }
 
+        function resolveJsPdfCtor() {
+            if (window.jspdf && window.jspdf.jsPDF) return window.jspdf.jsPDF;
+            if (typeof window.jsPDF === 'function') return window.jsPDF;
+            return null;
+        }
+
         function loadJsPdfLibrary() {
             return new Promise(function(resolve, reject) {
-                if (window.jspdf && window.jspdf.jsPDF) {
-                    resolve(window.jspdf.jsPDF);
+                const existingCtor = resolveJsPdfCtor();
+                if (existingCtor) {
+                    resolve(existingCtor);
                     return;
                 }
+
                 const existing = document.getElementById('adminJsPdfScript');
                 if (existing) {
+                    if (existing.getAttribute('data-loaded') === 'true') {
+                        const ctor = resolveJsPdfCtor();
+                        if (ctor) resolve(ctor);
+                        else reject(new Error('PDF library failed to load.'));
+                        return;
+                    }
                     existing.addEventListener('load', function onLoad() {
                         existing.removeEventListener('load', onLoad);
-                        if (window.jspdf && window.jspdf.jsPDF) resolve(window.jspdf.jsPDF);
+                        const ctor = resolveJsPdfCtor();
+                        if (ctor) resolve(ctor);
                         else reject(new Error('PDF library failed to load.'));
                     });
                     existing.addEventListener('error', function onErr() {
@@ -1308,12 +1321,15 @@
                     });
                     return;
                 }
+
                 const script = document.createElement('script');
                 script.id = 'adminJsPdfScript';
-                script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js';
+                script.src = './lib/jspdf.umd.min.js';
                 script.async = true;
                 script.onload = function() {
-                    if (window.jspdf && window.jspdf.jsPDF) resolve(window.jspdf.jsPDF);
+                    script.setAttribute('data-loaded', 'true');
+                    const ctor = resolveJsPdfCtor();
+                    if (ctor) resolve(ctor);
                     else reject(new Error('PDF library failed to load.'));
                 };
                 script.onerror = function() {
@@ -1323,22 +1339,293 @@
             });
         }
 
-        function pdfTruncate(text, maxLen) {
-            const s = text === null || text === undefined ? '' : String(text);
-            if (s.length <= maxLen) return s;
-            return s.slice(0, Math.max(0, maxLen - 1)) + '…';
+        function loadJsPdfAutotable() {
+            return loadJsPdfLibrary().then(function(jsPDF) {
+                const probe = new jsPDF();
+                if (typeof probe.autoTable === 'function') {
+                    return jsPDF;
+                }
+
+                return new Promise(function(resolve, reject) {
+                    function finish() {
+                        const check = new jsPDF();
+                        if (typeof check.autoTable === 'function') {
+                            resolve(jsPDF);
+                        } else {
+                            reject(new Error('PDF table plugin failed to load.'));
+                        }
+                    }
+
+                    const existing = document.getElementById('adminJsPdfAutotableScript');
+                    if (existing) {
+                        if (existing.getAttribute('data-loaded') === 'true') {
+                            finish();
+                            return;
+                        }
+                        existing.addEventListener('load', function onLoad() {
+                            existing.removeEventListener('load', onLoad);
+                            finish();
+                        });
+                        existing.addEventListener('error', function onErr() {
+                            existing.removeEventListener('error', onErr);
+                            reject(new Error('PDF table plugin failed to load.'));
+                        });
+                        return;
+                    }
+
+                    const script = document.createElement('script');
+                    script.id = 'adminJsPdfAutotableScript';
+                    script.src = './lib/jspdf.plugin.autotable.min.js';
+                    script.async = true;
+                    script.onload = function() {
+                        script.setAttribute('data-loaded', 'true');
+                        finish();
+                    };
+                    script.onerror = function() {
+                        reject(new Error('PDF table plugin failed to load.'));
+                    };
+                    document.head.appendChild(script);
+                });
+            });
         }
 
-        function formatShortDate(isoOrStr) {
-            if (!isoOrStr) return '—';
-            const d = new Date(isoOrStr);
-            if (Number.isNaN(d.getTime())) return '—';
-            return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+        let reportLogoDataUrlCache = null;
+
+        async function loadReportLogoDataUrl() {
+            if (reportLogoDataUrlCache) return reportLogoDataUrlCache;
+            const res = await fetch('./images/websitehead.png');
+            if (!res.ok) throw new Error('Could not load PermitPath logo.');
+            const blob = await res.blob();
+            reportLogoDataUrlCache = await new Promise(function(resolve, reject) {
+                const reader = new FileReader();
+                reader.onload = function() {
+                    resolve(reader.result);
+                };
+                reader.onerror = function() {
+                    reject(new Error('Could not load PermitPath logo.'));
+                };
+                reader.readAsDataURL(blob);
+            });
+            return reportLogoDataUrlCache;
+        }
+
+        function pdfDisplayValue(value) {
+            if (value === null || value === undefined || value === '') return '—';
+            return String(value);
+        }
+
+        function pdfYesNoFlag(value) {
+            return isTruthyFlag(value) ? 'Yes' : 'No';
+        }
+
+        function getReportMonthRange(referenceDate) {
+            const ref = referenceDate || new Date();
+            const start = new Date(ref.getFullYear(), ref.getMonth(), 1, 0, 0, 0, 0);
+            const monthEnd = new Date(ref.getFullYear(), ref.getMonth() + 1, 0, 23, 59, 59, 999);
+            const end = ref.getTime() < monthEnd.getTime() ? ref : monthEnd;
+            return {
+                start: start,
+                end: end,
+                label: start.toLocaleString(undefined, { month: 'long', year: 'numeric' }),
+                shortLabel: start.toLocaleString(undefined, { month: 'short' }),
+                rangeLabel:
+                    start.toLocaleDateString(undefined, {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric'
+                    }) +
+                    ' – ' +
+                    end.toLocaleDateString(undefined, {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric'
+                    })
+            };
+        }
+
+        function isWithinReportRange(isoOrStr, range) {
+            const d = profileDate(isoOrStr);
+            if (!d) return false;
+            const t = d.getTime();
+            return t >= range.start.getTime() && t <= range.end.getTime();
+        }
+
+        function filterUsageEventsForRange(events, range) {
+            return (events || []).filter(function(ev) {
+                return isWithinReportRange(ev.created_at, range);
+            });
+        }
+
+        function periodOverlapsReportRange(period, range) {
+            const periodStart = profileDate(period.started_at);
+            if (!periodStart) return false;
+            const periodEnd = period.ended_at ? profileDate(period.ended_at) : range.end;
+            if (!periodEnd) return false;
+            return (
+                periodStart.getTime() <= range.end.getTime() &&
+                periodEnd.getTime() >= range.start.getTime()
+            );
+        }
+
+        function profileRelevantToReportMonth(profile, monthEvents, range) {
+            if (isWithinReportRange(profile.created_at, range)) return true;
+            if (isWithinReportRange(profile.last_seen_at, range)) return true;
+            const uid =
+                profile.user_id !== null && profile.user_id !== undefined
+                    ? String(profile.user_id)
+                    : '';
+            if (!uid) return false;
+            const hasEvent = monthEvents.some(function(ev) {
+                return userIdFromUsageEvent(ev) === uid;
+            });
+            if (hasEvent) return true;
+            return subscriptionPeriodsForUser(uid).some(function(period) {
+                return periodOverlapsReportRange(period, range);
+            });
+        }
+
+        function computeMonthlyReportMetrics(profiles, allEvents, deletedList, range) {
+            const monthEvents = filterUsageEventsForRange(allEvents, range);
+            const activityCounts = aggregateDisplayedUsageEventCounts(monthEvents);
+            const reportProfiles = (profiles || []).filter(function(profile) {
+                return profileRelevantToReportMonth(profile, monthEvents, range);
+            });
+            const monthDeleted = (deletedList || []).filter(function(record) {
+                return isWithinReportRange(record.deleted_at, range);
+            });
+
+            let newUsers = 0;
+            let activeUsers = 0;
+            let subscribed = 0;
+            reportProfiles.forEach(function(profile) {
+                if (isWithinReportRange(profile.created_at, range)) newUsers++;
+                const uid =
+                    profile.user_id !== null && profile.user_id !== undefined
+                        ? String(profile.user_id)
+                        : '';
+                const activeInMonth =
+                    isWithinReportRange(profile.last_seen_at, range) ||
+                    (uid &&
+                        monthEvents.some(function(ev) {
+                            return userIdFromUsageEvent(ev) === uid;
+                        }));
+                if (activeInMonth) activeUsers++;
+                if (isTruthyFlag(profile.subscription_is_active)) subscribed++;
+            });
+
+            let newSubscriptions = 0;
+            let lapsedInMonth = 0;
+            Object.keys(latestSubscriptionPeriodsByUser).forEach(function(uid) {
+                subscriptionPeriodsForUser(uid).forEach(function(period) {
+                    if (isWithinReportRange(period.started_at, range)) newSubscriptions++;
+                    if (period.ended_at && isWithinReportRange(period.ended_at, range)) {
+                        lapsedInMonth++;
+                    }
+                });
+            });
+
+            return {
+                monthEvents: monthEvents,
+                reportProfiles: reportProfiles,
+                monthDeleted: monthDeleted,
+                activityCounts: activityCounts,
+                newUsers: newUsers,
+                activeUsers: activeUsers,
+                subscribed: subscribed,
+                totalInReport: reportProfiles.length,
+                deletedTotal: monthDeleted.length,
+                deletedSelf: monthDeleted.filter(function(r) {
+                    return r.deletion_source === 'self';
+                }).length,
+                deletedAdmin: monthDeleted.filter(function(r) {
+                    return r.deletion_source === 'admin';
+                }).length,
+                newSubscriptions: newSubscriptions,
+                lapsedInMonth: lapsedInMonth
+            };
+        }
+
+        function formatSubscriptionHistoryForPdf(userId, range) {
+            const periods = subscriptionPeriodsForUser(userId).filter(function(period) {
+                return periodOverlapsReportRange(period, range);
+            });
+            if (!periods.length) return '—';
+            return periods
+                .map(function(period) {
+                    const revenue = estimateSubscriptionNetRevenue(
+                        billingMonthsSubscribed(period.started_at, period.ended_at)
+                    );
+                    const isOpen = !period.ended_at;
+                    const rangeText = isOpen
+                        ? 'Since ' + formatDisplayDate(period.started_at)
+                        : formatDisplayDate(period.started_at) +
+                              ' – ' +
+                              formatDisplayDate(period.ended_at);
+                    const status = isOpen ? 'Active' : 'Lapsed';
+                    return (
+                        rangeText +
+                        ' · ' +
+                        formatBillingMonthsLabel(revenue.billedMonths) +
+                        ' · Est. net ' +
+                        formatUsd(revenue.net) +
+                        ' · ' +
+                        status
+                    );
+                })
+                .join('\n');
+        }
+
+        function drawPdfPageChrome(doc, logoDataUrl, meta) {
+            const pageW = doc.internal.pageSize.getWidth();
+            const pageH = doc.internal.pageSize.getHeight();
+            const pageNumber = doc.internal.getCurrentPageInfo().pageNumber;
+            const pageCount = doc.internal.getNumberOfPages();
+            const headerH = 22;
+
+            doc.setFillColor(17, 24, 39);
+            doc.rect(0, 0, pageW, headerH, 'F');
+
+            if (logoDataUrl) {
+                doc.addImage(logoDataUrl, 'PNG', 12, 4.5, 52, 13);
+            }
+
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(10);
+            doc.setTextColor(255, 255, 255);
+            doc.text('Admin Dashboard Report', pageW - 14, 10.5, { align: 'right' });
+
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(8);
+            doc.setTextColor(186, 196, 208);
+            doc.text(meta.subtitle, pageW - 14, 15.5, { align: 'right' });
+
+            doc.setDrawColor(0, 163, 224);
+            doc.setLineWidth(0.5);
+            doc.line(0, headerH, pageW, headerH);
+
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(7.5);
+            doc.setTextColor(120, 130, 145);
+            doc.text('PermitPath · permitpathnav.com · Confidential', 14, pageH - 7);
+            doc.text('Page ' + pageNumber + ' of ' + pageCount, pageW - 14, pageH - 7, {
+                align: 'right'
+            });
+        }
+
+        function addPdfSectionTitle(doc, title, startY) {
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(12);
+            doc.setTextColor(26, 35, 50);
+            doc.text(title, 14, startY);
+            doc.setDrawColor(0, 163, 224);
+            doc.setLineWidth(0.55);
+            doc.line(14, startY + 2.5, 56, startY + 2.5);
+            return startY + 9;
         }
 
         async function exportAdminMonthlyReportPdf() {
-            if (!latestProfilesList || latestProfilesList.length === 0) {
-                setDataMessage('Load the dashboard first — no user data to export.', 'error');
+            if (!latestProfilesList) {
+                setDataMessage('Load the dashboard first.', 'error');
                 return;
             }
 
@@ -1349,227 +1636,372 @@
 
             try {
                 setDataMessage('Generating PDF…', '');
-                const jsPDF = await loadJsPdfLibrary();
+                const jsPDF = await loadJsPdfAutotable();
+                const logoDataUrl = await loadReportLogoDataUrl();
                 const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'letter' });
                 const pageW = doc.internal.pageSize.getWidth();
-                const pageH = doc.internal.pageSize.getHeight();
-                const marginL = 14;
-                const marginR = 14;
-                const marginTop = 16;
-                const marginBottom = 14;
-                const contentW = pageW - marginL - marginR;
-                let y = marginTop;
-
-                function ensureSpace(lineH) {
-                    lineH = lineH || 6;
-                    if (y + lineH > pageH - marginBottom) {
-                        doc.addPage();
-                        y = marginTop;
-                    }
-                }
-
-                function addHeading(text, size) {
-                    ensureSpace(10);
-                    doc.setFont('helvetica', 'bold');
-                    doc.setFontSize(size || 14);
-                    doc.setTextColor(26, 35, 50);
-                    doc.text(text, marginL, y);
-                    y += (size || 14) * 0.45 + 4;
-                }
-
-                function addLine(text, opts) {
-                    opts = opts || {};
-                    const fontSize = opts.size || 9;
-                    const lineH = opts.lineH || 5;
-                    doc.setFont('helvetica', opts.bold ? 'bold' : 'normal');
-                    doc.setFontSize(fontSize);
-                    doc.setTextColor(
-                        opts.muted ? 90 : 26,
-                        opts.muted ? 107 : 35,
-                        opts.muted ? 128 : 50
-                    );
-                    const lines = doc.splitTextToSize(String(text), contentW);
-                    lines.forEach(function(line) {
-                        ensureSpace(lineH);
-                        doc.text(line, marginL, y);
-                        y += lineH;
-                    });
-                }
-
-                function addSpacer(h) {
-                    y += h || 4;
-                }
-
+                const contentWidth = pageW - 28;
                 const now = new Date();
-                const monthLabel = now.toLocaleString(undefined, { month: 'long', year: 'numeric' });
-                const metrics = computeProfileMetrics(latestProfilesList);
-                const activityCounts = aggregateDisplayedUsageEventCounts(latestEventsList);
-                const gross = metrics.subscribed * SUBSCRIPTION_PRICE_MONTHLY;
-                const net = gross * (1 - APP_STORE_FEE_RATE);
-
-                addHeading('PermitPath — Monthly Users Report', 16);
-                addLine(monthLabel + ' · Generated ' + formatDisplayDate(now.toISOString()), {
-                    size: 9,
-                    muted: true
-                });
-                addSpacer(6);
-
-                addHeading('Summary', 11);
-                addLine(
-                    'Total users: ' +
-                        metrics.total +
-                        ' · Subscribed: ' +
-                        metrics.subscribed +
-                        ' · Not subscribed: ' +
-                        metrics.notSubscribed
+                const monthRange = getReportMonthRange(now);
+                const monthMetrics = computeMonthlyReportMetrics(
+                    latestProfilesList,
+                    latestEventsList,
+                    latestDeletedList,
+                    monthRange
                 );
-                addLine(
-                    'New (7d): ' +
-                        metrics.new7 +
-                        ' · New (30d): ' +
-                        metrics.new30 +
-                        ' · Active (7d): ' +
-                        metrics.active7
-                );
-                addLine(
-                    'Expiring soon: ' +
-                        metrics.expiringSoon +
-                        ' · Paying, inactive 14d+: ' +
-                        metrics.payingInactive +
-                        ' · Lapsed: ' +
-                        metrics.lapsed
-                );
-                addSpacer(4);
-
-                addHeading('Platform activity (last ' + USAGE_EVENTS_WINDOW_DAYS + ' days)', 11);
-                addLine(
-                    'App opens: ' +
-                        (activityCounts.app_open || 0) +
-                        ' · Routes built: ' +
-                        (activityCounts.route_built || 0) +
-                        ' · Navigations started: ' +
-                        (activityCounts.navigation_started || 0)
-                );
-                addSpacer(4);
-
-                addHeading('Revenue estimate', 11);
-                addLine(
-                    'Est. net monthly revenue: ' +
-                        formatUsd(net) +
+                const reportMeta = {
+                    subtitle:
+                        monthRange.label +
                         ' (' +
-                        metrics.subscribed +
-                        ' subscribers × ' +
-                        formatUsd(SUBSCRIPTION_PRICE_MONTHLY) +
-                        '/mo, after ~15% store fees)'
+                        monthRange.rangeLabel +
+                        ') · Generated ' +
+                        formatDisplayDate(now.toISOString())
+                };
+                const gross = monthMetrics.subscribed * SUBSCRIPTION_PRICE_MONTHLY;
+                const storeFees = gross * APP_STORE_FEE_RATE;
+                const net = gross - storeFees;
+                const feePct = Math.round(APP_STORE_FEE_RATE * 100);
+                const monthTag = monthRange.shortLabel;
+
+                const tableBase = {
+                    theme: 'grid',
+                    styles: {
+                        fontSize: 7.5,
+                        cellPadding: 2.8,
+                        overflow: 'linebreak',
+                        lineColor: [218, 224, 232],
+                        lineWidth: 0.12,
+                        textColor: [26, 35, 50],
+                        valign: 'top'
+                    },
+                    headStyles: {
+                        fillColor: [26, 35, 50],
+                        textColor: [255, 255, 255],
+                        fontStyle: 'bold',
+                        fontSize: 7.5
+                    },
+                    alternateRowStyles: {
+                        fillColor: [248, 250, 252]
+                    },
+                    margin: { top: 26, left: 14, right: 14, bottom: 16 },
+                    didDrawPage: function() {
+                        drawPdfPageChrome(doc, logoDataUrl, reportMeta);
+                    }
+                };
+
+                let startY = 30;
+                startY = addPdfSectionTitle(doc, 'Executive summary · ' + monthRange.label, startY);
+
+                doc.autoTable(
+                    Object.assign({}, tableBase, {
+                        startY: startY,
+                        head: [['Metric', 'Value']],
+                        body: [
+                            ['Report month', monthRange.label],
+                            ['Report date range', monthRange.rangeLabel],
+                            ['Generated', formatDisplayDate(now.toISOString())],
+                            ['Users in this report', String(monthMetrics.totalInReport)],
+                            ['New users this month', String(monthMetrics.newUsers)],
+                            ['Active users this month', String(monthMetrics.activeUsers)],
+                            [
+                                'Subscribed (as of report date)',
+                                String(monthMetrics.subscribed)
+                            ],
+                            ['New subscriptions this month', String(monthMetrics.newSubscriptions)],
+                            ['Subscriptions lapsed this month', String(monthMetrics.lapsedInMonth)],
+                            [
+                                'Platform app opens (' + monthTag + ')',
+                                String(monthMetrics.activityCounts.app_open || 0)
+                            ],
+                            [
+                                'Platform routes built (' + monthTag + ')',
+                                String(monthMetrics.activityCounts.route_built || 0)
+                            ],
+                            [
+                                'Platform navigations (' + monthTag + ')',
+                                String(monthMetrics.activityCounts.navigation_started || 0)
+                            ],
+                            ['Deleted accounts this month', String(monthMetrics.deletedTotal)],
+                            ['Deleted this month (self-deleted)', String(monthMetrics.deletedSelf)],
+                            [
+                                'Deleted this month (removed by admin)',
+                                String(monthMetrics.deletedAdmin)
+                            ]
+                        ],
+                        columnStyles: {
+                            0: { cellWidth: 72, fontStyle: 'bold' },
+                            1: { cellWidth: 'auto' }
+                        }
+                    })
                 );
-                addSpacer(4);
 
-                const deletedTotal = latestDeletedList.length;
-                const deletedSelf = latestDeletedList.filter(function(r) {
-                    return r.deletion_source === 'self';
-                }).length;
-                const deletedAdmin = latestDeletedList.filter(function(r) {
-                    return r.deletion_source === 'admin';
-                }).length;
-                addHeading('Deleted accounts', 11);
-                addLine(
-                    'Total: ' +
-                        deletedTotal +
-                        ' · Self-deleted: ' +
-                        deletedSelf +
-                        ' · Removed by admin: ' +
-                        deletedAdmin
+                startY = doc.lastAutoTable.finalY + 8;
+                startY = addPdfSectionTitle(
+                    doc,
+                    'Revenue estimate · ' + monthRange.label,
+                    startY
                 );
-                addSpacer(8);
 
-                addHeading('Users (' + latestProfilesList.length + ')', 11);
-                addSpacer(2);
+                doc.autoTable(
+                    Object.assign({}, tableBase, {
+                        startY: startY,
+                        head: [['Item', 'Amount']],
+                        body: [
+                            [
+                                'Subscribed users (as of report date)',
+                                String(monthMetrics.subscribed)
+                            ],
+                            ['Monthly price per subscriber', formatUsd(SUBSCRIPTION_PRICE_MONTHLY)],
+                            ['Gross monthly revenue', formatUsd(gross)],
+                            ['Estimated app store fees (~' + feePct + '%)', '−' + formatUsd(storeFees)],
+                            [
+                                'Estimated net monthly revenue',
+                                formatUsd(net) + ' for ' + monthRange.label
+                            ],
+                            [
+                                'Notes',
+                                'Estimate for ' +
+                                    monthRange.label +
+                                    ' only. Based on users subscribed as of the report date. Assumes $3.99/mo and ~15% platform fees. Actual payouts vary by store, region, trials, refunds, and tax.'
+                            ]
+                        ],
+                        columnStyles: {
+                            0: { cellWidth: 72, fontStyle: 'bold' },
+                            1: { cellWidth: 'auto' }
+                        }
+                    })
+                );
 
-                const colXs = [
-                    marginL,
-                    marginL + 42,
-                    marginL + 92,
-                    marginL + 108,
-                    marginL + 132,
-                    marginL + 152,
-                    marginL + 168,
-                    marginL + 184
-                ];
+                startY = doc.lastAutoTable.finalY + 8;
+                startY = addPdfSectionTitle(
+                    doc,
+                    'Users this month (' + monthMetrics.totalInReport + ')',
+                    startY
+                );
 
-                function drawUserTableHeader() {
-                    ensureSpace(8);
-                    doc.setFont('helvetica', 'bold');
-                    doc.setFontSize(8);
-                    doc.setTextColor(26, 35, 50);
-                    doc.text('Name', colXs[0], y);
-                    doc.text('Email', colXs[1], y);
-                    doc.text('Sub', colXs[2], y);
-                    doc.text('Last seen', colXs[3], y);
-                    doc.text('Routes', colXs[4], y);
-                    doc.text('Opens', colXs[5], y);
-                    doc.text('Nav', colXs[6], y);
-                    doc.text('Built', colXs[7], y);
-                    y += 5;
-                    doc.setDrawColor(200, 210, 220);
-                    doc.line(marginL, y - 2, pageW - marginR, y - 2);
+                const sortedProfiles = sortProfilesByLastSeen(monthMetrics.reportProfiles);
+                const userRows = sortedProfiles.map(function(profile) {
+                    const uid =
+                        profile.user_id !== null && profile.user_id !== undefined
+                            ? String(profile.user_id)
+                            : '';
+                    const activity = uid
+                        ? countProfileActivity(uid, monthMetrics.monthEvents)
+                        : null;
+                    return [
+                        pdfDisplayValue(profile.full_name),
+                        pdfDisplayValue(profile.email),
+                        pdfDisplayValue(uid),
+                        profileScalarDisplay(profile, 'created_at'),
+                        profileScalarDisplay(profile, 'last_seen_at'),
+                        pdfYesNoFlag(profile.subscription_is_active),
+                        profileScalarDisplay(profile, 'subscription_expires_at'),
+                        pdfDisplayValue(profile.subscription_product_id),
+                        pdfDisplayValue(profile.routes_built_count),
+                        activity ? String(activity.app_open || 0) : '—',
+                        activity ? String(activity.navigation_started || 0) : '—',
+                        activity ? String(activity.route_built || 0) : '—',
+                        formatSubscriptionHistoryForPdf(uid, monthRange)
+                    ];
+                });
+
+                doc.autoTable(
+                    Object.assign({}, tableBase, {
+                        startY: startY,
+                        tableWidth: contentWidth,
+                        head: [
+                            [
+                                'Full name',
+                                'Email',
+                                'User ID',
+                                'Profile created',
+                                'Last seen',
+                                'Subscribed',
+                                'Subscription expires',
+                                'Product ID',
+                                'Routes built',
+                                'App opens (' + monthTag + ')',
+                                'Navigations (' + monthTag + ')',
+                                'Routes (' + monthTag + ')',
+                                'Subscription history (' + monthTag + ')'
+                            ]
+                        ],
+                        body: userRows.length
+                            ? userRows
+                            : [
+                                  [
+                                      '—',
+                                      'No users matched this month.',
+                                      '—',
+                                      '—',
+                                      '—',
+                                      '—',
+                                      '—',
+                                      '—',
+                                      '—',
+                                      '—',
+                                      '—',
+                                      '—',
+                                      '—'
+                                  ]
+                              ],
+                        styles: Object.assign({}, tableBase.styles, { fontSize: 6.5 }),
+                        headStyles: Object.assign({}, tableBase.headStyles, { fontSize: 6.5 }),
+                        horizontalPageBreak: true,
+                        horizontalPageBreakRepeat: 0,
+                        columnStyles: {
+                            0: { cellWidth: 20 },
+                            1: { cellWidth: 28 },
+                            2: { cellWidth: 26, font: 'courier', fontSize: 6 },
+                            3: { cellWidth: 18 },
+                            4: { cellWidth: 18 },
+                            5: { cellWidth: 11 },
+                            6: { cellWidth: 18 },
+                            7: { cellWidth: 16 },
+                            8: { cellWidth: 11 },
+                            9: { cellWidth: 11 },
+                            10: { cellWidth: 11 },
+                            11: { cellWidth: 11 },
+                            12: { cellWidth: 42 }
+                        }
+                    })
+                );
+
+                const periodRows = [];
+                const profileByUserId = Object.create(null);
+                latestProfilesList.forEach(function(profile) {
+                    if (profile.user_id) {
+                        profileByUserId[String(profile.user_id)] = profile;
+                    }
+                });
+                Object.keys(latestSubscriptionPeriodsByUser).forEach(function(uid) {
+                    const profile = profileByUserId[uid];
+                    const email =
+                        profile && profile.email ? String(profile.email).trim() : '—';
+                    const name =
+                        profile && profile.full_name ? String(profile.full_name).trim() : '—';
+                    subscriptionPeriodsForUser(uid).forEach(function(period) {
+                        if (!periodOverlapsReportRange(period, monthRange)) return;
+                        const revenue = estimateSubscriptionNetRevenue(
+                            billingMonthsSubscribed(period.started_at, period.ended_at)
+                        );
+                        periodRows.push([
+                            name,
+                            email,
+                            uid,
+                            formatDisplayDate(period.started_at),
+                            period.ended_at ? formatDisplayDate(period.ended_at) : '—',
+                            formatBillingMonthsLabel(revenue.billedMonths),
+                            formatUsd(revenue.gross),
+                            formatUsd(revenue.fees),
+                            formatUsd(revenue.net),
+                            period.ended_at ? 'Lapsed' : 'Active'
+                        ]);
+                    });
+                });
+
+                if (periodRows.length > 0) {
+                    startY = doc.lastAutoTable.finalY + 8;
+                    startY = addPdfSectionTitle(
+                        doc,
+                        'Subscription periods this month (' + periodRows.length + ')',
+                        startY
+                    );
+
+                    doc.autoTable(
+                        Object.assign({}, tableBase, {
+                            startY: startY,
+                            tableWidth: contentWidth,
+                            head: [
+                                [
+                                    'Full name',
+                                    'Email',
+                                    'User ID',
+                                    'Started',
+                                    'Ended',
+                                    'Billed months',
+                                    'Gross',
+                                    'Store fees',
+                                    'Est. net',
+                                    'Status'
+                                ]
+                            ],
+                            body: periodRows,
+                            columnStyles: {
+                                0: { cellWidth: 24 },
+                                1: { cellWidth: 34 },
+                                2: { cellWidth: 30, font: 'courier', fontSize: 6.5 },
+                                3: { cellWidth: 24 },
+                                4: { cellWidth: 24 },
+                                5: { cellWidth: 18 },
+                                6: { cellWidth: 18 },
+                                7: { cellWidth: 18 },
+                                8: { cellWidth: 18 },
+                                9: { cellWidth: 14 }
+                            }
+                        })
+                    );
                 }
 
-                drawUserTableHeader();
+                if (monthMetrics.monthDeleted.length > 0) {
+                    startY = doc.lastAutoTable.finalY + 8;
+                    startY = addPdfSectionTitle(
+                        doc,
+                        'Deleted accounts this month (' + monthMetrics.monthDeleted.length + ')',
+                        startY
+                    );
 
-                const sorted = sortProfilesByLastSeen(latestProfilesList);
-                doc.setFont('helvetica', 'normal');
-                doc.setFontSize(7.5);
-
-                sorted.forEach(function(profile) {
-                    if (y > pageH - marginBottom - 6) {
-                        doc.addPage();
-                        y = marginTop;
-                        drawUserTableHeader();
-                    }
-
-                    const fn = profile.full_name && String(profile.full_name).trim();
-                    const em = profile.email && String(profile.email).trim();
-                    const uid = profile.user_id ? String(profile.user_id) : '';
-                    const name = pdfTruncate(fn || em || uid || 'Unknown', 28);
-                    const email = pdfTruncate(em || '—', 34);
-                    const sub = isTruthyFlag(profile.subscription_is_active) ? 'Yes' : 'No';
-                    const lastSeen = formatShortDate(profile.last_seen_at);
-                    const routes =
-                        profile.routes_built_count === null || profile.routes_built_count === undefined
-                            ? '—'
-                            : String(profile.routes_built_count);
-                    const activity = uid ? countProfileActivity(uid, latestEventsList) : null;
-                    const opens = activity ? String(activity.app_open || 0) : '—';
-                    const nav = activity ? String(activity.navigation_started || 0) : '—';
-                    const built = activity ? String(activity.route_built || 0) : '—';
-
-                    doc.setTextColor(26, 35, 50);
-                    doc.text(name, colXs[0], y);
-                    doc.text(email, colXs[1], y);
-                    doc.text(sub, colXs[2], y);
-                    doc.text(lastSeen, colXs[3], y);
-                    doc.text(routes, colXs[4], y);
-                    doc.text(opens, colXs[5], y);
-                    doc.text(nav, colXs[6], y);
-                    doc.text(built, colXs[7], y);
-                    y += 4.5;
-                });
-
-                const pageCount = doc.internal.getNumberOfPages();
-                for (let i = 1; i <= pageCount; i++) {
-                    doc.setPage(i);
-                    doc.setFont('helvetica', 'normal');
-                    doc.setFontSize(8);
-                    doc.setTextColor(120, 130, 145);
-                    doc.text('Page ' + i + ' of ' + pageCount, pageW - marginR, pageH - 8, {
-                        align: 'right'
+                    const deletedRows = monthMetrics.monthDeleted.map(function(record) {
+                        return [
+                            pdfDisplayValue(record.full_name),
+                            pdfDisplayValue(record.email),
+                            pdfDisplayValue(record.user_id),
+                            deletionSourceLabel(record.deletion_source),
+                            profileScalarDisplay(record, 'deleted_at'),
+                            profileScalarDisplay(record, 'profile_created_at'),
+                            profileScalarDisplay(record, 'last_seen_at'),
+                            pdfDisplayValue(record.routes_built_count),
+                            pdfYesNoFlag(record.subscription_is_active)
+                        ];
                     });
+
+                    doc.autoTable(
+                        Object.assign({}, tableBase, {
+                            startY: startY,
+                            tableWidth: contentWidth,
+                            head: [
+                                [
+                                    'Full name',
+                                    'Email',
+                                    'User ID',
+                                    'Deletion type',
+                                    'Deleted',
+                                    'Profile created',
+                                    'Last seen',
+                                    'Routes built',
+                                    'Was subscribed'
+                                ]
+                            ],
+                            body: deletedRows,
+                            columnStyles: {
+                                0: { cellWidth: 28 },
+                                1: { cellWidth: 40 },
+                                2: { cellWidth: 34, font: 'courier', fontSize: 6.5 },
+                                3: { cellWidth: 22 },
+                                4: { cellWidth: 28 },
+                                5: { cellWidth: 28 },
+                                6: { cellWidth: 28 },
+                                7: { cellWidth: 16 },
+                                8: { cellWidth: 18 }
+                            }
+                        })
+                    );
                 }
 
                 const fileMonth =
                     now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0');
                 doc.save('permitpath-monthly-report-' + fileMonth + '.pdf');
-                setDataMessage('PDF downloaded.', 'success');
+                setDataMessage('PDF downloaded for ' + monthRange.label + '.', 'success');
             } catch (err) {
                 const msg = err && err.message ? err.message : 'PDF export failed.';
                 setDataMessage(msg, 'error');
@@ -1620,108 +2052,6 @@
             } catch (_e) {
                 /* ignore quota / private mode */
             }
-        }
-
-        function loadUserNotesByKey() {
-            try {
-                const raw = localStorage.getItem(USER_NOTES_STORAGE_KEY);
-                if (!raw) return Object.create(null);
-                const parsed = JSON.parse(raw);
-                if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
-                    return Object.create(null);
-                }
-                return parsed;
-            } catch (_e) {
-                return Object.create(null);
-            }
-        }
-
-        function saveUserNotesByKey() {
-            try {
-                localStorage.setItem(USER_NOTES_STORAGE_KEY, JSON.stringify(userNotesByKey));
-            } catch (_e) {
-                /* ignore quota / private mode */
-            }
-        }
-
-        function getUserNote(key) {
-            if (!key) return '';
-            const v = userNotesByKey[key];
-            return v === null || v === undefined ? '' : String(v);
-        }
-
-        function setUserNote(key, text) {
-            if (!key) return;
-            const value = text === null || text === undefined ? '' : String(text);
-            if (value.trim() === '') {
-                delete userNotesByKey[key];
-            } else {
-                userNotesByKey[key] = value;
-            }
-            saveUserNotesByKey();
-        }
-
-        function hasUserNote(key) {
-            return getUserNote(key).trim() !== '';
-        }
-
-        function updateNotesDotIndicator(dotEl, key) {
-            if (!dotEl) return;
-            dotEl.classList.toggle('admin-profile-notes-dot--filled', hasUserNote(key));
-            dotEl.classList.toggle('admin-profile-notes-dot--empty', !hasUserNote(key));
-        }
-
-        function appendProfileNotesBlock(expandEl, profile) {
-            const pinKey = profileListKey(profile);
-            const block = document.createElement('div');
-            block.className = 'admin-profile-notes-block';
-
-            const det = document.createElement('details');
-            det.className = 'admin-profile-notes';
-
-            const sum = document.createElement('summary');
-            sum.className = 'admin-profile-notes-toggle';
-
-            const dot = document.createElement('span');
-            dot.className = 'admin-profile-notes-dot';
-            updateNotesDotIndicator(dot, pinKey);
-
-            const label = document.createElement('span');
-            label.className = 'admin-profile-notes-label';
-            label.textContent = 'Notes';
-
-            sum.appendChild(dot);
-            sum.appendChild(label);
-
-            const textarea = document.createElement('textarea');
-            textarea.className = 'admin-profile-notes-field';
-            textarea.rows = 4;
-            textarea.placeholder = 'Private notes about this user (saved in this browser)…';
-            textarea.spellcheck = true;
-            textarea.value = getUserNote(pinKey);
-            if (!pinKey) {
-                textarea.disabled = true;
-                textarea.placeholder = 'Cannot save notes for this profile (no user id, profile id, or email).';
-            }
-
-            let saveTimer = null;
-            function persistNotes() {
-                if (!pinKey) return;
-                setUserNote(pinKey, textarea.value);
-                updateNotesDotIndicator(dot, pinKey);
-            }
-
-            textarea.addEventListener('input', function() {
-                updateNotesDotIndicator(dot, pinKey);
-                clearTimeout(saveTimer);
-                saveTimer = setTimeout(persistNotes, 300);
-            });
-            textarea.addEventListener('blur', persistNotes);
-
-            det.appendChild(sum);
-            det.appendChild(textarea);
-            block.appendChild(det);
-            expandEl.appendChild(block);
         }
 
         function isProfilePinned(profile) {
@@ -2081,8 +2411,6 @@
 
             appendProfileActivityBlock(expand, uid);
 
-            appendProfileNotesBlock(expand, profile);
-
             const profileUserId =
                 profile.user_id !== null && profile.user_id !== undefined && profile.user_id !== ''
                     ? String(profile.user_id)
@@ -2386,10 +2714,6 @@
                         return k !== pinKey;
                     });
                     savePinnedUserKeys(pinnedUserKeys);
-                }
-                if (pinKey && userNotesByKey[pinKey]) {
-                    delete userNotesByKey[pinKey];
-                    saveUserNotesByKey();
                 }
 
                 latestProfilesList = latestProfilesList.filter(function(p) {
