@@ -7,7 +7,7 @@
             try {
                 var u = new URL(window.location.href);
                 if (!u.searchParams.has('v')) {
-                    u.searchParams.set('v', '51');
+                    u.searchParams.set('v', '52');
                     window.location.replace(u.pathname + u.search + u.hash);
                 }
             } catch (_e) {}
@@ -21,7 +21,7 @@
     <meta http-equiv="Expires" content="0" />
     <title>Admin Dashboard - PermitPath</title>
     <meta name="robots" content="noindex, nofollow" />
-    <link rel="canonical" href="https://permitpathnav.com/admin.html?v=51" />
+    <link rel="canonical" href="https://permitpathnav.com/admin.html?v=52" />
     <link rel="icon" type="image/png" href="images/pppp.png" />
     <link rel="stylesheet" href="styles.css?v=35" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -3131,16 +3131,7 @@
 
         supabase.auth.onAuthStateChange(async function(event, session) {
             await enforceAdminState(session);
-
-            const user = session && session.user ? session.user : null;
-            if (!user || !isAdminUser(user)) {
-                return;
-            }
-            // Avoid double-fetch on first paint: initAdminAuth already loads once.
-            if (event === 'INITIAL_SESSION') {
-                return;
-            }
-            await loadDashboardData(session);
+            // Dashboard data loads only on sign-in (form or initAdminAuth) or Refresh — not on token refresh.
         });
 
         (async function initAdminAuth() {
