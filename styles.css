@@ -2682,6 +2682,52 @@ body.admin-page .admin-user-filter-clear {
     min-height: auto;
 }
 
+body.admin-page .admin-user-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 0.65rem;
+    margin-bottom: 0.85rem;
+}
+
+body.admin-page .admin-user-search-wrap {
+    flex: 1 1 14rem;
+    min-width: 0;
+    margin-bottom: 0;
+}
+
+body.admin-page .admin-user-search-wrap label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: #647896;
+}
+
+body.admin-page .admin-user-search-input {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 44px;
+    padding: 0.65rem 0.85rem;
+    border-radius: 10px;
+    border: 1px solid rgba(26, 35, 50, 0.14);
+    background: #fff;
+    color: #1a2332;
+    font: inherit;
+    font-size: 0.95rem;
+}
+
+body.admin-page .admin-user-search-input:focus {
+    outline: none;
+    border-color: rgba(44, 82, 130, 0.45);
+    box-shadow: 0 0 0 3px rgba(44, 82, 130, 0.15);
+}
+
+body.admin-page .admin-user-search-clear {
+    flex-shrink: 0;
+    min-height: 44px;
+}
+
 body.admin-page .admin-revenue-panel {
     margin-top: 1rem;
 }
@@ -3684,10 +3730,34 @@ body.admin-page .admin-block-spaced {
     }
 }
 
+@media (max-width: 900px) {
+    body.admin-page .admin-topbar {
+        position: sticky;
+        top: 0;
+        z-index: 40;
+        background: rgba(244, 247, 252, 0.96);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        margin: 0 -0.35rem 0.85rem;
+        padding: 0.85rem 0.35rem;
+        border-bottom: 1px solid rgba(26, 35, 50, 0.08);
+        border-radius: 0 0 12px 12px;
+    }
+
+    body.admin-page .admin-overview-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    body.admin-page .admin-event-totals-ticker,
+    body.admin-page .admin-profile-events-ticker {
+        flex-wrap: wrap;
+    }
+}
+
 @media (max-width: 640px) {
     body.admin-page .info.admin-shell {
-        padding: 1.5rem 1rem 2rem;
-        margin: 1rem 0.5rem 1.5rem;
+        padding: max(1rem, env(safe-area-inset-top)) 0.75rem max(1.5rem, env(safe-area-inset-bottom));
+        margin: 0.75rem 0.35rem 1.25rem;
     }
 
     body.admin-page .admin-topbar {
@@ -3696,11 +3766,111 @@ body.admin-page .admin-block-spaced {
     }
 
     body.admin-page .admin-topbar-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
         width: 100%;
+        gap: 0.5rem;
     }
 
     body.admin-page .admin-topbar-actions .button {
-        flex: 1;
+        flex: unset;
+        width: 100%;
+        min-height: 48px;
+        padding-left: 0.65rem;
+        padding-right: 0.65rem;
+        font-size: 0.88rem;
+    }
+
+    body.admin-page .admin-topbar-actions .admin-refresh-btn {
+        grid-column: 1;
+    }
+
+    body.admin-page .admin-topbar-actions #adminExportPdfBtn {
+        grid-column: 2;
+    }
+
+    body.admin-page .admin-topbar-actions #adminSignOutBtn {
+        grid-column: 1 / -1;
+    }
+
+    body.admin-page .admin-panel {
+        padding: 1rem 0.85rem;
+    }
+
+    body.admin-page .admin-users-panel {
+        padding: 1rem 0.85rem 1.05rem;
+    }
+
+    body.admin-page .admin-user-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    body.admin-page .admin-user-search-wrap {
+        flex-basis: auto;
+    }
+
+    body.admin-page .admin-user-search-input {
+        font-size: 16px;
+    }
+
+    body.admin-page .admin-user-search-clear,
+    body.admin-page .admin-user-filter-clear {
+        width: 100%;
+        min-height: 48px;
+    }
+
+    body.admin-page .admin-user-filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    body.admin-page .admin-profile-legend {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.35rem;
+    }
+
+    body.admin-page .admin-profile-summary-body {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.55rem;
+    }
+
+    body.admin-page .admin-profile-summary-aside {
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: flex-start;
+        max-width: none;
+        text-align: left;
+        gap: 0.45rem;
+    }
+
+    body.admin-page .admin-email-tools-nav,
+    body.admin-page .admin-deleted-filter-nav {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.45rem;
+    }
+
+    body.admin-page .admin-email-tools-nav .admin-tool-nav-btn,
+    body.admin-page .admin-deleted-filter-nav .admin-tool-nav-btn {
+        width: 100%;
+        min-height: 48px;
+    }
+
+    body.admin-page .admin-email-templates {
+        grid-template-columns: 1fr;
+    }
+
+    body.admin-page .admin-email-tool-actions,
+    body.admin-page .admin-email-tool-actions .button {
+        width: 100%;
+    }
+
+    body.admin-page .admin-profile-delete-btn {
+        width: 100%;
     }
 
     body.admin-page .info {

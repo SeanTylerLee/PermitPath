@@ -7,7 +7,7 @@
             try {
                 var u = new URL(window.location.href);
                 if (!u.searchParams.has('v')) {
-                    u.searchParams.set('v', '49');
+                    u.searchParams.set('v', '51');
                     window.location.replace(u.pathname + u.search + u.hash);
                 }
             } catch (_e) {}
@@ -21,9 +21,9 @@
     <meta http-equiv="Expires" content="0" />
     <title>Admin Dashboard - PermitPath</title>
     <meta name="robots" content="noindex, nofollow" />
-    <link rel="canonical" href="https://permitpathnav.com/admin.html?v=49" />
+    <link rel="canonical" href="https://permitpathnav.com/admin.html?v=51" />
     <link rel="icon" type="image/png" href="images/pppp.png" />
-    <link rel="stylesheet" href="styles.css?v=33" />
+    <link rel="stylesheet" href="styles.css?v=35" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 </head>
@@ -111,6 +111,28 @@
                         <div id="adminUserFilterBar" class="admin-user-filter-bar" hidden>
                             <span id="adminUserFilterLabel" class="admin-user-filter-label"></span>
                             <button type="button" class="button button-secondary admin-user-filter-clear" id="adminUserFilterClear">Clear filter</button>
+                        </div>
+                        <div class="admin-user-toolbar">
+                            <div class="form-group admin-user-search-wrap">
+                                <label for="adminUserSearch">Search users</label>
+                                <input
+                                    type="search"
+                                    id="adminUserSearch"
+                                    class="admin-user-search-input"
+                                    placeholder="Name or email…"
+                                    autocomplete="off"
+                                    spellcheck="false"
+                                    enterkeyhint="search"
+                                />
+                            </div>
+                            <button
+                                type="button"
+                                class="button button-secondary admin-user-search-clear"
+                                id="adminUserSearchClear"
+                                hidden
+                            >
+                                Clear search
+                            </button>
                         </div>
                         <p class="admin-profile-legend">
                             <span class="admin-profile-legend-item"><span class="admin-profile-sub-dot admin-profile-sub-dot--active admin-profile-sub-dot--legend"></span> Subscribed</span>
@@ -254,6 +276,8 @@
         const adminUserFilterBar = document.getElementById('adminUserFilterBar');
         const adminUserFilterLabel = document.getElementById('adminUserFilterLabel');
         const adminUserFilterClear = document.getElementById('adminUserFilterClear');
+        const adminUserSearch = document.getElementById('adminUserSearch');
+        const adminUserSearchClear = document.getElementById('adminUserSearchClear');
         const adminSignedInAs = document.getElementById('adminSignedInAs');
         const adminRefreshBtn = document.getElementById('adminRefreshBtn');
         const adminExportPdfBtn = document.getElementById('adminExportPdfBtn');
@@ -319,6 +343,7 @@
 
         let pinnedUserKeys = loadPinnedUserKeys();
         let activeUserFilter = null;
+        let activeUserSearchQuery = '';
 
         const USER_FILTER_META = {
             all: { label: 'All users' },
@@ -478,6 +503,9 @@
             latestProfilesList = [];
             latestEventsList = [];
             activeUserFilter = null;
+            activeUserSearchQuery = '';
+            if (adminUserSearch) adminUserSearch.value = '';
+            updateUserSearchUi();
             updateUserFilterBar();
             if (adminMainView && adminEmailToolView) {
                 adminEmailToolView.hidden = true;
@@ -1096,6 +1124,43 @@
             return (profiles || []).filter(function(profile) {
                 return profileMatchesUserFilter(profile, activeUserFilter);
             });
+        }
+
+        function profileMatchesSearch(profile, query) {
+            const q = query === null || query === undefined ? '' : String(query).trim().toLowerCase();
+            if (!q) return true;
+            const name =
+                profile && profile.full_name !== null && profile.full_name !== undefined
+                    ? String(profile.full_name).trim().toLowerCase()
+                    : '';
+            const email =
+                profile && profile.email !== null && profile.email !== undefined
+                    ? String(profile.email).trim().toLowerCase()
+                    : '';
+            return name.indexOf(q) !== -1 || email.indexOf(q) !== -1;
+        }
+
+        function applyProfileListFilters(profiles) {
+            return applyUserFilter(profiles).filter(function(profile) {
+                return profileMatchesSearch(profile, activeUserSearchQuery);
+            });
+        }
+
+        function updateUserSearchUi() {
+            const hasQuery = !!String(activeUserSearchQuery || '').trim();
+            if (adminUserSearchClear) {
+                adminUserSearchClear.hidden = !hasQuery;
+            }
+        }
+
+        function setUserSearch(query) {
+            activeUserSearchQuery =
+                query === null || query === undefined ? '' : String(query).trim();
+            updateUserSearchUi();
+            renderProfiles(latestProfilesList);
+            if (activeUserSearchQuery && adminUsersPanel) {
+                adminUsersPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
         }
 
         function updateUserFilterBar() {
@@ -2453,13 +2518,13 @@
         function renderProfiles(profiles) {
             profilesWrap.innerHTML = '';
             const all = profiles || [];
-            const list = applyUserFilter(all);
+            const list = applyProfileListFilters(all);
+            const hasSearch = !!String(activeUserSearchQuery || '').trim();
 
             if (profilesCount) {
-                if (activeUserFilter) {
+                if (activeUserFilter || hasSearch) {
                     profilesCount.hidden = false;
-                    profilesCount.textContent =
-                        list.length + ' of ' + all.length + ' users match filter';
+                    profilesCount.textContent = list.length + ' of ' + all.length + ' users shown';
                 } else {
                     setSectionCount(profilesCount, all.length, 'user', 'users');
                 }
@@ -2478,15 +2543,21 @@
                 profilesWrap.className = 'admin-profile-list admin-profile-list--empty';
                 const empty = document.createElement('div');
                 empty.className = 'admin-empty-state';
-                const meta = USER_FILTER_META[activeUserFilter];
-                empty.textContent =
-                    'No users match “' + (meta ? meta.label : activeUserFilter) + '”. Try another filter or clear it.';
+                if (hasSearch) {
+                    empty.textContent =
+                        'No users match “' + activeUserSearchQuery + '”. Try a different name or email.';
+                } else {
+                    const meta = USER_FILTER_META[activeUserFilter];
+                    empty.textContent =
+                        'No users match “' + (meta ? meta.label : activeUserFilter) + '”. Try another filter or clear it.';
+                }
                 profilesWrap.appendChild(empty);
                 return;
             }
 
             profilesWrap.className = 'admin-profile-list';
             const parts = partitionProfilesForDisplay(list);
+            const sectionLabel = activeUserFilter || hasSearch ? 'Matching users' : 'All users';
 
             if (parts.pinned.length > 0) {
                 appendProfileSection(profilesWrap, 'Pinned', parts.pinned, 'admin-profile-section--pinned', {
@@ -2494,18 +2565,18 @@
                 });
                 appendProfileSection(
                     profilesWrap,
-                    activeUserFilter ? 'Matching users' : 'All other users',
+                    parts.rest.length ? sectionLabel : '',
                     parts.rest,
                     'admin-profile-section--rest',
-                    { showEmail: false }
+                    { showEmail: hasSearch || parts.pinned.length === 0 }
                 );
             } else {
                 appendProfileSection(
                     profilesWrap,
-                    activeUserFilter ? 'Matching users' : 'All users',
+                    sectionLabel,
                     parts.rest,
                     'admin-profile-section--all',
-                    { showEmail: false }
+                    { showEmail: hasSearch }
                 );
             }
         }
@@ -3095,6 +3166,19 @@
         if (adminUserFilterClear) {
             adminUserFilterClear.addEventListener('click', function() {
                 setUserFilter('all');
+            });
+        }
+
+        if (adminUserSearch) {
+            adminUserSearch.addEventListener('input', function() {
+                setUserSearch(adminUserSearch.value);
+            });
+        }
+
+        if (adminUserSearchClear) {
+            adminUserSearchClear.addEventListener('click', function() {
+                if (adminUserSearch) adminUserSearch.value = '';
+                setUserSearch('');
             });
         }
 
