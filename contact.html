@@ -2,48 +2,41 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     
-    <title>Contact - PermitPath</title>
-    <meta name="title" content="Contact - PermitPath" />
-    <meta name="description" content="Contact PermitPath support for questions about oversize permit routing, subscriptions, or the app. Email support@permitpathnav.com." />
+    <!-- Primary Meta Tags -->
+    <title>Contact - PermitPath | Support for Oversize Permit Routing App</title>
+    <meta name="title" content="Contact - PermitPath | Support for Oversize Permit Routing App" />
+    <meta name="description" content="Contact PermitPath for support, questions, or feedback about our oversize and overweight permit routing app. We're here to help truck drivers with permit routing." />
+    <meta name="keywords" content="permit path contact, oversize permit app support, truck routing app help, permit path customer service" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://permitpathnav.com/contact.html" />
     
+    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://permitpathnav.com/contact.html" />
     <meta property="og:title" content="Contact PermitPath" />
-    <meta property="og:description" content="Get in touch with the PermitPath team." />
-    <meta property="og:image" content="https://permitpathnav.com/images/hero-screenshots.png" />
     
+    <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="32x32" href="images/pppp.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="images/pppp.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="images/pppp.png" />
     <link rel="icon" type="image/png" href="images/pppp.png" />
     
+    <!-- Link to CSS -->
     <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="index-home.css?v=18" />
-    <link rel="stylesheet" href="site.css?v=1" />
 
+    <!-- iOS styling -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 </head>
 
-<body class="site-page contact-page">
+<body class="contact-page">
 
-    <header class="site-header">
-        <a href="index.html" class="logo-link">
-            <img src="images/websitehead.png" alt="PermitPath" class="logo" width="200" height="50" />
-        </a>
-        <nav class="site-nav" aria-label="Primary">
-            <a href="index.html">Home</a>
-            <a href="features.html">Features</a>
-            <a href="pricing.html">Pricing</a>
-            <a href="oversize-routing.html">Oversize Routing</a>
-            <a href="contact.html" class="current">Contact</a>
-        </nav>
+    <header>
+        <a href="index.html"><img src="images/websitehead.png" alt="PermitPath - Oversize and Overweight Permit Routing App Logo" class="logo" width="200" height="50" /></a>
         <div class="menu-container">
-            <button class="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="dropdownMenu" id="menuToggle">
+            <button class="menu-toggle" aria-label="Toggle menu" id="menuToggle">
                 <span class="menu-icon">
                     <span></span>
                     <span></span>
@@ -56,87 +49,101 @@
                 <a href="pricing.html">Pricing</a>
                 <a href="oversize-routing.html">Oversize Routing</a>
                 <a href="contact.html" class="current">Contact</a>
+                <a href="privacy.html">Privacy</a>
+                <a href="terms.html">Terms</a>
             </nav>
         </div>
     </header>
 
-    <main>
-        <section class="site-page-hero">
-            <div class="site-container">
-                <p class="index-section__eyebrow">Contact</p>
-                <h1>Get in <span class="highlight">touch</span></h1>
-                <p>Questions, feedback, or support—send a message and we will get back to you as soon as we can.</p>
-            </div>
-        </section>
+    <section class="info">
+        <h2>Contact <span class="highlight">Us</span></h2>
+        <p>Get in touch with the PermitPath team.</p>
+    </section>
 
-        <section class="index-section">
-            <div class="site-container">
-                <form class="contact-form" id="contactForm">
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" id="name" name="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="message">Message</label>
-                        <textarea id="message" name="message" rows="6" required></textarea>
-                    </div>
-                    <button type="submit" class="button">Send Message</button>
-                    <div class="form-message" id="formMessage" role="status" aria-live="polite"></div>
-                </form>
+    <section class="info">
+        <h2>Send Us a <span class="highlight">Message</span></h2>
+        <p>
+            Fill out the form below and we'll get back to you as soon as possible.
+        </p>
+        <form class="contact-form" id="contactForm">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required>
             </div>
-        </section>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="6" required></textarea>
+            </div>
+            <button type="submit" class="button">Send Message</button>
+            <small style="display:block;margin-top:0.35rem;font-size:0.8rem;color:rgba(255,255,255,0.55);text-align:center;">v4</small>
+            <div class="form-message" id="formMessage"></div>
+        </form>
+    </section>
 
-        <section class="index-section">
-            <div class="site-container index-section__head">
-                <h2 class="index-section__title">Email</h2>
-                <p class="site-support-email"><a href="mailto:support@permitpathnav.com">support@permitpathnav.com</a></p>
-            </div>
-        </section>
+    <section class="info">
+        <h2>Follow <span class="highlight">Us</span></h2>
+        <p class="follow-us-tagline">Help get the word out by <span class="highlight">following</span> and <span class="highlight">liking</span>.</p>
+        <p>Connect with PermitPath on Facebook for News and Updates.</p>
+        <p class="contact-facebook-wrap">
+            <a href="https://www.facebook.com/profile.php?id=61587110132438" class="facebook-button" target="_blank" rel="noopener noreferrer" aria-label="Follow PermitPath on Facebook">
+                <img src="images/fb.png" alt="Follow us on Facebook" width="60" height="60" />
+            </a>
+        </p>
+    </section>
 
-        <section class="index-section index-social" aria-label="Follow PermitPath on social media">
-            <div class="index-container index-social__wrap">
-                <a href="https://www.facebook.com/profile.php?id=61587110132438" class="social-button facebook-button" target="_blank" rel="noopener noreferrer" aria-label="Follow PermitPath on Facebook">
-                    <img src="images/social-facebook.png" alt="" width="60" height="60" />
-                </a>
-                <a href="https://www.linkedin.com/in/permit-path-63b19b386/" class="social-button" target="_blank" rel="noopener noreferrer" aria-label="Follow PermitPath on LinkedIn">
-                    <img src="images/social-linkedin.png" alt="" width="60" height="60" />
-                </a>
-                <a href="https://www.instagram.com/permitpathnav" class="social-button" target="_blank" rel="noopener noreferrer" aria-label="Follow PermitPath on Instagram">
-                    <img src="images/social-instagram.png" alt="" width="60" height="60" />
-                </a>
-                <a href="https://www.tiktok.com/@permitpathnav" class="social-button" target="_blank" rel="noopener noreferrer" aria-label="Follow PermitPath on TikTok">
-                    <img src="images/social-tiktok.png" alt="" width="60" height="60" />
-                </a>
-            </div>
-        </section>
-    </main>
+    <section class="info">
+        <h2>PermitPath <span class="highlight">Team</span></h2>
+        <p>
+            support@permitpathnav.com
+        </p>
+    </section>
 
-    <footer class="site-footer">
-        <div class="site-container site-footer__inner">
-            <img src="images/websitehead.png" alt="PermitPath" class="site-footer__logo" width="160" height="40" />
-            <div class="site-stores">
-                <a href="https://apps.apple.com/us/app/permit-path/id6759459273" class="app-store-button" target="_blank" rel="noopener noreferrer" aria-label="Download on the App Store">
-                    <img src="images/applestore.png" alt="Download on the App Store" width="72" height="60" />
-                </a>
-                <a href="https://play.google.com/store/apps/details?id=com.haulpath.permitpath" class="google-play-button" target="_blank" rel="noopener noreferrer" aria-label="Get it on Google Play">
-                    <img src="images/googleplay.png" alt="Get it on Google Play" width="72" height="60" />
-                </a>
-            </div>
-            <nav class="site-footer__nav" aria-label="Footer">
-                <a href="contact.html" class="current">Contact</a>
-                <a href="privacy.html">Privacy</a>
-                <a href="terms.html">Terms</a>
-            </nav>
-            <p class="site-footer__copy">© 2026 PermitPath. All Rights Reserved.</p>
-        </div>
+    <footer>
+        <p>© 2026 PermitPath. All Rights Reserved.</p>
     </footer>
 
-    <script src="js/site.js?v=1"></script>
     <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+
+        menuToggle.addEventListener('click', function() {
+            dropdownMenu.classList.toggle('active');
+            menuToggle.classList.toggle('active');
+        });
+
+        document.addEventListener('click', function(event) {
+            const isClickInsideMenu = dropdownMenu.contains(event.target);
+            const isClickOnToggle = menuToggle.contains(event.target);
+            
+            if (!isClickInsideMenu && !isClickOnToggle && dropdownMenu.classList.contains('active')) {
+                dropdownMenu.classList.remove('active');
+                menuToggle.classList.remove('active');
+            }
+        });
+
+        // Compact top bar when scrolled down, normal when near top (hysteresis avoids glitch)
+        (function() {
+            var header = document.querySelector('header');
+            var scrollDown = 100;
+            var scrollUp = 40;
+            var compact = false;
+            window.addEventListener('scroll', function() {
+                var y = window.scrollY;
+                if (!compact && y > scrollDown) {
+                    compact = true;
+                    header.classList.add('header--compact');
+                } else if (compact && y < scrollUp) {
+                    compact = false;
+                    header.classList.remove('header--compact');
+                }
+            }, { passive: true });
+        })();
+
+        // Form submission handler (PermitPath backend)
         document.getElementById("contactForm").addEventListener("submit", function (e) {
             e.preventDefault();
 
@@ -186,3 +193,4 @@
 
 </body>
 </html>
+
