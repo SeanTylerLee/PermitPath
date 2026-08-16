@@ -2,31 +2,79 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     
-    <!-- Primary Meta Tags -->
-    <title>Oversize Routing &amp; Trucker Navigation Guide | PermitPath</title>
-    <meta name="title" content="Oversize Routing &amp; Trucker Navigation Guide | PermitPath" />
-    <meta name="description" content="Complete guide to oversize routing, permit routing, and trucker navigation for heavy-haul loads. Learn how PermitPath helps oversize trucking drivers follow permit-approved routes—and how it compares to apps like PermitPass." />
-    <meta name="keywords" content="oversize routing, permit routing, trucker navigation, oversize load navigation, heavy haul routing, oversize trucking, truck GPS permit route, PermitPass alternative, PermitPath" />
+    <title>Oversize Routing &amp; Permit Navigation Guide | PermitPath</title>
+    <meta name="title" content="Oversize Routing &amp; Permit Navigation Guide | PermitPath" />
+    <meta name="description" content="What oversize routing and permit routing mean for heavy-haul drivers, and how PermitPath helps you follow the exact route on your state permit." />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://permitpathnav.com/oversize-routing.html" />
     
-    <!-- Favicon -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://permitpathnav.com/oversize-routing.html" />
+    <meta property="og:title" content="Oversize Routing Guide | PermitPath" />
+    <meta property="og:description" content="Follow the route on your oversize permit. Learn how permit routing works and how PermitPath keeps you on it." />
+    <meta property="og:image" content="https://permitpathnav.com/images/hero-screenshots.png" />
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:image" content="https://permitpathnav.com/images/hero-screenshots.png" />
+    
     <link rel="icon" type="image/png" sizes="32x32" href="images/pppp.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="images/pppp.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="images/pppp.png" />
     <link rel="icon" type="image/png" href="images/pppp.png" />
     
-    <!-- CSS -->
     <link rel="stylesheet" href="styles.css" />
-</head>
-<body class="oversize-page">
+    <link rel="stylesheet" href="index-home.css?v=18" />
+    <link rel="stylesheet" href="site.css?v=1" />
 
-    <header>
-        <a href="index.html"><img src="images/websitehead.png" alt="PermitPath - Oversize and Overweight Permit Routing App Logo" class="logo" width="200" height="50" /></a>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is oversize routing?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Oversize routing is planning a path for a load that exceeds legal size or weight limits. The route must respect bridge limits, lane widths, curfews, and state rules, and it is usually specified on your oversize or overweight permit."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is permit routing?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Permit routing is the route printed on the state permit itself. When you haul an oversize or overweight load, that route is your official navigation plan."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does PermitPath help with permit routing?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You pin the start, end, and every permit waypoint in PermitPath, then navigate that exact route. Routes can be saved, edited, and shared between iOS and Android."
+          }
+        }
+      ]
+    }
+    </script>
+</head>
+<body class="site-page oversize-page">
+
+    <header class="site-header">
+        <a href="index.html" class="logo-link">
+            <img src="images/websitehead.png" alt="PermitPath" class="logo" width="200" height="50" />
+        </a>
+        <nav class="site-nav" aria-label="Primary">
+            <a href="index.html">Home</a>
+            <a href="features.html">Features</a>
+            <a href="pricing.html">Pricing</a>
+            <a href="oversize-routing.html" class="current">Oversize Routing</a>
+            <a href="contact.html">Contact</a>
+        </nav>
         <div class="menu-container">
-            <button class="menu-toggle" aria-label="Toggle menu" id="menuToggle">
+            <button class="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="dropdownMenu" id="menuToggle">
                 <span class="menu-icon">
                     <span></span>
                     <span></span>
@@ -37,133 +85,154 @@
                 <a href="index.html">Home</a>
                 <a href="features.html">Features</a>
                 <a href="pricing.html">Pricing</a>
-                <a href="contact.html">Contact</a>
                 <a href="oversize-routing.html" class="current">Oversize Routing</a>
-                <a href="privacy.html">Privacy</a>
-                <a href="terms.html">Terms</a>
+                <a href="contact.html">Contact</a>
             </nav>
         </div>
     </header>
 
-    <section class="hero">
-        <h1>Oversize <span class="highlight">Routing</span> & Permit Routing Guide</h1>
-        <p>
-            Oversize routing and permit routing is about following the exact path your state permits require.
-            For heavy-haul and oversize loads, the route on the permit is the law—deviating can mean fines,
-            delays, or worse. This guide explains what oversize routing is and how PermitPath helps you stay on
-            your permit-approved route.
-        </p>
-    </section>
+    <main>
+        <section class="site-page-hero">
+            <div class="site-container">
+                <p class="index-section__eyebrow">Guide</p>
+                <h1>Oversize <span class="highlight">routing</span> &amp; permit routing</h1>
+                <p>For heavy-haul and oversize loads, the route on the permit is the law. This guide covers what that means and how PermitPath helps you stay on it.</p>
+            </div>
+        </section>
 
-    <section class="info">
-        <h2>What is <span class="highlight">Oversize Routing</span>?</h2>
-        <p>
-            Oversize routing is the process of planning a path for a load that exceeds legal size or weight limits.
-            Instead of just “shortest” or “fastest,” oversize routing must respect bridge limits, lane widths,
-            curfews, construction, and state-by-state rules. The route is usually specified on your oversize or
-            overweight permit, and you are expected to follow that permit routing exactly.
-        </p>
-    </section>
+        <section class="index-section">
+            <div class="site-container">
+                <div class="site-prose">
+                    <h2>What is <span class="highlight">oversize routing</span>?</h2>
+                    <p>
+                        Oversize routing is planning a path for a load that exceeds legal size or weight limits.
+                        Instead of “shortest” or “fastest,” the route has to respect bridge limits, lane widths,
+                        curfews, construction, and state-by-state rules. That path is usually written on your
+                        oversize or overweight permit, and you are expected to follow it exactly.
+                    </p>
+                </div>
 
-    <section class="info">
-        <h2>What is <span class="highlight">Permit Routing</span>?</h2>
-        <p>
-            Permit routing is the route printed on the state permit itself. States may specify highways, exits,
-            turn-by-turn directions, mile markers, or written instructions like “follow I‑80 WB to Exit 123, then
-            US‑30 WB.” When you are hauling an oversize or overweight load, permit routing becomes your official
-            navigation plan. Your job is to match your real‑world driving to that permit routing.
-        </p>
-    </section>
+                <div class="site-prose">
+                    <h2>What is <span class="highlight">permit routing</span>?</h2>
+                    <p>
+                        Permit routing is the route printed on the state permit itself. States may list highways, exits,
+                        turn-by-turn directions, mile markers, or instructions like “follow I‑80 WB to Exit 123, then
+                        US‑30 WB.” When you are hauling oversize or overweight, that permit routing is your official
+                        navigation plan. Your job is to match real-world driving to that paper route.
+                    </p>
+                </div>
 
-    <section class="info">
-        <h2>Why Oversize & Permit Routing <span class="highlight">Matters</span></h2>
-        <p>
-            Missing a turn on an oversize permit route can push you onto roads that are too low, too narrow, or
-            not legal for your weight or dimensions. That can lead to:
-        </p>
-        <ul class="requirements-list">
-            <li>Tickets and fines for being off your permit routing</li>
-            <li>Delays while you work with the permit office to correct the route</li>
-            <li>Safety risks around low bridges, tight turns, and restricted roads</li>
-        </ul>
-        <p>
-            A dedicated oversize routing app like PermitPath helps you stay locked onto the permit route from
-            start to finish.
-        </p>
-    </section>
+                <div class="site-prose">
+                    <h2>Why it <span class="highlight">matters</span></h2>
+                    <p>
+                        Missing a turn on an oversize permit route can put you on roads that are too low, too narrow, or
+                        not legal for your weight or dimensions. That can mean:
+                    </p>
+                    <ul>
+                        <li>Tickets and fines for being off your permit routing</li>
+                        <li>Delays while you work with the permit office to correct the route</li>
+                        <li>Safety risks around low bridges, tight turns, and restricted roads</li>
+                    </ul>
+                </div>
 
-    <section class="info">
-        <h2>How <span class="highlight">PermitPath</span> Helps with Oversize Routing</h2>
-        <p>
-            PermitPath is built specifically for oversize routing and permit routing. Instead of trying to force a
-            car GPS to match your paper permit, you can:
-        </p>
-        <ul class="requirements-list">
-            <li><strong>Pin your start, end, and all permit waypoints</strong> to match the route on your permit</li>
-            <li><strong>Add unlimited waypoints</strong> so every turn or major change is captured</li>
-            <li><strong>Save and edit routes</strong> when you get updated permits or changes</li>
-            <li><strong>Share routes</strong> between iOS and Android, so everyone on the job is on the same path</li>
-        </ul>
-        <p>
-            The goal is simple: your oversize routing in the app should match your permit routing on paper.
-        </p>
-    </section>
+                <div class="site-prose">
+                    <h2>How <span class="highlight">PermitPath</span> helps</h2>
+                    <p>
+                        Instead of forcing a car GPS to match a paper permit, you can:
+                    </p>
+                    <ul>
+                        <li><strong>Pin your start, end, and all permit waypoints</strong> to match the route on the permit</li>
+                        <li><strong>Add unlimited waypoints</strong> so every turn or major change is captured</li>
+                        <li><strong>Save and edit routes</strong> when a permit is updated</li>
+                        <li><strong>Share routes</strong> between iOS and Android so everyone on the job is on the same path</li>
+                    </ul>
+                    <p>The goal is simple: the route in the app should match the route on paper.</p>
+                </div>
 
-    <section class="info">
-        <h2>Best Practices for <span class="highlight">Oversize Routing</span></h2>
-        <ul class="requirements-list">
-            <li>Always read the permit first and highlight the official route</li>
-            <li>Enter the same start, end, and major waypoints into PermitPath</li>
-            <li>Double‑check low bridges, weight limits, and curfews before you roll</li>
-            <li>Keep your permit and the app in sync—edit the route if the permit changes</li>
-        </ul>
-    </section>
+                <div class="site-prose">
+                    <h2>Best practices</h2>
+                    <ul>
+                        <li>Read the permit first and highlight the official route</li>
+                        <li>Enter the same start, end, and major waypoints into PermitPath</li>
+                        <li>Double-check low bridges, weight limits, and curfews before you roll</li>
+                        <li>Keep the permit and the app in sync—edit the route if the permit changes</li>
+                    </ul>
+                </div>
 
-    <section class="info">
-        <h2>PermitPath vs <span class="highlight">PermitPass</span> &amp; other routing apps</h2>
-        <p>
-            Drivers often search for <strong>PermitPass</strong>, <strong>permit routing apps</strong>, or general
-            <strong>trucker navigation</strong> when hauling oversize loads. PermitPath is built specifically for
-            <strong>oversize load navigation</strong> and <strong>permit-approved truck routes</strong>—not parking
-            permits or passenger-car GPS.
-        </p>
-        <p>
-            Compared with many oversize routing options, PermitPath offers <strong>unlimited waypoints</strong>,
-            <strong>iOS and Android</strong> route sharing, and straightforward pricing at
-            <a href="pricing.html">$3.99 per month</a>. You control the route; the app navigates what you built.
-        </p>
-        <p>
-            Ready to try it? <a href="index.html">Get launch updates on the PermitPath homepage</a> or
-            <a href="features.html">see all features</a>.
-        </p>
-    </section>
+                <div class="site-prose">
+                    <h2>PermitPath and other routing apps</h2>
+                    <p>
+                        Drivers searching for permit routing or trucker navigation often land on several apps.
+                        PermitPath is built for oversize load navigation and permit-approved truck routes—not
+                        parking permits or passenger-car GPS.
+                    </p>
+                    <p>
+                        You get unlimited waypoints, iOS and Android route sharing, and
+                        <a href="pricing.html">straightforward $3.99/month pricing</a>. You control the route; the app navigates what you built.
+                    </p>
+                </div>
+            </div>
+        </section>
 
-    <footer>
-        <p>© 2026 PermitPath. All Rights Reserved.</p>
+        <section class="index-section" aria-labelledby="oversize-faq-title">
+            <div class="site-container">
+                <div class="index-section__head">
+                    <p class="index-section__eyebrow">FAQ</p>
+                    <h2 id="oversize-faq-title" class="index-section__title">Quick <span class="highlight">answers</span></h2>
+                </div>
+                <div class="site-faq">
+                    <details>
+                        <summary>What is oversize routing?</summary>
+                        <p>Oversize routing is planning a path for a load that exceeds legal size or weight limits. The route must respect bridge limits, lane widths, curfews, and state rules, and it is usually specified on your oversize or overweight permit.</p>
+                    </details>
+                    <details>
+                        <summary>What is permit routing?</summary>
+                        <p>Permit routing is the route printed on the state permit itself. When you haul an oversize or overweight load, that route is your official navigation plan.</p>
+                    </details>
+                    <details>
+                        <summary>How does PermitPath help with permit routing?</summary>
+                        <p>You pin the start, end, and every permit waypoint in PermitPath, then navigate that exact route. Routes can be saved, edited, and shared between iOS and Android.</p>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <section class="index-section">
+            <div class="site-container index-section__head">
+                <h2 class="index-section__title">Ready to stay on <span class="highlight">route</span>?</h2>
+                <p class="index-section__lead">Download PermitPath or <a href="features.html" class="site-text-link">see how it works</a>.</p>
+                <div class="site-stores site-stores--after-copy">
+                    <a href="https://apps.apple.com/us/app/permit-path/id6759459273" class="app-store-button" target="_blank" rel="noopener noreferrer" aria-label="Download on the App Store">
+                        <img src="images/applestore.png" alt="Download on the App Store" width="72" height="60" />
+                    </a>
+                    <a href="https://play.google.com/store/apps/details?id=com.haulpath.permitpath" class="google-play-button" target="_blank" rel="noopener noreferrer" aria-label="Get it on Google Play">
+                        <img src="images/googleplay.png" alt="Get it on Google Play" width="72" height="60" />
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-container site-footer__inner">
+            <img src="images/websitehead.png" alt="PermitPath" class="site-footer__logo" width="160" height="40" />
+            <div class="site-stores">
+                <a href="https://apps.apple.com/us/app/permit-path/id6759459273" class="app-store-button" target="_blank" rel="noopener noreferrer" aria-label="Download on the App Store">
+                    <img src="images/applestore.png" alt="Download on the App Store" width="72" height="60" />
+                </a>
+                <a href="https://play.google.com/store/apps/details?id=com.haulpath.permitpath" class="google-play-button" target="_blank" rel="noopener noreferrer" aria-label="Get it on Google Play">
+                    <img src="images/googleplay.png" alt="Get it on Google Play" width="72" height="60" />
+                </a>
+            </div>
+            <nav class="site-footer__nav" aria-label="Footer">
+                <a href="contact.html">Contact</a>
+                <a href="privacy.html">Privacy</a>
+                <a href="terms.html">Terms</a>
+            </nav>
+            <p class="site-footer__copy">© 2026 PermitPath. All Rights Reserved.</p>
+        </div>
     </footer>
 
-    <script>
-        const menuToggle = document.getElementById('menuToggle');
-        const dropdownMenu = document.getElementById('dropdownMenu');
-
-        if (menuToggle && dropdownMenu) {
-            menuToggle.addEventListener('click', function() {
-                dropdownMenu.classList.toggle('active');
-                menuToggle.classList.toggle('active');
-            });
-
-            document.addEventListener('click', function(event) {
-                const isClickInsideMenu = dropdownMenu.contains(event.target);
-                const isClickOnToggle = menuToggle.contains(event.target);
-                
-                if (!isClickInsideMenu && !isClickOnToggle && dropdownMenu.classList.contains('active')) {
-                    dropdownMenu.classList.remove('active');
-                    menuToggle.classList.remove('active');
-                }
-            });
-        }
-    </script>
-
+    <script src="js/site.js?v=1"></script>
 </body>
 </html>
-

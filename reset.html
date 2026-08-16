@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Reset password - PermitPath</title>
     <meta name="title" content="Reset password - PermitPath" />
@@ -16,6 +16,7 @@
     <link rel="icon" type="image/png" href="images/pppp.png" />
 
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="site.css?v=1" />
 
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -23,10 +24,19 @@
 
 <body class="reset-page">
 
-    <header>
-        <a href="index.html"><img src="images/websitehead.png" alt="PermitPath - Oversize and Overweight Permit Routing App Logo" class="logo" width="200" height="50" /></a>
+    <header class="site-header">
+        <a href="index.html" class="logo-link">
+            <img src="images/websitehead.png" alt="PermitPath" class="logo" width="200" height="50" />
+        </a>
+        <nav class="site-nav" aria-label="Primary">
+            <a href="index.html">Home</a>
+            <a href="features.html">Features</a>
+            <a href="pricing.html">Pricing</a>
+            <a href="oversize-routing.html">Oversize Routing</a>
+            <a href="contact.html">Contact</a>
+        </nav>
         <div class="menu-container">
-            <button class="menu-toggle" aria-label="Toggle menu" id="menuToggle">
+            <button class="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="dropdownMenu" id="menuToggle">
                 <span class="menu-icon">
                     <span></span>
                     <span></span>
@@ -39,8 +49,6 @@
                 <a href="pricing.html">Pricing</a>
                 <a href="oversize-routing.html">Oversize Routing</a>
                 <a href="contact.html">Contact</a>
-                <a href="privacy.html">Privacy</a>
-                <a href="terms.html">Terms</a>
             </nav>
         </div>
     </header>
@@ -77,45 +85,18 @@
         <p class="reset-success-lead" role="status">You can close this page and sign in again in the PermitPath app.</p>
     </section>
 
-    <footer>
-        <p>© 2026 PermitPath. All Rights Reserved.</p>
-        <p style="margin-top:0.5rem;font-size:0.75rem;color:rgba(255,255,255,0.45);text-align:center;">v4</p>
+    <footer class="site-footer">
+        <div class="site-container site-footer__inner">
+            <nav class="site-footer__nav" aria-label="Footer">
+                <a href="contact.html">Contact</a>
+                <a href="privacy.html">Privacy</a>
+                <a href="terms.html">Terms</a>
+            </nav>
+            <p class="site-footer__copy">© 2026 PermitPath. All Rights Reserved.</p>
+        </div>
     </footer>
 
-    <script>
-        const menuToggle = document.getElementById('menuToggle');
-        const dropdownMenu = document.getElementById('dropdownMenu');
-
-        menuToggle.addEventListener('click', function() {
-            dropdownMenu.classList.toggle('active');
-            menuToggle.classList.toggle('active');
-        });
-
-        document.addEventListener('click', function(event) {
-            const isClickInsideMenu = dropdownMenu.contains(event.target) || menuToggle.contains(event.target);
-            if (!isClickInsideMenu) {
-                dropdownMenu.classList.remove('active');
-                menuToggle.classList.remove('active');
-            }
-        });
-
-        (function() {
-            var header = document.querySelector('header');
-            var scrollDown = 100;
-            var scrollUp = 40;
-            var compact = false;
-            window.addEventListener('scroll', function() {
-                var y = window.scrollY;
-                if (!compact && y > scrollDown) {
-                    compact = true;
-                    header.classList.add('header--compact');
-                } else if (compact && y < scrollUp) {
-                    compact = false;
-                    header.classList.remove('header--compact');
-                }
-            }, { passive: true });
-        })();
-    </script>
+    <script src="js/site.js?v=1"></script>
 
     <!--
       ?token_hash → verifyOtp on load; submit → updateUser. Keys: ./lib/supabaseClient.js

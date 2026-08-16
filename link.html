@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     
     <!-- Primary Meta Tags -->
     <title>Install App on Google Play - PermitPath</title>
@@ -16,22 +16,25 @@
     
     <!-- Link to CSS -->
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="site.css?v=1" />
 
     <!-- iOS styling -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 </head>
 
-<body>
+<body class="site-page">
 
-    <header>
-        <img src="images/websitehead.png" alt="PermitPath - Oversize and Overweight Permit Routing App Logo" class="logo" width="200" height="50" />
+    <header class="site-header">
+        <a href="index.html" class="logo-link">
+            <img src="images/websitehead.png" alt="PermitPath" class="logo" width="200" height="50" />
+        </a>
     </header>
 
     <main>
         <section class="info">
-            <h2><span class="highlight">Install App on Google Play</span></h2>
-            <p>Content for this page goes here.</p>
+            <h2>Install on <span class="highlight">Google Play</span></h2>
+            <p>Open the Play Store listing to install PermitPath on Android.</p>
             <p class="button-wrap">
                 <a href="https://play.google.com/store/apps/details?id=com.haulpath.permitpath" class="button" target="_blank" rel="noopener noreferrer">Download on Google Play</a>
             </p>
@@ -70,30 +73,19 @@
         </section>
     </main>
 
-    <footer>
-        <p>© 2026 PermitPath. All Rights Reserved.</p>
+    <footer class="site-footer">
+        <div class="site-container site-footer__inner">
+            <nav class="site-footer__nav" aria-label="Footer">
+                <a href="index.html">Home</a>
+                <a href="contact.html">Contact</a>
+                <a href="privacy.html">Privacy</a>
+                <a href="terms.html">Terms</a>
+            </nav>
+            <p class="site-footer__copy">© 2026 PermitPath. All Rights Reserved.</p>
+        </div>
     </footer>
 
-    <script>
-        // Compact top bar when scrolled down, normal when near top (hysteresis avoids glitch)
-        (function() {
-            var header = document.querySelector('header');
-            if (!header) return;
-            var scrollDown = 100;
-            var scrollUp = 40;
-            var compact = false;
-            window.addEventListener('scroll', function() {
-                var y = window.scrollY;
-                if (!compact && y > scrollDown) {
-                    compact = true;
-                    header.classList.add('header--compact');
-                } else if (compact && y < scrollUp) {
-                    compact = false;
-                    header.classList.remove('header--compact');
-                }
-            }, { passive: true });
-        })();
-    </script>
+    <script src="js/site.js?v=1"></script>
 
 </body>
 </html>
