@@ -2355,13 +2355,8 @@ body.admin-page {
     min-height: 100dvh;
 }
 
-body.admin-page header {
-    padding-top: max(0.35rem, env(safe-area-inset-top, 0px));
-    padding-left: max(0.5rem, env(safe-area-inset-left, 0px));
-    padding-right: max(0.5rem, env(safe-area-inset-right, 0px));
-    background: rgba(255, 255, 255, 0.92);
-    border-bottom: 1px solid rgba(26, 35, 50, 0.08);
-    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+body.admin-page header:not(.admin-chrome) {
+    display: none;
 }
 
 body.admin-page footer {

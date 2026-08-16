@@ -7,7 +7,7 @@
             try {
                 var u = new URL(window.location.href);
                 if (!u.searchParams.has('v')) {
-                    u.searchParams.set('v', '53');
+                    u.searchParams.set('v', '60');
                     window.location.replace(u.pathname + u.search + u.hash);
                 }
             } catch (_e) {}
@@ -21,206 +21,215 @@
     <meta http-equiv="Expires" content="0" />
     <title>Admin Dashboard - PermitPath</title>
     <meta name="robots" content="noindex, nofollow" />
-    <link rel="canonical" href="https://permitpathnav.com/admin.html?v=53" />
+    <link rel="canonical" href="https://permitpathnav.com/admin.html?v=60" />
     <link rel="icon" type="image/png" href="images/pppp.png" />
     <link rel="stylesheet" href="styles.css?v=35" />
+    <link rel="stylesheet" href="admin.css?v=60" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 </head>
 <body class="admin-page">
 
-    <header>
-        <a href="index.html"><img src="images/websitehead.png" alt="PermitPath" class="logo" width="200" height="50" /></a>
-        <div class="menu-container">
-            <button class="menu-toggle" aria-label="Toggle menu" id="menuToggle">
-                <span class="menu-icon">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </span>
-            </button>
-            <nav class="dropdown-menu" id="dropdownMenu">
-                <a href="index.html">Home</a>
-                <a href="features.html">Features</a>
-                <a href="pricing.html">Pricing</a>
-                <a href="oversize-routing.html">Oversize Routing</a>
-                <a href="contact.html">Contact</a>
-                <a href="privacy.html">Privacy</a>
-                <a href="terms.html">Terms</a>
-            </nav>
+    <section id="adminLoginWrap" class="admin-login-shell">
+        <div class="admin-login-brand">
+            <span class="admin-pin" aria-hidden="true"></span>
+            <p class="admin-wordmark">Permit<span>Path</span></p>
+            <h1 class="admin-login-heading">Admin</h1>
         </div>
-    </header>
-
-    <section class="info admin-shell">
-        <section id="adminLoginWrap" class="admin-login-wrap">
-            <h2 class="admin-login-heading"><span class="highlight">Admin</span></h2>
-            <p id="adminIntroText" class="admin-login-intro">Sign in with your admin account to continue.</p>
-            <div class="admin-login-card">
-                <form class="contact-form admin-login-form" id="adminLoginForm" novalidate>
-                    <div class="form-group">
-                        <label for="adminEmail">Email</label>
-                        <input type="email" id="adminEmail" name="email" autocomplete="email" required maxlength="254" />
-                    </div>
-                    <div class="form-group">
-                        <label for="adminPassword">Password</label>
-                        <input type="password" id="adminPassword" name="password" autocomplete="current-password" required minlength="6" maxlength="128" />
-                    </div>
-                    <button type="submit" class="button admin-login-submit" id="adminLoginBtn">Sign in</button>
-                    <div class="form-message" id="adminAuthMessage" aria-live="polite"></div>
-                </form>
-            </div>
-        </section>
-
-        <section id="adminAuthedWrap" class="admin-authed-wrap" hidden>
-            <div class="admin-topbar">
-                <div class="admin-topbar-brand">
-                    <p class="admin-topbar-kicker">PermitPath</p>
-                    <h2 class="admin-topbar-title">Admin Dashboard</h2>
-                    <p id="adminSignedInAs" class="admin-topbar-signed-in" hidden></p>
+        <p id="adminIntroText" class="admin-login-intro">Sign in with your admin account to continue.</p>
+        <div class="admin-login-card">
+            <form class="admin-login-form" id="adminLoginForm" novalidate>
+                <div class="form-group">
+                    <label for="adminEmail">Email</label>
+                    <input type="email" id="adminEmail" name="email" autocomplete="email" required maxlength="254" />
                 </div>
-                <div class="admin-topbar-actions">
-                    <button type="button" class="button button-secondary admin-refresh-btn" id="adminRefreshBtn">Refresh</button>
-                    <button type="button" class="button button-secondary" id="adminExportPdfBtn" title="Download a PDF report for the current calendar month">Export PDF</button>
-                    <button type="button" class="button button-secondary" id="adminSignOutBtn">Sign out</button>
+                <div class="form-group">
+                    <label for="adminPassword">Password</label>
+                    <input type="password" id="adminPassword" name="password" autocomplete="current-password" required minlength="6" maxlength="128" />
+                </div>
+                <button type="submit" class="admin-btn admin-login-submit" id="adminLoginBtn">Sign in</button>
+                <div class="form-message" id="adminAuthMessage" aria-live="polite"></div>
+            </form>
+        </div>
+        <p class="admin-login-foot"><a href="index.html">Back to home</a></p>
+    </section>
+
+    <div id="adminAuthedWrap" class="admin-app" hidden>
+        <header class="admin-chrome">
+            <div class="admin-chrome-brand">
+                <span class="admin-pin admin-pin--sm" aria-hidden="true"></span>
+                <div class="admin-chrome-titles">
+                    <p class="admin-wordmark admin-wordmark--sm">Permit<span>Path</span></p>
+                    <h1 class="admin-chrome-title">Admin</h1>
                 </div>
             </div>
+            <div class="admin-chrome-right">
+                <p id="adminSignedInAs" class="admin-chrome-signed-in" hidden></p>
+                <div class="admin-chrome-actions">
+                    <button type="button" class="admin-btn admin-btn--secondary admin-refresh-btn" id="adminRefreshBtn">Refresh</button>
+                    <button type="button" class="admin-btn admin-btn--secondary" id="adminExportPdfBtn" title="Download a PDF report for the current calendar month">Export PDF</button>
+                    <button type="button" class="admin-btn admin-btn--secondary" id="adminSignOutBtn">Sign out</button>
+                </div>
+            </div>
+        </header>
 
-            <div id="adminMainView" class="admin-main-view">
-                <section class="admin-dashboard-section">
-                    <div class="admin-panel admin-stats-panel">
-                        <div class="admin-section-head admin-stats-head">
-                            <h3 class="admin-panel-title">Platform activity</h3>
-                        </div>
-                        <div id="adminEventTotals" class="admin-event-totals" aria-live="polite">
+        <nav class="admin-nav" id="adminNav" aria-label="Admin sections">
+            <button type="button" class="admin-nav-btn is-active" data-admin-tab="overview" aria-current="page">Overview</button>
+            <button type="button" class="admin-nav-btn" data-admin-tab="users">
+                Users <span id="adminUsersTabCount" class="admin-nav-count" hidden></span>
+            </button>
+            <button type="button" class="admin-nav-btn" data-admin-tab="deleted">
+                Deleted <span id="adminDeletedTabCount" class="admin-nav-count" hidden></span>
+            </button>
+            <button type="button" class="admin-nav-btn" data-admin-tab="outreach">Outreach</button>
+        </nav>
+
+        <div class="admin-status-strip" aria-live="polite">
+            <p id="adminLoadStatus" class="admin-load-status"></p>
+            <div class="form-message admin-data-message" id="adminDataMessage"></div>
+        </div>
+
+        <main id="adminMainView" class="admin-main">
+            <section id="adminPanelOverview" class="admin-tab-panel" data-admin-panel="overview">
+                <div id="adminHeroStats" class="admin-hero-stats" aria-live="polite"></div>
+                <div class="admin-overview-grid">
+                    <div class="admin-panel">
+                        <h2 class="admin-panel-title">Activity · last 90 days</h2>
+                        <div id="adminEventTotals" class="admin-event-totals">
                             <div id="adminEventTotalsInner" class="admin-event-totals-inner"></div>
                         </div>
                     </div>
-
-                    <div id="adminOverviewStats" class="admin-overview-stats" aria-live="polite"></div>
-
-                    <div class="admin-status-strip" aria-live="polite">
-                        <p id="adminLoadStatus" class="admin-load-status"></p>
-                        <div class="form-message admin-data-message" id="adminDataMessage"></div>
-                    </div>
-
-                    <div class="admin-panel admin-users-panel admin-block-spaced">
-                        <div class="admin-section-head">
-                            <h3 class="admin-panel-title">Users</h3>
-                            <span id="profilesCount" class="admin-count-pill" hidden aria-live="polite"></span>
-                        </div>
-                        <div id="adminUserFilterBar" class="admin-user-filter-bar" hidden>
-                            <span id="adminUserFilterLabel" class="admin-user-filter-label"></span>
-                            <button type="button" class="button button-secondary admin-user-filter-clear" id="adminUserFilterClear">Clear filter</button>
-                        </div>
-                        <div class="admin-user-toolbar">
-                            <div class="form-group admin-user-search-wrap">
-                                <label for="adminUserSearch">Search users</label>
-                                <input
-                                    type="search"
-                                    id="adminUserSearch"
-                                    class="admin-user-search-input"
-                                    placeholder="Name or email…"
-                                    autocomplete="off"
-                                    spellcheck="false"
-                                    enterkeyhint="search"
-                                />
-                            </div>
-                            <button
-                                type="button"
-                                class="button button-secondary admin-user-search-clear"
-                                id="adminUserSearchClear"
-                                hidden
-                            >
-                                Clear search
-                            </button>
-                        </div>
-                        <p class="admin-profile-legend">
-                            <span class="admin-profile-legend-item"><span class="admin-profile-sub-dot admin-profile-sub-dot--active admin-profile-sub-dot--legend"></span> Subscribed</span>
-                            <span class="admin-profile-legend-item"><span class="admin-profile-sub-dot admin-profile-sub-dot--inactive admin-profile-sub-dot--legend"></span> Not subscribed</span>
-                            <span class="admin-profile-legend-item admin-profile-legend-item--hint">Click a stat card above to filter users; pin users to keep them at the top</span>
-                        </p>
-                        <div id="profilesWrap" class="admin-profile-list"></div>
-                    </div>
-
-                    <div class="admin-panel admin-deleted-panel admin-block-spaced">
-                        <div class="admin-section-head">
-                            <h3 class="admin-panel-title">Deleted accounts</h3>
-                            <span id="deletedAccountsCount" class="admin-count-pill" hidden aria-live="polite"></span>
-                        </div>
-                        <p class="admin-deleted-hint">Users who deleted themselves in the app, or accounts you removed from this dashboard.</p>
-                        <div class="admin-deleted-filter-nav" role="toolbar" aria-label="Deleted account filters">
-                            <button type="button" class="button admin-tool-nav-btn admin-deleted-filter-btn admin-deleted-filter-btn--active" data-deletion-filter="all">All</button>
-                            <button type="button" class="button admin-tool-nav-btn admin-deleted-filter-btn" data-deletion-filter="self">Self-deleted</button>
-                            <button type="button" class="button admin-tool-nav-btn admin-deleted-filter-btn" data-deletion-filter="admin">Removed by admin</button>
-                        </div>
-                        <div id="deletedAccountsWrap" class="admin-deleted-list"></div>
-                    </div>
-
                     <div class="admin-panel admin-revenue-panel">
                         <div id="adminRevenueEstimate" class="admin-revenue-estimate" aria-live="polite"></div>
                     </div>
+                </div>
+                <div class="admin-panel">
+                    <h2 class="admin-panel-title">User segments</h2>
+                    <div id="adminSecondaryStats" class="admin-secondary-stats"></div>
+                </div>
+            </section>
 
-                    <div class="admin-panel admin-email-panel">
-                        <p class="admin-panel-label">Email lists</p>
-                        <div class="admin-email-tools-nav" role="toolbar" aria-label="Email lists">
-                            <button type="button" class="button admin-tool-nav-btn" id="adminBtnMassEmail" data-email-filter="all">All users</button>
-                            <button type="button" class="button admin-tool-nav-btn" id="adminBtnSubscribedEmails" data-email-filter="subscribed">Subscribed</button>
-                            <button type="button" class="button admin-tool-nav-btn" id="adminBtnUnsubscribedEmails" data-email-filter="unsubscribed">Not subscribed</button>
-                            <button type="button" class="button admin-tool-nav-btn" id="adminBtnLapsedEmails" data-email-filter="lapsed">Lapsed</button>
-                        </div>
-                        <div class="admin-email-templates">
-                            <p class="admin-email-templates-label">Notice templates</p>
-                            <button type="button" class="admin-email-template-card" id="adminBtnRemovedByAdminNotice" data-notice-template="removed_by_admin">
-                                <span class="admin-email-template-card-title">Removed by admin</span>
-                                <span class="admin-email-template-card-desc">Deletion notice — edit, then copy into your email app</span>
-                            </button>
-                            <button type="button" class="admin-email-template-card" id="adminBtnLapsedSubscriberNotice" data-notice-template="lapsed_subscriber">
-                                <span class="admin-email-template-card-title">Former subscriber</span>
-                                <span class="admin-email-template-card-desc">Win-back message — resubscribe help and feedback request</span>
-                            </button>
-                            <button type="button" class="admin-email-template-card" id="adminBtnSelfDeletedNotice" data-notice-template="self_deleted">
-                                <span class="admin-email-template-card-title">Self-deleted account</span>
-                                <span class="admin-email-template-card-desc">Personal follow-up — ask what we can improve</span>
-                            </button>
+            <section id="adminPanelUsers" class="admin-tab-panel admin-panel admin-users-panel" data-admin-panel="users" hidden>
+                <div class="admin-section-head">
+                    <h2 class="admin-panel-title">Users</h2>
+                    <span id="profilesCount" class="admin-count-pill" hidden aria-live="polite"></span>
+                </div>
+                <div id="adminUserFilterBar" class="admin-user-filter-bar" hidden>
+                    <span id="adminUserFilterLabel" class="admin-user-filter-label"></span>
+                    <button type="button" class="admin-btn admin-btn--secondary admin-user-filter-clear" id="adminUserFilterClear">Clear filter</button>
+                </div>
+                <div class="admin-user-toolbar">
+                    <div class="form-group admin-user-search-wrap">
+                        <label for="adminUserSearch">Search users</label>
+                        <input
+                            type="search"
+                            id="adminUserSearch"
+                            class="admin-user-search-input"
+                            placeholder="Name, email, or user ID…"
+                            autocomplete="off"
+                            spellcheck="false"
+                            enterkeyhint="search"
+                        />
+                    </div>
+                    <button type="button" class="admin-btn admin-btn--secondary admin-user-search-clear" id="adminUserSearchClear" hidden>
+                        Clear search
+                    </button>
+                </div>
+                <div id="profilesWrap" class="admin-table-wrap"></div>
+            </section>
+
+            <section id="adminPanelDeleted" class="admin-tab-panel admin-panel admin-deleted-panel" data-admin-panel="deleted" hidden>
+                <div class="admin-section-head">
+                    <h2 class="admin-panel-title">Deleted accounts</h2>
+                    <span id="deletedAccountsCount" class="admin-count-pill" hidden aria-live="polite"></span>
+                </div>
+                <p class="admin-deleted-hint">Users who deleted themselves in the app, or accounts you removed from this dashboard.</p>
+                <div class="admin-deleted-filter-nav" role="toolbar" aria-label="Deleted account filters">
+                    <button type="button" class="admin-btn admin-btn--secondary admin-tool-nav-btn admin-deleted-filter-btn admin-deleted-filter-btn--active" data-deletion-filter="all">All</button>
+                    <button type="button" class="admin-btn admin-btn--secondary admin-tool-nav-btn admin-deleted-filter-btn" data-deletion-filter="self">Self-deleted</button>
+                    <button type="button" class="admin-btn admin-btn--secondary admin-tool-nav-btn admin-deleted-filter-btn" data-deletion-filter="admin">Removed by admin</button>
+                </div>
+                <div id="deletedAccountsWrap" class="admin-deleted-list"></div>
+            </section>
+
+            <section id="adminPanelOutreach" class="admin-tab-panel admin-panel admin-email-panel" data-admin-panel="outreach" hidden>
+                <h2 class="admin-panel-title">Email lists</h2>
+                <div class="admin-email-tools-nav" role="toolbar" aria-label="Email lists">
+                    <button type="button" class="admin-btn admin-btn--secondary admin-tool-nav-btn" id="adminBtnMassEmail" data-email-filter="all">All users</button>
+                    <button type="button" class="admin-btn admin-btn--secondary admin-tool-nav-btn" id="adminBtnSubscribedEmails" data-email-filter="subscribed">Subscribed</button>
+                    <button type="button" class="admin-btn admin-btn--secondary admin-tool-nav-btn" id="adminBtnUnsubscribedEmails" data-email-filter="unsubscribed">Not subscribed</button>
+                    <button type="button" class="admin-btn admin-btn--secondary admin-tool-nav-btn" id="adminBtnLapsedEmails" data-email-filter="lapsed">Lapsed</button>
+                </div>
+                <div class="admin-email-templates">
+                    <p class="admin-email-templates-label admin-panel-label">Notice templates</p>
+                    <button type="button" class="admin-email-template-card" id="adminBtnRemovedByAdminNotice" data-notice-template="removed_by_admin">
+                        <span class="admin-email-template-card-title">Removed by admin</span>
+                        <span class="admin-email-template-card-desc">Deletion notice — edit, then copy into your email app</span>
+                    </button>
+                    <button type="button" class="admin-email-template-card" id="adminBtnLapsedSubscriberNotice" data-notice-template="lapsed_subscriber">
+                        <span class="admin-email-template-card-title">Former subscriber</span>
+                        <span class="admin-email-template-card-desc">Win-back message — resubscribe help and feedback request</span>
+                    </button>
+                    <button type="button" class="admin-email-template-card" id="adminBtnSelfDeletedNotice" data-notice-template="self_deleted">
+                        <span class="admin-email-template-card-title">Self-deleted account</span>
+                        <span class="admin-email-template-card-desc">Personal follow-up — ask what we can improve</span>
+                    </button>
+                </div>
+
+                <div id="adminEmailToolView" class="admin-email-tool-view" hidden>
+                    <h3 id="adminEmailToolTitle" class="admin-email-tool-title"></h3>
+                    <p class="admin-email-tool-hint">Select all (⌘/Ctrl+A) or use Copy all, then paste into your email app.</p>
+                    <textarea id="adminEmailToolTextarea" class="admin-email-tool-textarea" readonly rows="14" spellcheck="false" aria-label="Email addresses"></textarea>
+                    <p id="adminEmailToolStatus" class="admin-email-tool-status" aria-live="polite"></p>
+                    <div class="admin-email-tool-actions">
+                        <button type="button" class="admin-btn" id="adminEmailToolCopy">Copy all</button>
+                        <button type="button" class="admin-btn admin-btn--secondary" id="adminEmailToolBack">Close list</button>
+                    </div>
+                </div>
+
+                <div id="adminNoticeEmailView" class="admin-email-tool-view admin-notice-email-view" hidden>
+                    <h3 id="adminNoticeEmailTitle" class="admin-email-tool-title"></h3>
+                    <p class="admin-email-tool-hint">Edit the message below, then copy it into your email platform.</p>
+                    <div class="admin-notice-email-form">
+                        <div class="form-group">
+                            <label for="adminNoticeBody">Message</label>
+                            <textarea id="adminNoticeBody" class="admin-notice-email-field admin-notice-email-body" rows="12" spellcheck="true" aria-label="Email message body"></textarea>
                         </div>
                     </div>
-                </section>
-            </div>
-
-            <div id="adminEmailToolView" class="admin-email-tool-view admin-panel" hidden>
-                <h3 id="adminEmailToolTitle" class="admin-email-tool-title"></h3>
-                <p class="admin-email-tool-hint">Select all (⌘/Ctrl+A) or use Copy all, then paste into your email app.</p>
-                <textarea id="adminEmailToolTextarea" class="admin-email-tool-textarea" readonly rows="14" spellcheck="false" aria-label="Email addresses"></textarea>
-                <p id="adminEmailToolStatus" class="admin-email-tool-status" aria-live="polite"></p>
-                <div class="admin-email-tool-actions">
-                    <button type="button" class="button" id="adminEmailToolCopy">Copy all</button>
-                    <button type="button" class="button button-secondary" id="adminEmailToolBack">Back to dashboard</button>
-                </div>
-            </div>
-
-            <div id="adminNoticeEmailView" class="admin-email-tool-view admin-notice-email-view admin-panel" hidden>
-                <h3 id="adminNoticeEmailTitle" class="admin-email-tool-title"></h3>
-                <p class="admin-email-tool-hint">Edit the message below, then copy it into your email platform.</p>
-                <div class="admin-notice-email-form">
-                    <div class="form-group">
-                        <label for="adminNoticeBody">Message</label>
-                        <textarea id="adminNoticeBody" class="admin-notice-email-field admin-notice-email-body" rows="12" spellcheck="true" aria-label="Email message body"></textarea>
+                    <p id="adminNoticeEmailStatus" class="admin-email-tool-status" aria-live="polite"></p>
+                    <div class="admin-email-tool-actions">
+                        <button type="button" class="admin-btn" id="adminNoticeCopy">Copy message</button>
+                        <button type="button" class="admin-btn admin-btn--secondary" id="adminNoticeEmailBack">Close template</button>
                     </div>
                 </div>
-                <p id="adminNoticeEmailStatus" class="admin-email-tool-status" aria-live="polite"></p>
-                <div class="admin-email-tool-actions">
-                    <button type="button" class="button" id="adminNoticeCopy">Copy message</button>
-                    <button type="button" class="button button-secondary" id="adminNoticeEmailBack">Back to dashboard</button>
-                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="adminDrawerBackdrop" class="admin-drawer-backdrop" hidden></div>
+    <aside id="adminDrawer" class="admin-drawer" hidden aria-hidden="true">
+        <div class="admin-drawer-head">
+            <div>
+                <p class="admin-drawer-kicker">User</p>
+                <h2 id="adminDrawerTitle" class="admin-drawer-title">Details</h2>
             </div>
-        </section>
+            <button type="button" class="admin-btn admin-btn--ghost" id="adminDrawerClose">Close</button>
+        </div>
+        <div id="adminDrawerBody" class="admin-drawer-body"></div>
+    </aside>
 
-        <p class="reset-support-hint admin-back-hint"><a href="index.html">Back to home</a></p>
-    </section>
-
-    <footer>
-        <p>© 2026 PermitPath. All Rights Reserved.</p>
-    </footer>
+    <div id="adminDeleteModal" class="admin-modal" hidden>
+        <div class="admin-modal-backdrop" id="adminDeleteBackdrop"></div>
+        <div class="admin-modal-card" role="dialog" aria-modal="true" aria-labelledby="adminDeleteTitle">
+            <h2 id="adminDeleteTitle">Delete user</h2>
+            <p class="admin-modal-lead">This permanently removes the account from PermitPath. Their profile and usage data will be deleted. This cannot be undone.</p>
+            <div id="adminDeleteIdentity" class="admin-modal-identity"></div>
+            <div class="admin-modal-actions">
+                <button type="button" class="admin-btn admin-btn--secondary" id="adminDeleteCancel">Cancel</button>
+                <button type="button" class="admin-btn admin-btn--danger" id="adminDeleteConfirm">Delete user</button>
+            </div>
+        </div>
+    </div>
 
     <script type="module">
         import { supabase, supabaseUrl, supabaseAnonKey } from './lib/supabaseClient.js';
@@ -238,8 +247,6 @@
             }
         });
 
-        const menuToggle = document.getElementById('menuToggle');
-        const dropdownMenu = document.getElementById('dropdownMenu');
         const adminLoginWrap = document.getElementById('adminLoginWrap');
         const adminAuthedWrap = document.getElementById('adminAuthedWrap');
         const adminIntroText = document.getElementById('adminIntroText');
@@ -275,9 +282,10 @@
         const adminNoticeEmailStatus = document.getElementById('adminNoticeEmailStatus');
         const adminNoticeCopy = document.getElementById('adminNoticeCopy');
         const adminNoticeEmailBack = document.getElementById('adminNoticeEmailBack');
-        const adminOverviewStats = document.getElementById('adminOverviewStats');
+        const adminHeroStats = document.getElementById('adminHeroStats');
+        const adminSecondaryStats = document.getElementById('adminSecondaryStats');
         const adminRevenueEstimate = document.getElementById('adminRevenueEstimate');
-        const adminUsersPanel = document.querySelector('.admin-users-panel');
+        const adminUsersPanel = document.getElementById('adminPanelUsers');
         const adminUserFilterBar = document.getElementById('adminUserFilterBar');
         const adminUserFilterLabel = document.getElementById('adminUserFilterLabel');
         const adminUserFilterClear = document.getElementById('adminUserFilterClear');
@@ -286,6 +294,20 @@
         const adminSignedInAs = document.getElementById('adminSignedInAs');
         const adminRefreshBtn = document.getElementById('adminRefreshBtn');
         const adminExportPdfBtn = document.getElementById('adminExportPdfBtn');
+        const adminNavButtons = document.querySelectorAll('[data-admin-tab]');
+        const adminTabPanels = document.querySelectorAll('[data-admin-panel]');
+        const adminUsersTabCount = document.getElementById('adminUsersTabCount');
+        const adminDeletedTabCount = document.getElementById('adminDeletedTabCount');
+        const adminDrawer = document.getElementById('adminDrawer');
+        const adminDrawerBackdrop = document.getElementById('adminDrawerBackdrop');
+        const adminDrawerTitle = document.getElementById('adminDrawerTitle');
+        const adminDrawerBody = document.getElementById('adminDrawerBody');
+        const adminDrawerClose = document.getElementById('adminDrawerClose');
+        const adminDeleteModal = document.getElementById('adminDeleteModal');
+        const adminDeleteBackdrop = document.getElementById('adminDeleteBackdrop');
+        const adminDeleteIdentity = document.getElementById('adminDeleteIdentity');
+        const adminDeleteCancel = document.getElementById('adminDeleteCancel');
+        const adminDeleteConfirm = document.getElementById('adminDeleteConfirm');
         const adminEmailNavButtons = [
             adminBtnMassEmail,
             adminBtnSubscribedEmails,
@@ -349,6 +371,11 @@
         let pinnedUserKeys = loadPinnedUserKeys();
         let activeUserFilter = null;
         let activeUserSearchQuery = '';
+        let activeAdminTab = 'overview';
+        let activeUserSort = { key: 'last_seen', dir: 'desc' };
+        let selectedProfileKey = '';
+        let selectedProfile = null;
+        let pendingDeleteProfile = null;
 
         const USER_FILTER_META = {
             all: { label: 'All users' },
@@ -373,32 +400,26 @@
             ]);
         }
 
-        menuToggle.addEventListener('click', function() {
-            dropdownMenu.classList.toggle('active');
-            menuToggle.classList.toggle('active');
-        });
-        document.addEventListener('click', function(event) {
-            if (!dropdownMenu.contains(event.target) && !menuToggle.contains(event.target)) {
-                dropdownMenu.classList.remove('active');
-                menuToggle.classList.remove('active');
+        function setAdminTab(tab) {
+            const next = tab || 'overview';
+            activeAdminTab = next;
+            adminNavButtons.forEach(function(btn) {
+                const isActive = btn.getAttribute('data-admin-tab') === next;
+                btn.classList.toggle('is-active', isActive);
+                if (isActive) btn.setAttribute('aria-current', 'page');
+                else btn.removeAttribute('aria-current');
+            });
+            adminTabPanels.forEach(function(panel) {
+                panel.hidden = panel.getAttribute('data-admin-panel') !== next;
+            });
+            if (next !== 'users') {
+                closeUserDrawer();
             }
-        });
-        (function() {
-            var header = document.querySelector('header');
-            var scrollDown = 100;
-            var scrollUp = 40;
-            var compact = false;
-            window.addEventListener('scroll', function() {
-                var y = window.scrollY;
-                if (!compact && y > scrollDown) {
-                    compact = true;
-                    header.classList.add('header--compact');
-                } else if (compact && y < scrollUp) {
-                    compact = false;
-                    header.classList.remove('header--compact');
-                }
-            }, { passive: true });
-        })();
+            if (next !== 'outreach') {
+                closeEmailTool();
+                closeAdminNoticeEmailTool();
+            }
+        }
 
         function setAuthMessage(text, kind) {
             adminAuthMessage.textContent = text;
@@ -410,11 +431,23 @@
             adminAuthMessage.className = 'form-message';
         }
 
+        let dataMessageTimer = null;
         function setDataMessage(text, kind) {
             adminDataMessage.textContent = text;
             adminDataMessage.className =
                 'form-message admin-data-message' + (kind === 'success' ? ' success' : kind === 'error' ? ' error' : '');
             adminDataMessage.hidden = !text;
+            if (dataMessageTimer) {
+                clearTimeout(dataMessageTimer);
+                dataMessageTimer = null;
+            }
+            if (text && kind === 'success') {
+                dataMessageTimer = setTimeout(function() {
+                    if (adminDataMessage.className.indexOf('success') !== -1) {
+                        clearDataMessage();
+                    }
+                }, 2800);
+            }
         }
 
         function clearDataMessage() {
@@ -509,18 +542,20 @@
             updateSignedInLabel(null);
             latestProfilesList = [];
             latestEventsList = [];
+            latestDeletedList = [];
             activeUserFilter = null;
             activeUserSearchQuery = '';
+            selectedProfileKey = '';
+            selectedProfile = null;
+            pendingDeleteProfile = null;
             if (adminUserSearch) adminUserSearch.value = '';
             updateUserSearchUi();
             updateUserFilterBar();
-            if (adminMainView && adminEmailToolView) {
-                adminEmailToolView.hidden = true;
-                adminMainView.hidden = false;
-            }
-            if (adminNoticeEmailView) {
-                adminNoticeEmailView.hidden = true;
-            }
+            closeUserDrawer();
+            closeDeleteModal();
+            if (adminEmailToolView) adminEmailToolView.hidden = true;
+            if (adminNoticeEmailView) adminNoticeEmailView.hidden = true;
+            if (adminMainView) adminMainView.hidden = false;
             clearEmailNavActive();
             clearNoticeTemplateActive();
             if (adminEmailToolStatus) adminEmailToolStatus.textContent = '';
@@ -533,6 +568,9 @@
             }
             clearOverviewStats();
             clearUsageEventTotals();
+            updateTabCounts();
+            updateEmailListCounts();
+            setAdminTab('overview');
         }
 
         function projectRefFromSupabaseUrl() {
@@ -813,7 +851,7 @@
 
         async function openAdminNoticeTool(templateId) {
             const template = ADMIN_NOTICE_TEMPLATES[templateId];
-            if (!template || !adminMainView || !adminNoticeEmailView || !adminNoticeBody) {
+            if (!template || !adminNoticeEmailView || !adminNoticeBody) {
                 return;
             }
             try {
@@ -830,8 +868,8 @@
                 return;
             }
 
+            setAdminTab('outreach');
             if (adminEmailToolView) adminEmailToolView.hidden = true;
-            adminMainView.hidden = true;
             adminNoticeEmailView.hidden = false;
             setNoticeTemplateActive(templateId);
             setNoticeEmailStatus('');
@@ -845,7 +883,6 @@
 
         function closeAdminNoticeEmailTool() {
             if (adminNoticeEmailView) adminNoticeEmailView.hidden = true;
-            if (adminMainView) adminMainView.hidden = false;
             clearNoticeTemplateActive();
             setNoticeEmailStatus('');
         }
@@ -880,8 +917,36 @@
             });
         }
 
+        function updateEmailListCounts() {
+            const labels = {
+                all: 'All users',
+                subscribed: 'Subscribed',
+                unsubscribed: 'Not subscribed',
+                lapsed: 'Lapsed'
+            };
+            adminEmailNavButtons.forEach(function(btn) {
+                if (!btn) return;
+                const filter = btn.getAttribute('data-email-filter');
+                const count = collectEmailsFromProfiles(latestProfilesList, filter).length;
+                btn.textContent = (labels[filter] || filter) + ' (' + count + ')';
+            });
+        }
+
+        function updateTabCounts() {
+            if (adminUsersTabCount) {
+                const n = (latestProfilesList || []).length;
+                adminUsersTabCount.hidden = false;
+                adminUsersTabCount.textContent = String(n);
+            }
+            if (adminDeletedTabCount) {
+                const n = (latestDeletedList || []).length;
+                adminDeletedTabCount.hidden = false;
+                adminDeletedTabCount.textContent = String(n);
+            }
+        }
+
         async function openEmailTool(filter) {
-            if (!adminMainView || !adminEmailToolView || !adminEmailToolTitle || !adminEmailToolTextarea) return;
+            if (!adminEmailToolView || !adminEmailToolTitle || !adminEmailToolTextarea) return;
             try {
                 const { data: wrap } = await supabase.auth.getSession();
                 const session = wrap && wrap.session ? wrap.session : null;
@@ -897,7 +962,7 @@
                 return;
             }
 
-            adminMainView.hidden = true;
+            setAdminTab('outreach');
             adminEmailToolView.hidden = false;
             if (adminNoticeEmailView) adminNoticeEmailView.hidden = true;
             clearNoticeTemplateActive();
@@ -917,12 +982,9 @@
         }
 
         function closeEmailTool() {
-            if (!adminMainView || !adminEmailToolView) return;
+            if (!adminEmailToolView) return;
             adminEmailToolView.hidden = true;
-            adminMainView.hidden = false;
-            if (adminNoticeEmailView) adminNoticeEmailView.hidden = true;
             clearEmailNavActive();
-            clearNoticeTemplateActive();
             if (adminEmailToolStatus) adminEmailToolStatus.textContent = '';
         }
 
@@ -1036,7 +1098,8 @@
         }
 
         function clearOverviewStats() {
-            if (adminOverviewStats) adminOverviewStats.innerHTML = '';
+            if (adminHeroStats) adminHeroStats.innerHTML = '';
+            if (adminSecondaryStats) adminSecondaryStats.innerHTML = '';
             if (adminRevenueEstimate) adminRevenueEstimate.innerHTML = '';
         }
 
@@ -1165,7 +1228,11 @@
                 profile && profile.email !== null && profile.email !== undefined
                     ? String(profile.email).trim().toLowerCase()
                     : '';
-            return name.indexOf(q) !== -1 || email.indexOf(q) !== -1;
+            const uid =
+                profile && profile.user_id !== null && profile.user_id !== undefined
+                    ? String(profile.user_id).trim().toLowerCase()
+                    : '';
+            return name.indexOf(q) !== -1 || email.indexOf(q) !== -1 || uid.indexOf(q) !== -1;
         }
 
         function applyProfileListFilters(profiles) {
@@ -1214,16 +1281,18 @@
             updateUserFilterBar();
             renderProfiles(latestProfilesList);
             syncOverviewStatFilterHighlight();
-            if (activeUserFilter && adminUsersPanel) {
-                adminUsersPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }
+            setAdminTab('users');
         }
 
         function syncOverviewStatFilterHighlight() {
-            if (!adminOverviewStats) return;
-            adminOverviewStats.querySelectorAll('.admin-overview-stat--clickable').forEach(function(el) {
-                const key = el.dataset.userFilter || '';
-                el.classList.toggle('admin-overview-stat--active-filter', key === activeUserFilter);
+            [adminHeroStats, adminSecondaryStats].forEach(function(container) {
+                if (!container) return;
+                container.querySelectorAll('.admin-overview-stat--clickable').forEach(function(el) {
+                    const key = el.dataset.userFilter || '';
+                    const isActive =
+                        key === activeUserFilter || (key === 'all' && !activeUserFilter);
+                    el.classList.toggle('admin-overview-stat--active-filter', isActive);
+                });
             });
         }
 
@@ -1266,59 +1335,54 @@
         }
 
         function renderDashboardOverviewStats(profiles, events) {
-            if (!adminOverviewStats) return;
-            adminOverviewStats.innerHTML = '';
+            if (adminHeroStats) adminHeroStats.innerHTML = '';
+            if (adminSecondaryStats) adminSecondaryStats.innerHTML = '';
 
             const metrics = computeProfileMetrics(profiles);
-            const activityCounts = aggregateDisplayedUsageEventCounts(events);
+            const gross = metrics.subscribed * SUBSCRIPTION_PRICE_MONTHLY;
+            const net = gross - gross * APP_STORE_FEE_RATE;
 
-            appendOverviewStatCard(adminOverviewStats, 'Total users', metrics.total, 'default', {
-                filterKey: 'all'
-            });
-            appendOverviewStatCard(adminOverviewStats, 'Subscribed', metrics.subscribed, 'success', {
-                filterKey: 'subscribed'
-            });
-            appendOverviewStatCard(adminOverviewStats, 'Not subscribed', metrics.notSubscribed, 'muted', {
-                filterKey: 'not_subscribed'
-            });
-            appendOverviewStatCard(
-                adminOverviewStats,
-                'App opens (' + USAGE_EVENTS_WINDOW_DAYS + 'd)',
-                activityCounts.app_open || 0,
-                'default'
-            );
-            appendOverviewStatCard(
-                adminOverviewStats,
-                'Routes built (' + USAGE_EVENTS_WINDOW_DAYS + 'd)',
-                activityCounts.route_built || 0,
-                'default'
-            );
-            appendOverviewStatCard(
-                adminOverviewStats,
-                'Navigations (' + USAGE_EVENTS_WINDOW_DAYS + 'd)',
-                activityCounts.navigation_started || 0,
-                'default'
-            );
-            appendOverviewStatCard(adminOverviewStats, 'New (7 days)', metrics.new7, 'default', {
-                filterKey: 'new7'
-            });
-            appendOverviewStatCard(adminOverviewStats, 'New (30 days)', metrics.new30, 'default', {
-                filterKey: 'new30'
-            });
-            appendOverviewStatCard(adminOverviewStats, 'Active (7 days)', metrics.active7, 'success', {
-                filterKey: 'active7'
-            });
-            appendOverviewStatCard(adminOverviewStats, 'Expiring soon', metrics.expiringSoon, 'warning', {
-                filterKey: 'expiring_soon'
-            });
-            appendOverviewStatCard(adminOverviewStats, 'Paying, inactive 14d+', metrics.payingInactive, 'danger', {
-                filterKey: 'paying_inactive'
-            });
-            appendOverviewStatCard(adminOverviewStats, 'Lapsed', metrics.lapsed, 'muted', {
-                filterKey: 'lapsed'
-            });
+            if (adminHeroStats) {
+                appendOverviewStatCard(adminHeroStats, 'Total users', metrics.total, 'default', {
+                    filterKey: 'all'
+                });
+                appendOverviewStatCard(adminHeroStats, 'Subscribed', metrics.subscribed, 'success', {
+                    filterKey: 'subscribed'
+                });
+                appendOverviewStatCard(adminHeroStats, 'Active (7 days)', metrics.active7, 'success', {
+                    filterKey: 'active7'
+                });
+                appendOverviewStatCard(adminHeroStats, 'Est. net / month', formatUsd(net), 'success');
+            }
+
+            if (adminSecondaryStats) {
+                appendOverviewStatCard(adminSecondaryStats, 'Not subscribed', metrics.notSubscribed, 'muted', {
+                    filterKey: 'not_subscribed'
+                });
+                appendOverviewStatCard(adminSecondaryStats, 'New (7 days)', metrics.new7, 'default', {
+                    filterKey: 'new7'
+                });
+                appendOverviewStatCard(adminSecondaryStats, 'New (30 days)', metrics.new30, 'default', {
+                    filterKey: 'new30'
+                });
+                appendOverviewStatCard(adminSecondaryStats, 'Expiring soon', metrics.expiringSoon, 'warning', {
+                    filterKey: 'expiring_soon'
+                });
+                appendOverviewStatCard(
+                    adminSecondaryStats,
+                    'Paying, inactive 14d+',
+                    metrics.payingInactive,
+                    'danger',
+                    { filterKey: 'paying_inactive' }
+                );
+                appendOverviewStatCard(adminSecondaryStats, 'Lapsed', metrics.lapsed, 'muted', {
+                    filterKey: 'lapsed'
+                });
+            }
 
             renderRevenueEstimate(metrics.subscribed);
+            updateTabCounts();
+            updateEmailListCounts();
         }
 
         function renderRevenueEstimate(subscribedCount) {
@@ -2347,112 +2411,103 @@
             expandEl.appendChild(block);
         }
 
-        function appendProfileSection(container, title, profiles, sectionClass, rowOpts) {
-            if (!profiles || profiles.length === 0) return;
-
-            const section = document.createElement('section');
-            section.className = 'admin-profile-section' + (sectionClass ? ' ' + sectionClass : '');
-
-            const heading = document.createElement('h4');
-            heading.className = 'admin-profile-section-title';
-            heading.textContent = title + ' (' + profiles.length + ')';
-            section.appendChild(heading);
-
-            const listEl = document.createElement('div');
-            listEl.className = 'admin-profile-section-list';
-
-            profiles.forEach(function(profile) {
-                listEl.appendChild(buildProfileRow(profile, rowOpts));
-            });
-
-            section.appendChild(listEl);
-            container.appendChild(section);
+        function profileStatusMeta(profile) {
+            if (isTruthyFlag(profile.subscription_is_active) && isExpiringWithinDays(profile.subscription_expires_at, 7)) {
+                return { label: 'Expiring', kind: 'expiring' };
+            }
+            if (isTruthyFlag(profile.subscription_is_active)) {
+                return { label: 'Subscribed', kind: 'subscribed' };
+            }
+            if (isLapsedProfile(profile)) {
+                return { label: 'Lapsed', kind: 'lapsed' };
+            }
+            return { label: 'Free', kind: 'free' };
         }
 
-        function buildProfileRow(profile, rowOpts) {
-            rowOpts = rowOpts || {};
-            const showEmail = rowOpts.showEmail !== false;
+        function profileSortValue(profile, key) {
+            if (key === 'name') {
+                return profile && profile.full_name ? String(profile.full_name).trim().toLowerCase() : '';
+            }
+            if (key === 'email') {
+                return profile && profile.email ? String(profile.email).trim().toLowerCase() : '';
+            }
+            if (key === 'status') {
+                return profileStatusMeta(profile).label;
+            }
+            if (key === 'last_seen') {
+                const d = profileDate(profile.last_seen_at);
+                return d ? d.getTime() : 0;
+            }
+            if (key === 'routes') {
+                const n = Number(profile.routes_built_count);
+                return Number.isFinite(n) ? n : -1;
+            }
+            if (key === 'expires') {
+                const d = profileDate(profile.subscription_expires_at);
+                return d ? d.getTime() : 0;
+            }
+            return '';
+        }
+
+        function compareProfilesForSort(a, b, key, dir) {
+            const av = profileSortValue(a, key);
+            const bv = profileSortValue(b, key);
+            let cmp = 0;
+            if (typeof av === 'number' && typeof bv === 'number') {
+                cmp = av - bv;
+            } else {
+                cmp = String(av).localeCompare(String(bv));
+            }
+            if (cmp === 0) {
+                const ta = profileSortValue(a, 'last_seen');
+                const tb = profileSortValue(b, 'last_seen');
+                cmp = tb - ta;
+            }
+            return dir === 'asc' ? cmp : -cmp;
+        }
+
+        function setUserSort(key) {
+            if (!key) return;
+            if (activeUserSort.key === key) {
+                activeUserSort = { key: key, dir: activeUserSort.dir === 'asc' ? 'desc' : 'asc' };
+            } else {
+                activeUserSort = {
+                    key: key,
+                    dir: key === 'name' || key === 'email' || key === 'status' ? 'asc' : 'desc'
+                };
+            }
+            renderProfiles(latestProfilesList);
+        }
+
+        function sortIndicator(key) {
+            if (activeUserSort.key !== key) return '';
+            return activeUserSort.dir === 'asc' ? '↑' : '↓';
+        }
+
+        function makeSortHeader(label, key) {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'admin-sort-btn';
+            btn.textContent = label;
+            if (activeUserSort.key === key) {
+                const ind = document.createElement('span');
+                ind.className = 'admin-sort-ind';
+                ind.textContent = sortIndicator(key);
+                btn.appendChild(ind);
+            }
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                setUserSort(key);
+            });
+            return btn;
+        }
+
+        function buildUserDrawerContent(profile) {
             const em = profile.email && String(profile.email).trim();
-            const fn = profile.full_name && String(profile.full_name).trim();
             const uid = profile.user_id ? String(profile.user_id) : '';
             const routes = profile.routes_built_count;
             const routesStr = routes === null || routes === undefined ? '—' : String(routes);
-            const pinned = isProfilePinned(profile);
-            const pinKey = profileListKey(profile);
-
-            const det = document.createElement('details');
-            det.className = 'admin-profile-row' + (pinned ? ' admin-profile-row--pinned' : '');
-
-            const sum = document.createElement('summary');
-            sum.className = 'admin-profile-email';
-
-            const pinBtn = document.createElement('button');
-            pinBtn.type = 'button';
-            pinBtn.className = 'admin-profile-pin-btn' + (pinned ? ' admin-profile-pin-btn--active' : '');
-            pinBtn.setAttribute('aria-label', pinned ? 'Unpin from top' : 'Pin to top');
-            pinBtn.setAttribute('aria-pressed', pinned ? 'true' : 'false');
-            pinBtn.title = pinned ? 'Unpin from top' : 'Pin to top';
-            pinBtn.textContent = pinned ? '★' : '☆';
-            if (!pinKey) {
-                pinBtn.disabled = true;
-                pinBtn.title = 'Cannot pin this profile (no user id, profile id, or email).';
-            }
-            pinBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                if (!pinKey) return;
-                toggleProfilePinned(profile);
-            });
-
-            const bodyWrap = document.createElement('div');
-            bodyWrap.className = 'admin-profile-summary-body';
-
-            const mainWrap = document.createElement('div');
-            mainWrap.className = 'admin-profile-summary-main';
-            const nameEl = document.createElement('span');
-            nameEl.className = 'admin-profile-summary-name';
-            const subEmail = document.createElement('span');
-            subEmail.className = 'admin-profile-summary-email';
-            if (fn) {
-                nameEl.textContent = fn;
-                if (em && showEmail) {
-                    subEmail.textContent = em;
-                } else {
-                    subEmail.classList.add('admin-profile-summary-email--empty');
-                }
-            } else {
-                nameEl.textContent = em || uid || 'Unknown';
-                subEmail.classList.add('admin-profile-summary-email--empty');
-            }
-            mainWrap.appendChild(nameEl);
-            mainWrap.appendChild(subEmail);
-
-            const asideWrap = document.createElement('div');
-            asideWrap.className = 'admin-profile-summary-aside';
-            const subPill = document.createElement('span');
-            subPill.className =
-                'admin-profile-sub-pill admin-profile-sub-pill--' + subscriptionIndicatorKind(profile);
-            subPill.textContent = isTruthyFlag(profile.subscription_is_active) ? 'Subscribed' : 'Free';
-            asideWrap.appendChild(subPill);
-
-            const ago = formatRelativeTimeAgo(profile.last_seen_at);
-            if (ago) {
-                const activeEl = document.createElement('span');
-                activeEl.className = 'admin-profile-summary-active';
-                activeEl.textContent = 'Active ' + ago;
-                asideWrap.appendChild(activeEl);
-            } else if (routes !== null && routes !== undefined) {
-                const routesEl = document.createElement('span');
-                routesEl.className = 'admin-profile-summary-routes';
-                routesEl.textContent = routes === 1 ? '1 route built' : String(routes) + ' routes built';
-                asideWrap.appendChild(routesEl);
-            }
-
-            bodyWrap.appendChild(mainWrap);
-            bodyWrap.appendChild(asideWrap);
-
-            sum.appendChild(pinBtn);
-            sum.appendChild(bodyWrap);
 
             const expand = document.createElement('div');
             expand.className = 'admin-profile-expand';
@@ -2487,7 +2542,6 @@
                 'Subscription expires',
                 profileScalarDisplay(profile, 'subscription_expires_at')
             );
-
             appendProfileExpandFullRow(
                 expand,
                 'Subscription product ID',
@@ -2513,7 +2567,7 @@
             dangerZone.className = 'admin-profile-danger-zone';
             const deleteBtn = document.createElement('button');
             deleteBtn.type = 'button';
-            deleteBtn.className = 'button admin-profile-delete-btn';
+            deleteBtn.className = 'admin-btn admin-btn--danger admin-profile-delete-btn';
             deleteBtn.textContent = 'Delete user';
             if (!profileUserId) {
                 deleteBtn.disabled = true;
@@ -2523,24 +2577,163 @@
                 deleteBtn.title = 'Cannot delete the admin account.';
             }
             deleteBtn.addEventListener('click', function() {
-                handleDeleteUser(profile);
+                openDeleteModal(profile);
             });
             dangerZone.appendChild(deleteBtn);
             expand.appendChild(dangerZone);
+            return expand;
+        }
 
-            det.addEventListener('toggle', function() {
-                if (det.open) {
-                    profilesWrap.querySelectorAll('details.admin-profile-row').forEach(function(other) {
-                        if (other !== det && other.open) {
-                            other.open = false;
-                        }
-                    });
+        function openUserDrawer(profile) {
+            if (!adminDrawer || !adminDrawerBody || !profile) return;
+            selectedProfile = profile;
+            selectedProfileKey = profileListKey(profile);
+            const title =
+                (profile.full_name && String(profile.full_name).trim()) ||
+                (profile.email && String(profile.email).trim()) ||
+                'User details';
+            if (adminDrawerTitle) adminDrawerTitle.textContent = title;
+            adminDrawerBody.innerHTML = '';
+            adminDrawerBody.appendChild(buildUserDrawerContent(profile));
+            adminDrawer.hidden = false;
+            adminDrawer.setAttribute('aria-hidden', 'false');
+            if (adminDrawerBackdrop) adminDrawerBackdrop.hidden = false;
+            document.body.style.overflow = 'hidden';
+            if (profilesWrap) {
+                profilesWrap.querySelectorAll('tr[data-profile-key]').forEach(function(row) {
+                    row.classList.toggle('is-selected', row.dataset.profileKey === selectedProfileKey);
+                });
+            }
+        }
+
+        function closeUserDrawer() {
+            selectedProfile = null;
+            selectedProfileKey = '';
+            if (adminDrawer) {
+                adminDrawer.hidden = true;
+                adminDrawer.setAttribute('aria-hidden', 'true');
+            }
+            if (adminDrawerBody) adminDrawerBody.innerHTML = '';
+            if (adminDrawerBackdrop) adminDrawerBackdrop.hidden = true;
+            if (!adminDeleteModal || adminDeleteModal.hidden) {
+                document.body.style.overflow = '';
+            }
+            if (profilesWrap) {
+                profilesWrap.querySelectorAll('tr.is-selected').forEach(function(row) {
+                    row.classList.remove('is-selected');
+                });
+            }
+        }
+
+        function openDeleteModal(profile) {
+            pendingDeleteProfile = profile || null;
+            if (!adminDeleteModal || !pendingDeleteProfile) return;
+            const name =
+                (profile.full_name && String(profile.full_name).trim()) || 'Unnamed user';
+            const email = (profile.email && String(profile.email).trim()) || '';
+            if (adminDeleteIdentity) {
+                adminDeleteIdentity.innerHTML = '';
+                const nameEl = document.createElement('p');
+                nameEl.className = 'admin-modal-identity-name';
+                nameEl.textContent = name;
+                adminDeleteIdentity.appendChild(nameEl);
+                if (email) {
+                    const emailEl = document.createElement('p');
+                    emailEl.className = 'admin-modal-identity-email';
+                    emailEl.textContent = email;
+                    adminDeleteIdentity.appendChild(emailEl);
                 }
-            });
+            }
+            adminDeleteModal.hidden = false;
+            document.body.style.overflow = 'hidden';
+            if (adminDeleteCancel) adminDeleteCancel.focus();
+        }
 
-            det.appendChild(sum);
-            det.appendChild(expand);
-            return det;
+        function closeDeleteModal() {
+            pendingDeleteProfile = null;
+            if (adminDeleteModal) adminDeleteModal.hidden = true;
+            if (!adminDrawer || adminDrawer.hidden) {
+                document.body.style.overflow = '';
+            }
+        }
+
+        function buildUserTableRow(profile) {
+            const em = profile.email && String(profile.email).trim();
+            const fn = profile.full_name && String(profile.full_name).trim();
+            const uid = profile.user_id ? String(profile.user_id) : '';
+            const routes = profile.routes_built_count;
+            const pinned = isProfilePinned(profile);
+            const pinKey = profileListKey(profile);
+            const status = profileStatusMeta(profile);
+
+            const tr = document.createElement('tr');
+            if (pinKey) tr.dataset.profileKey = pinKey;
+            if (pinned) tr.classList.add('is-pinned');
+            if (pinKey && pinKey === selectedProfileKey) tr.classList.add('is-selected');
+
+            const pinTd = document.createElement('td');
+            pinTd.className = 'admin-table-pin';
+            const pinBtn = document.createElement('button');
+            pinBtn.type = 'button';
+            pinBtn.className = 'admin-profile-pin-btn' + (pinned ? ' admin-profile-pin-btn--active' : '');
+            pinBtn.setAttribute('aria-label', pinned ? 'Unpin from top' : 'Pin to top');
+            pinBtn.setAttribute('aria-pressed', pinned ? 'true' : 'false');
+            pinBtn.title = pinned ? 'Unpin from top' : 'Pin to top';
+            pinBtn.textContent = pinned ? '★' : '☆';
+            if (!pinKey) {
+                pinBtn.disabled = true;
+                pinBtn.title = 'Cannot pin this profile (no user id, profile id, or email).';
+            }
+            pinBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                if (!pinKey) return;
+                toggleProfilePinned(profile);
+            });
+            pinTd.appendChild(pinBtn);
+
+            const nameTd = document.createElement('td');
+            const nameEl = document.createElement('div');
+            nameEl.className = 'admin-table-name';
+            nameEl.textContent = fn || em || uid || 'Unknown';
+            nameTd.appendChild(nameEl);
+
+            const emailTd = document.createElement('td');
+            emailTd.className = 'admin-table-email';
+            emailTd.textContent = em || '—';
+
+            const statusTd = document.createElement('td');
+            const pill = document.createElement('span');
+            pill.className = 'admin-status-pill admin-status-pill--' + status.kind;
+            pill.textContent = status.label;
+            statusTd.appendChild(pill);
+
+            const seenTd = document.createElement('td');
+            const ago = formatRelativeTimeAgo(profile.last_seen_at);
+            seenTd.textContent = ago || '—';
+            if (profile.last_seen_at) seenTd.title = formatDisplayDate(profile.last_seen_at);
+
+            const routesTd = document.createElement('td');
+            routesTd.textContent = routes === null || routes === undefined ? '—' : String(routes);
+
+            const expTd = document.createElement('td');
+            expTd.className = 'admin-table-muted';
+            expTd.textContent = profile.subscription_expires_at
+                ? formatDisplayDate(profile.subscription_expires_at)
+                : '—';
+
+            tr.appendChild(pinTd);
+            tr.appendChild(nameTd);
+            tr.appendChild(emailTd);
+            tr.appendChild(statusTd);
+            tr.appendChild(seenTd);
+            tr.appendChild(routesTd);
+            tr.appendChild(expTd);
+
+            tr.addEventListener('click', function() {
+                openUserDrawer(profile);
+            });
+            return tr;
         }
 
         function renderProfiles(profiles) {
@@ -2559,54 +2752,64 @@
             }
 
             if (all.length === 0) {
-                profilesWrap.className = 'admin-profile-list admin-profile-list--empty';
-                const empty = document.createElement('div');
-                empty.className = 'admin-empty-state';
-                empty.textContent = 'No profiles found.';
-                profilesWrap.appendChild(empty);
+                profilesWrap.className = 'admin-empty-state';
+                profilesWrap.textContent = 'No profiles found.';
                 return;
             }
 
             if (list.length === 0) {
-                profilesWrap.className = 'admin-profile-list admin-profile-list--empty';
-                const empty = document.createElement('div');
-                empty.className = 'admin-empty-state';
+                profilesWrap.className = 'admin-empty-state';
                 if (hasSearch) {
-                    empty.textContent =
-                        'No users match “' + activeUserSearchQuery + '”. Try a different name or email.';
+                    profilesWrap.textContent =
+                        'No users match “' + activeUserSearchQuery + '”. Try a different name, email, or user ID.';
                 } else {
                     const meta = USER_FILTER_META[activeUserFilter];
-                    empty.textContent =
+                    profilesWrap.textContent =
                         'No users match “' + (meta ? meta.label : activeUserFilter) + '”. Try another filter or clear it.';
                 }
-                profilesWrap.appendChild(empty);
                 return;
             }
 
-            profilesWrap.className = 'admin-profile-list';
-            const parts = partitionProfilesForDisplay(list);
-            const sectionLabel = activeUserFilter || hasSearch ? 'Matching users' : 'All users';
+            const pinned = [];
+            const rest = [];
+            list.forEach(function(profile) {
+                if (isProfilePinned(profile)) pinned.push(profile);
+                else rest.push(profile);
+            });
+            pinned.sort(function(a, b) {
+                return pinnedUserKeys.indexOf(profileListKey(a)) - pinnedUserKeys.indexOf(profileListKey(b));
+            });
+            rest.sort(function(a, b) {
+                return compareProfilesForSort(a, b, activeUserSort.key, activeUserSort.dir);
+            });
 
-            if (parts.pinned.length > 0) {
-                appendProfileSection(profilesWrap, 'Pinned', parts.pinned, 'admin-profile-section--pinned', {
-                    showEmail: true
-                });
-                appendProfileSection(
-                    profilesWrap,
-                    parts.rest.length ? sectionLabel : '',
-                    parts.rest,
-                    'admin-profile-section--rest',
-                    { showEmail: hasSearch || parts.pinned.length === 0 }
-                );
-            } else {
-                appendProfileSection(
-                    profilesWrap,
-                    sectionLabel,
-                    parts.rest,
-                    'admin-profile-section--all',
-                    { showEmail: hasSearch }
-                );
-            }
+            profilesWrap.className = 'admin-table-wrap';
+            const table = document.createElement('table');
+            table.className = 'admin-table';
+            const thead = document.createElement('thead');
+            const headRow = document.createElement('tr');
+            ['', 'Name', 'Email', 'Status', 'Last seen', 'Routes', 'Expires'].forEach(function(label, idx) {
+                const th = document.createElement('th');
+                if (idx === 0) {
+                    th.textContent = '';
+                    th.className = 'admin-table-pin';
+                } else if (idx === 1) th.appendChild(makeSortHeader(label, 'name'));
+                else if (idx === 2) th.appendChild(makeSortHeader(label, 'email'));
+                else if (idx === 3) th.appendChild(makeSortHeader(label, 'status'));
+                else if (idx === 4) th.appendChild(makeSortHeader(label, 'last_seen'));
+                else if (idx === 5) th.appendChild(makeSortHeader(label, 'routes'));
+                else th.appendChild(makeSortHeader(label, 'expires'));
+                headRow.appendChild(th);
+            });
+            thead.appendChild(headRow);
+            table.appendChild(thead);
+
+            const tbody = document.createElement('tbody');
+            pinned.concat(rest).forEach(function(profile) {
+                tbody.appendChild(buildUserTableRow(profile));
+            });
+            table.appendChild(tbody);
+            profilesWrap.appendChild(table);
         }
 
         function deletionSourceLabel(source) {
@@ -2777,17 +2980,6 @@
                 return;
             }
 
-            const label =
-                (profile.email && String(profile.email).trim()) ||
-                (profile.full_name && String(profile.full_name).trim()) ||
-                uid;
-            const ok = window.confirm(
-                'Permanently delete this user?\n\n' +
-                    label +
-                    '\n\nTheir profile and usage data will be removed. This cannot be undone.'
-            );
-            if (!ok) return;
-
             const { data: sessWrap, error: sessErr } = await supabase.auth.getSession();
             if (sessErr || !sessWrap || !sessWrap.session || !sessWrap.session.access_token) {
                 setDataMessage('Please sign in again.', 'error');
@@ -2800,6 +2992,10 @@
             }
 
             try {
+                if (adminDeleteConfirm) {
+                    adminDeleteConfirm.disabled = true;
+                    adminDeleteConfirm.textContent = 'Deleting…';
+                }
                 setDataMessage('Deleting user…', '');
                 const deleteUrl = supabaseUrl + '/functions/v1/admin-data/delete-user';
                 await fetchJsonWithAuth(deleteUrl, session.access_token, {
@@ -2822,11 +3018,15 @@
                     return String(ev.user_id || '') !== uid;
                 });
 
+                closeDeleteModal();
+                closeUserDrawer();
                 renderProfiles(latestProfilesList);
                 renderDashboardOverviewStats(latestProfilesList, latestEventsList);
                 syncOverviewStatFilterHighlight();
                 updateUserFilterBar();
                 renderUsageEventTotals();
+                updateTabCounts();
+                updateEmailListCounts();
 
                 const deletedUrl = supabaseUrl + '/functions/v1/admin-data/deleted-accounts?limit=500';
                 const deletedData = await fetchJsonWithAuth(deletedUrl, session.access_token);
@@ -2839,6 +3039,11 @@
             } catch (err) {
                 const msg = err && err.message ? err.message : 'Delete failed.';
                 setDataMessage(msg, 'error');
+            } finally {
+                if (adminDeleteConfirm) {
+                    adminDeleteConfirm.disabled = false;
+                    adminDeleteConfirm.textContent = 'Delete user';
+                }
             }
         }
 
@@ -3272,6 +3477,50 @@
                 syncDeletionFilterButtons();
                 renderDeletedAccounts();
             });
+        });
+
+        adminNavButtons.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                setAdminTab(btn.getAttribute('data-admin-tab') || 'overview');
+            });
+        });
+
+        if (adminDrawerClose) {
+            adminDrawerClose.addEventListener('click', function() {
+                closeUserDrawer();
+            });
+        }
+        if (adminDrawerBackdrop) {
+            adminDrawerBackdrop.addEventListener('click', function() {
+                closeUserDrawer();
+            });
+        }
+        if (adminDeleteCancel) {
+            adminDeleteCancel.addEventListener('click', function() {
+                closeDeleteModal();
+            });
+        }
+        if (adminDeleteBackdrop) {
+            adminDeleteBackdrop.addEventListener('click', function() {
+                closeDeleteModal();
+            });
+        }
+        if (adminDeleteConfirm) {
+            adminDeleteConfirm.addEventListener('click', function() {
+                if (!pendingDeleteProfile) return;
+                handleDeleteUser(pendingDeleteProfile).catch(function() {});
+            });
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key !== 'Escape') return;
+            if (adminDeleteModal && !adminDeleteModal.hidden) {
+                closeDeleteModal();
+                return;
+            }
+            if (adminDrawer && !adminDrawer.hidden) {
+                closeUserDrawer();
+            }
         });
     </script>
 </body>
