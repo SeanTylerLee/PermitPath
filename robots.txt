@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /offer.html
+Disallow: /offer
 
 Sitemap: https://permitpathnav.com/sitemap.xml
 
