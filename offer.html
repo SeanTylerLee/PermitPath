@@ -2,16 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
     <title>Offer - The Rest of 2026 Free | PermitPath</title>
     <meta name="robots" content="noindex, nofollow, noarchive" />
     <meta name="description" content="Private PermitPath offer page." />
+    <meta name="theme-color" content="#0d1b2a" />
+    <meta name="format-detection" content="telephone=no" />
 
     <link rel="icon" type="image/png" sizes="32x32" href="images/pppp.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="images/pppp.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="images/pppp.png" />
-    <link rel="icon" type="image/png" href="images/pppp.png" />
 
     <link rel="stylesheet" href="styles.css" />
 
@@ -19,80 +19,265 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
     <style>
+        body.offer-page {
+            background: radial-gradient(ellipse at top, #1e3a5f 0%, #0d1b2a 62%) !important;
+            background-attachment: scroll !important;
+            padding-bottom: calc(5.75rem + env(safe-area-inset-bottom));
+        }
+
+        body.offer-page header {
+            position: sticky;
+            top: 0;
+            padding: 0.65rem 1rem;
+            padding-top: max(0.65rem, env(safe-area-inset-top));
+        }
+
+        body.offer-page header .logo {
+            max-width: 148px;
+        }
+
+        .offer-wrap {
+            width: min(100%, 560px);
+            margin: 0 auto;
+            padding: 0.75rem 1rem 1.5rem;
+        }
+
+        .offer-hero {
+            text-align: center;
+            padding: 1.15rem 0.25rem 0.25rem;
+        }
+
+        .offer-hero h1 {
+            font-size: clamp(1.55rem, 7vw, 2.1rem);
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+            margin: 0 0 0.65rem;
+            color: #fff;
+        }
+
+        .offer-hero h1 span {
+            color: #00B4FF;
+        }
+
+        .offer-hero p {
+            margin: 0;
+            color: rgba(255, 255, 255, 0.88);
+            font-size: 1.05rem;
+            line-height: 1.45;
+        }
+
+        .offer-card {
+            background: rgba(3, 12, 24, 0.88);
+            border: 1px solid rgba(0, 180, 255, 0.32);
+            border-radius: 18px;
+            padding: 1.15rem 1rem 1.25rem;
+            margin: 1rem 0;
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+        }
+
+        .offer-card h2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #fff;
+            margin: 0 0 0.7rem;
+            line-height: 1.3;
+        }
+
+        .offer-card h2 span {
+            color: #00B4FF;
+        }
+
+        .offer-card p {
+            margin: 0 0 0.85rem;
+            color: rgba(255, 255, 255, 0.86);
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .offer-card p:last-child {
+            margin-bottom: 0;
+        }
+
         .offer-code {
             display: inline-block;
-            margin: 0.35rem 0 1rem;
-            padding: 0.55rem 1rem;
-            border-radius: 10px;
-            background: rgba(0, 180, 255, 0.12);
+            padding: 0.2rem 0.55rem;
+            border-radius: 8px;
+            background: rgba(0, 180, 255, 0.14);
             border: 1px solid rgba(0, 180, 255, 0.45);
             color: #fff;
-            font-size: 1.35rem;
-            font-weight: 700;
-            letter-spacing: 0.12em;
+            font-size: 0.98rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            vertical-align: middle;
         }
+
         .offer-redeem {
-            display: inline-block;
-            margin: 0.5rem 0 1.25rem;
-            padding: 0.9rem 1.4rem;
-            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            min-height: 52px;
+            margin: 0.35rem 0 0.85rem;
+            padding: 0.9rem 1rem;
+            border-radius: 14px;
             background: linear-gradient(135deg, #00B4FF 0%, #0077cc 100%);
             color: #fff;
-            font-weight: 700;
+            font-size: 1.08rem;
+            font-weight: 800;
             text-decoration: none;
-            box-shadow: 0 8px 22px rgba(0, 180, 255, 0.35);
+            box-shadow: 0 8px 20px rgba(0, 180, 255, 0.32);
+            -webkit-tap-highlight-color: transparent;
         }
-        .offer-redeem:hover {
-            filter: brightness(1.08);
+
+        .offer-redeem:active {
+            transform: scale(0.98);
         }
+
         .offer-link {
-            word-break: break-all;
-            color: #7dd3ff;
+            display: none;
         }
-        .legal-section ol {
-            color: rgba(255, 255, 255, 0.85);
-            line-height: 2;
-            margin: 1rem 0 1.5rem 2rem;
-            padding-left: 0.5rem;
+
+        .offer-steps {
+            list-style: none;
+            margin: 0;
+            padding: 0;
         }
-        .legal-section ol li {
-            margin-bottom: 0.5rem;
+
+        .offer-step {
+            margin: 0 0 1.35rem;
+            padding-bottom: 1.35rem;
+            border-bottom: 1px solid rgba(0, 180, 255, 0.18);
+        }
+
+        .offer-step:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .offer-step-label {
+            display: inline-block;
+            margin-bottom: 0.35rem;
+            color: #00B4FF;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+        }
+
+        .offer-step p {
+            margin: 0 0 0.75rem;
+        }
+
+        .offer-step img {
+            display: block;
+            width: 100%;
+            max-width: 280px;
+            height: auto;
+            margin: 0 auto;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        .offer-dock {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 50;
+            padding: 0.7rem 1rem calc(0.7rem + env(safe-area-inset-bottom));
+            background: linear-gradient(180deg, rgba(13, 27, 42, 0) 0%, rgba(13, 27, 42, 0.96) 28%);
+        }
+
+        .offer-dock .offer-redeem {
+            margin: 0;
+            box-shadow: 0 8px 24px rgba(0, 180, 255, 0.4);
+        }
+
+        body.offer-page footer {
+            padding-bottom: 0.5rem;
+        }
+
+        @media (min-width: 700px) {
+            body.offer-page {
+                padding-bottom: 2rem;
+            }
+
+            .offer-wrap {
+                padding-top: 1.25rem;
+            }
+
+            .offer-link {
+                display: block;
+                word-break: break-all;
+                color: #7dd3ff;
+                font-size: 0.92rem;
+            }
+
+            .offer-step img {
+                max-width: 300px;
+            }
+
+            .offer-dock {
+                display: none;
+            }
         }
     </style>
 </head>
 
-<body>
+<body class="offer-page">
 
     <header>
         <a href="index.html"><img src="images/websitehead.png" alt="PermitPath" class="logo" width="200" height="50" /></a>
     </header>
 
-    <section class="hero">
-        <h2>Offer — The Rest of <span class="highlight">2026 Free</span></h2>
-        <p>Here’s the next 5 months of Permit Path for Free for Helping Make PermitPath Better.</p>
-    </section>
+    <main class="offer-wrap">
+        <section class="offer-hero">
+            <h1>Offer — The Rest of <span>2026 Free</span></h1>
+            <p>Here’s the next 5 months of Permit Path for Free for Helping Make PermitPath Better.</p>
+        </section>
 
-    <section class="legal-section">
-        <h2>Redeem on your <span class="highlight">iPhone</span></h2>
-        <p>On your iPhone, tap this link:</p>
-        <p>
+        <section class="offer-card">
+            <h2>Redeem on your <span>iPhone</span></h2>
+            <p>On your iPhone, tap this button:</p>
             <a class="offer-redeem" href="https://apps.apple.com/redeem?ctx=offercodes&amp;id=6759459273&amp;code=APPTESTER">Redeem APPTESTER</a>
-        </p>
-        <p>
             <a class="offer-link" href="https://apps.apple.com/redeem?ctx=offercodes&amp;id=6759459273&amp;code=APPTESTER">https://apps.apple.com/redeem?ctx=offercodes&amp;id=6759459273&amp;code=APPTESTER</a>
-        </p>
-        <p>Sign in with your App Store Apple ID if it asks, tap Redeem, then open Permit Path. It should unlock by itself.</p>
-    </section>
+            <p>Sign in with your App Store Apple ID if it asks, tap Redeem, then open Permit Path. It should unlock by itself.</p>
+        </section>
 
-    <section class="legal-section">
-        <h2>If the link doesn’t <span class="highlight">work</span></h2>
-        <ol>
-            <li>Open the App Store</li>
-            <li>Tap your photo (top right)</li>
-            <li>Redeem Gift Card or Code</li>
-            <li>Enter <span class="offer-code">APPTESTER</span></li>
-        </ol>
-    </section>
+        <section class="offer-card">
+            <h2>If the button doesn’t <span>work</span></h2>
+            <p>Open the App Store on your iPhone, then follow these steps. The code is <span class="offer-code">APPTESTER</span></p>
+            <ol class="offer-steps">
+                <li class="offer-step">
+                    <span class="offer-step-label">Step 1</span>
+                    <p>Tap your photo in the top right of the App Store.</p>
+                    <img src="images/offerstep1.jpg" alt="App Store Search screen with an arrow pointing to the profile photo in the top right" width="320" height="693" />
+                </li>
+                <li class="offer-step">
+                    <span class="offer-step-label">Step 2</span>
+                    <p>Tap Redeem Code.</p>
+                    <img src="images/offerstep2.jpg" alt="Apple Account screen with Redeem Code circled" width="320" height="693" />
+                </li>
+                <li class="offer-step">
+                    <span class="offer-step-label">Step 3</span>
+                    <p>Tap Enter Code Manually. Do not use the camera.</p>
+                    <img src="images/offerstep3.jpg" alt="Redeem Gift Card screen with an arrow pointing to Enter Code Manually" width="320" height="693" />
+                </li>
+                <li class="offer-step">
+                    <span class="offer-step-label">Step 4</span>
+                    <p>Type <span class="offer-code">APPTESTER</span> in the Code field, then tap Redeem. Open Permit Path and it should unlock.</p>
+                    <img src="images/offerstep4.jpg" alt="Redeem with Code screen with an arrow pointing to the Code field" width="320" height="693" />
+                </li>
+            </ol>
+        </section>
+    </main>
+
+    <div class="offer-dock">
+        <a class="offer-redeem" href="https://apps.apple.com/redeem?ctx=offercodes&amp;id=6759459273&amp;code=APPTESTER">Redeem APPTESTER</a>
+    </div>
 
     <footer>
         <p>© 2026 PermitPath. All Rights Reserved.</p>
