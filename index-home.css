@@ -191,6 +191,11 @@ header.index-header .logo {
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
     text-align: center;
+    scroll-margin-top: 5.5rem;
+}
+
+#releaseNotifyForm {
+    scroll-margin-top: 5.5rem;
 }
 
 .index-notify__eyebrow {
@@ -555,6 +560,194 @@ body.index-store-modal-open {
     object-fit: cover;
 }
 
+/* Upcoming feature showcase — Texas PDF permit → auto route */
+.index-upcoming {
+    padding-top: 1.5rem;
+    padding-bottom: 2.5rem;
+}
+
+.index-upcoming__card {
+    padding: 2rem 1.75rem;
+    border-radius: 22px;
+    background:
+        linear-gradient(145deg, rgba(0, 180, 255, 0.12) 0%, rgba(12, 26, 45, 0.88) 42%, rgba(12, 26, 45, 0.92) 100%);
+    border: 1px solid rgba(0, 180, 255, 0.28);
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+}
+
+.index-upcoming__badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 1.5rem;
+}
+
+.index-upcoming__badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    background: rgba(0, 180, 255, 0.18);
+    border: 1px solid rgba(0, 180, 255, 0.4);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #00b4ff;
+}
+
+.index-upcoming__date {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.index-upcoming__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.85fr);
+    gap: 1.75rem;
+    align-items: stretch;
+}
+
+.index-upcoming__copy .index-section__eyebrow {
+    text-align: left;
+}
+
+.index-upcoming__copy .index-section__title {
+    text-align: left;
+    margin-bottom: 0.85rem;
+}
+
+.index-upcoming__copy .index-section__title .highlight {
+    color: #00b4ff;
+}
+
+.index-upcoming__lead {
+    margin: 0 0 1.35rem;
+    font-size: 1.02rem;
+    line-height: 1.65;
+    color: rgba(238, 244, 251, 0.82);
+}
+
+.index-upcoming__steps {
+    list-style: none;
+    margin: 0 0 1.5rem;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.index-upcoming__steps li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+}
+
+.index-upcoming__step-num {
+    flex-shrink: 0;
+    width: 1.85rem;
+    height: 1.85rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: rgba(0, 180, 255, 0.16);
+    border: 1px solid rgba(0, 180, 255, 0.35);
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: #00b4ff;
+}
+
+.index-upcoming__step-text {
+    padding-top: 0.2rem;
+    font-size: 0.95rem;
+    line-height: 1.45;
+    color: rgba(238, 244, 251, 0.9);
+}
+
+.index-upcoming__step-text strong {
+    color: #fff;
+}
+
+.index-upcoming__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.8rem 1.25rem;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #00b4ff 0%, #0088cc 100%);
+    color: #fff;
+    font-size: 0.92rem;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 6px 18px rgba(0, 180, 255, 0.3);
+    transition: filter 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.index-upcoming__cta:hover {
+    filter: brightness(1.06);
+    box-shadow: 0 8px 22px rgba(0, 180, 255, 0.4);
+}
+
+.index-upcoming__cta:active {
+    transform: translateY(1px);
+}
+
+.index-upcoming__aside {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1.75rem 1.25rem;
+    border-radius: 18px;
+    background: rgba(0, 0, 0, 0.28);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.index-upcoming__aside-label {
+    margin: 0 0 0.5rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #00b4ff;
+}
+
+.index-upcoming__aside-date {
+    margin: 0;
+    font-size: clamp(2.6rem, 6vw, 3.4rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: #fff;
+}
+
+.index-upcoming__aside-year {
+    margin: 0.15rem 0 1rem;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: rgba(238, 244, 251, 0.7);
+}
+
+.index-upcoming__aside-text {
+    margin: 0;
+    max-width: 14rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: rgba(238, 244, 251, 0.78);
+}
+
 .index-features-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -895,6 +1088,15 @@ html {
     .index-testimonials__grid {
         grid-template-columns: 1fr;
     }
+
+    .index-upcoming__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .index-upcoming__aside {
+        min-height: 0;
+        padding: 1.35rem 1.15rem;
+    }
 }
 
 @media (max-width: 640px) {
@@ -904,6 +1106,19 @@ html {
 
     .index-hero {
         padding-top: 2rem;
+    }
+
+    .index-upcoming {
+        padding-top: 0.5rem;
+        padding-bottom: 1.5rem;
+    }
+
+    .index-upcoming__card {
+        padding: 1.35rem 1.1rem;
+    }
+
+    .index-upcoming__copy .index-section__title {
+        font-size: clamp(1.55rem, 7vw, 2rem);
     }
 
     .index-steps-grid,
