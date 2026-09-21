@@ -36,7 +36,7 @@
     <link rel="icon" type="image/png" href="images/pppp.png" />
     
     <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="index-home.css?v=19" />
+    <link rel="stylesheet" href="index-home.css?v=20" />
 
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -208,6 +208,27 @@
             </div>
         </section>
 
+        <section class="index-section index-stats" aria-labelledby="stats-title">
+            <div class="index-container">
+                <h2 id="stats-title" class="visually-hidden">PermitPath usage</h2>
+                <div class="index-stats__card">
+                    <p class="index-stats__live">
+                        <span class="index-stats__dot" aria-hidden="true"></span>
+                        Live
+                    </p>
+                    <div class="index-stats__item">
+                        <p class="index-stats__value" data-count="300" data-format="int">300</p>
+                        <p class="index-stats__label">drivers currently using Permit Path</p>
+                    </div>
+                    <div class="index-stats__rule" aria-hidden="true"></div>
+                    <div class="index-stats__item">
+                        <p class="index-stats__value" data-count="1100000" data-format="million">1.1 million</p>
+                        <p class="index-stats__label">miles of permit-approved routes planned</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section class="index-section index-upcoming" aria-labelledby="upcoming-title">
             <div class="index-container">
                 <div class="index-upcoming__card">
@@ -340,6 +361,68 @@
                     header.classList.remove('header--compact');
                 }
             }, { passive: true });
+        })();
+
+        (function() {
+            var root = document.querySelector('.index-stats');
+            if (!root) return;
+            var nums = root.querySelectorAll('[data-count]');
+            var played = false;
+
+            function formatValue(el, n) {
+                var mode = el.getAttribute('data-format');
+                if (mode === 'million') {
+                    var millions = n / 1000000;
+                    var digits = millions >= 10 || millions === Math.floor(millions) ? 0 : 1;
+                    return millions.toFixed(digits) + ' million';
+                }
+                return Math.round(n).toLocaleString('en-US');
+            }
+
+            function setFinal() {
+                nums.forEach(function(el) {
+                    el.textContent = formatValue(el, parseFloat(el.getAttribute('data-count')));
+                });
+            }
+
+            function animate() {
+                if (played) return;
+                played = true;
+                nums.forEach(function(el) {
+                    var target = parseFloat(el.getAttribute('data-count'));
+                    var start = performance.now();
+                    var duration = 1300;
+                    function tick(now) {
+                        var t = Math.min(1, (now - start) / duration);
+                        var eased = 1 - Math.pow(1 - t, 3);
+                        el.textContent = formatValue(el, target * eased);
+                        if (t < 1) requestAnimationFrame(tick);
+                        else el.textContent = formatValue(el, target);
+                    }
+                    requestAnimationFrame(tick);
+                });
+            }
+
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                setFinal();
+                return;
+            }
+
+            nums.forEach(function(el) { el.textContent = formatValue(el, 0); });
+
+            if ('IntersectionObserver' in window) {
+                var io = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            animate();
+                            io.disconnect();
+                        }
+                    });
+                }, { threshold: 0.45 });
+                io.observe(root);
+            } else {
+                animate();
+            }
         })();
 
         (function() {
