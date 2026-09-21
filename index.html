@@ -36,7 +36,7 @@
     <link rel="icon" type="image/png" href="images/pppp.png" />
     
     <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="index-home.css?v=20" />
+    <link rel="stylesheet" href="index-home.css?v=21" />
 
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -222,8 +222,8 @@
                     </div>
                     <div class="index-stats__rule" aria-hidden="true"></div>
                     <div class="index-stats__item">
-                        <p class="index-stats__value" data-count="1100000" data-format="million">1.1 million</p>
-                        <p class="index-stats__label">miles of permit-approved routes planned</p>
+                        <p class="index-stats__value" data-count="500000" data-format="over-k">over 500k</p>
+                        <p class="index-stats__label">miles and counting</p>
                     </div>
                 </div>
             </div>
@@ -371,10 +371,9 @@
 
             function formatValue(el, n) {
                 var mode = el.getAttribute('data-format');
-                if (mode === 'million') {
-                    var millions = n / 1000000;
-                    var digits = millions >= 10 || millions === Math.floor(millions) ? 0 : 1;
-                    return millions.toFixed(digits) + ' million';
+                if (mode === 'over-k') {
+                    var k = Math.round(n / 1000);
+                    return 'over ' + k.toLocaleString('en-US') + 'k';
                 }
                 return Math.round(n).toLocaleString('en-US');
             }
