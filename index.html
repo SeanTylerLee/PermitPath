@@ -36,7 +36,7 @@
     <link rel="icon" type="image/png" href="images/pppp.png" />
     
     <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="index-home.css?v=21" />
+    <link rel="stylesheet" href="index-home.css?v=22" />
 
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -217,8 +217,8 @@
                         Live
                     </p>
                     <div class="index-stats__item">
-                        <p class="index-stats__value" data-count="300" data-format="int">300</p>
-                        <p class="index-stats__label">drivers currently using Permit Path</p>
+                        <p class="index-stats__value" data-count="328" data-format="over">over 328</p>
+                        <p class="index-stats__label">users currently using PermitPath</p>
                     </div>
                     <div class="index-stats__rule" aria-hidden="true"></div>
                     <div class="index-stats__item">
@@ -374,6 +374,9 @@
                 if (mode === 'over-k') {
                     var k = Math.round(n / 1000);
                     return 'over ' + k.toLocaleString('en-US') + 'k';
+                }
+                if (mode === 'over') {
+                    return 'over ' + Math.round(n).toLocaleString('en-US');
                 }
                 return Math.round(n).toLocaleString('en-US');
             }
