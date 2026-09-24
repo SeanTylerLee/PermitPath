@@ -114,7 +114,7 @@ header.index-header .logo {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2.5rem;
+    gap: 1.75rem;
     text-align: center;
 }
 
@@ -159,7 +159,7 @@ header.index-header .logo {
 }
 
 .index-hero__lead {
-    margin: 0 auto 1.35rem;
+    margin: 0 auto;
     max-width: 34rem;
     font-size: 1.08rem;
     line-height: 1.7;
