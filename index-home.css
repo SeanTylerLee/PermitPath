@@ -107,7 +107,7 @@ header.index-header .logo {
 }
 
 .index-hero {
-    padding: 3.5rem 0 2rem;
+    padding: 3.5rem 0 0.5rem;
 }
 
 .index-hero__grid {
@@ -177,7 +177,7 @@ header.index-header .logo {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
-    margin-bottom: 4.5rem;
+    margin-bottom: 0;
     justify-content: center;
 }
 
@@ -656,8 +656,8 @@ body.index-store-modal-open {
 
 /* Upcoming feature showcase — Texas PDF permit → auto route */
 .index-upcoming {
-    padding-top: 1.5rem;
-    padding-bottom: 2.5rem;
+    padding-top: 1.75rem;
+    padding-bottom: 1.25rem;
 }
 
 .index-upcoming__card {
@@ -1362,6 +1362,7 @@ html {
 
     .index-hero {
         padding-top: 2rem;
+        padding-bottom: 0.25rem;
     }
 
     .index-stats {
