@@ -194,17 +194,17 @@ header.index-header .logo {
     scroll-margin-top: 5.5rem;
 }
 
-#releaseNotifyForm {
-    scroll-margin-top: 5.5rem;
-}
-
 .index-notify__eyebrow {
-    margin: 0 0 0.35rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    margin: 0 0 0.5rem;
     font-size: 0.72rem;
-    font-weight: 700;
+    font-weight: 800;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: #00b4ff;
+    color: #4ade80;
 }
 
 .index-notify__title {
@@ -217,6 +217,17 @@ header.index-header .logo {
 
 .index-notify__title .highlight {
     color: #00b4ff;
+}
+
+.index-notify__lead {
+    margin: 0 0 1.1rem;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: rgba(238, 244, 251, 0.82);
+}
+
+.index-hero__notify .index-upcoming__cta {
+    width: 100%;
 }
 
 .index-notify__form {
@@ -671,6 +682,7 @@ body.index-store-modal-open {
 .index-upcoming__badge {
     display: inline-flex;
     align-items: center;
+    gap: 0.45rem;
     padding: 0.35rem 0.75rem;
     border-radius: 999px;
     background: rgba(0, 180, 255, 0.18);
@@ -680,6 +692,12 @@ body.index-store-modal-open {
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: #00b4ff;
+}
+
+.index-upcoming__badge--now {
+    background: rgba(74, 222, 128, 0.14);
+    border-color: rgba(74, 222, 128, 0.4);
+    color: #4ade80;
 }
 
 .index-upcoming__date {
@@ -807,6 +825,10 @@ body.index-store-modal-open {
     color: #00b4ff;
 }
 
+.index-upcoming__aside-label--now {
+    color: #4ade80;
+}
+
 .index-upcoming__aside-date {
     margin: 0;
     font-size: clamp(2.6rem, 6vw, 3.4rem);
@@ -814,6 +836,10 @@ body.index-store-modal-open {
     line-height: 1;
     letter-spacing: -0.04em;
     color: #fff;
+}
+
+.index-upcoming__aside-date--now {
+    font-size: clamp(2.1rem, 5vw, 2.85rem);
 }
 
 .index-upcoming__aside-year {
@@ -1146,6 +1172,148 @@ body.index-page footer.index-footer {
     margin-top: 0;
 }
 
+/* Texas permit feature page */
+.texas-hero {
+    padding: 3.25rem 0 2rem;
+    text-align: center;
+}
+
+.texas-hero__badge {
+    margin-bottom: 1rem;
+}
+
+.texas-hero .index-section__title {
+    max-width: 40rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.texas-hero__lead {
+    max-width: 38rem;
+    margin: 0 auto 1.5rem;
+    font-size: 1.08rem;
+    line-height: 1.7;
+    color: rgba(238, 244, 251, 0.86);
+}
+
+.texas-hero__stores {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.texas-methods {
+    padding-top: 0.5rem;
+}
+
+.texas-methods-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.texas-method {
+    padding: 1.5rem 1.35rem;
+    border-radius: 18px;
+    background: rgba(12, 26, 45, 0.72);
+    border: 1px solid rgba(0, 180, 255, 0.22);
+}
+
+.texas-method__kicker {
+    margin: 0 0 0.45rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #00b4ff;
+}
+
+.texas-method h3 {
+    margin: 0 0 0.6rem;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #fff;
+}
+
+.texas-method p {
+    margin: 0;
+    font-size: 0.98rem;
+    line-height: 1.6;
+    color: rgba(238, 244, 251, 0.82);
+}
+
+.texas-split {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.texas-point {
+    padding: 1.5rem 1.35rem;
+    border-radius: 18px;
+    background: rgba(12, 26, 45, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.texas-point--yes {
+    border-color: rgba(74, 222, 128, 0.32);
+}
+
+.texas-point--no {
+    border-color: rgba(248, 113, 113, 0.28);
+}
+
+.texas-point h3 {
+    margin: 0 0 0.75rem;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #fff;
+}
+
+.texas-point--yes h3 {
+    color: #4ade80;
+}
+
+.texas-point--no h3 {
+    color: #f87171;
+}
+
+.texas-point ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+}
+
+.texas-point li {
+    font-size: 0.98rem;
+    line-height: 1.55;
+    color: rgba(238, 244, 251, 0.86);
+}
+
+.texas-copy {
+    max-width: 42rem;
+    margin: 0 auto;
+}
+
+.texas-copy p {
+    margin: 0 0 1rem;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: rgba(238, 244, 251, 0.86);
+}
+
+.texas-copy p:last-child {
+    margin-bottom: 0;
+}
+
+.texas-download {
+    text-align: center;
+}
+
 html {
     scroll-behavior: smooth;
 }
@@ -1179,6 +1347,11 @@ html {
     .index-upcoming__aside {
         min-height: 0;
         padding: 1.35rem 1.15rem;
+    }
+
+    .texas-methods-grid,
+    .texas-split {
+        grid-template-columns: 1fr;
     }
 }
 
