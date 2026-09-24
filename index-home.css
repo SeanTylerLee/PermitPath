@@ -345,6 +345,7 @@ header.index-header .logo {
     width: min(100%, 740px);
     border-radius: 0;
     box-shadow: none;
+    transform: translateX(28px);
 }
 
 .index-stats {
@@ -1363,6 +1364,10 @@ html {
     .index-hero {
         padding-top: 2rem;
         padding-bottom: 0.25rem;
+    }
+
+    .index-hero__phone {
+        transform: translateX(10px);
     }
 
     .index-stats {
