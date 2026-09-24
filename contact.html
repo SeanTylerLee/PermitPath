@@ -95,6 +95,7 @@
         <p>© 2026 STL Apps LLC. All Rights Reserved.</p>
     </footer>
 
+    <script src="lib/studioInbox.js"></script>
     <script>
         const menuToggle = document.getElementById('menuToggle');
         const dropdownMenu = document.getElementById('dropdownMenu');
@@ -132,7 +133,7 @@
             }, { passive: true });
         })();
 
-        // Form submission handler (PermitPath backend)
+        // Form submission handler (Studio Inbox)
         document.getElementById("contactForm").addEventListener("submit", function (e) {
             e.preventDefault();
 
@@ -148,29 +149,21 @@
             formMessage.style.color = "#ffffff";
             submitButton.disabled = true;
 
-            fetch("https://permitpath-backend-slgb.vercel.app/api/contact", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ name, email, message })
+            submitStudioInbox({
+                p_source: "contact",
+                p_name: name,
+                p_email: email,
+                p_message: message,
+                p_site: "permitpathnav.com"
             })
-            .then(function (response) {
-                return response.json().then(function (result) {
-                    if (response.ok) {
-                        formMessage.textContent = "Message sent successfully.";
-                        formMessage.className = "form-message success";
-                        formMessage.style.color = "#00c853";
-                        e.target.reset();
-                    } else {
-                        formMessage.textContent = (result && result.error) ? result.error : "Failed to send message.";
-                        formMessage.className = "form-message error";
-                        formMessage.style.color = "#ff5252";
-                    }
-                });
+            .then(function () {
+                formMessage.textContent = "Message sent successfully.";
+                formMessage.className = "form-message success";
+                formMessage.style.color = "#00c853";
+                e.target.reset();
             })
-            .catch(function () {
-                formMessage.textContent = "Something went wrong. Please try again.";
+            .catch(function (err) {
+                formMessage.textContent = (err && err.message) ? err.message : "Something went wrong. Please try again.";
                 formMessage.className = "form-message error";
                 formMessage.style.color = "#ff5252";
             })

@@ -327,6 +327,7 @@
         </div>
     </footer>
 
+    <script src="lib/studioInbox.js"></script>
     <script>
         const menuToggle = document.getElementById('menuToggle');
         const dropdownMenu = document.getElementById('dropdownMenu');
@@ -443,25 +444,21 @@
                 msgEl.style.color = '#ffffff';
                 if (btn) btn.disabled = true;
 
-                fetch('https://permitpath-backend-slgb.vercel.app/api/contact', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ type: 'release_notify', email: email, name: 'Release notification signup', message: 'Launch notification signup — email: ' + email })
+                submitStudioInbox({
+                    p_source: 'release_notify',
+                    p_name: 'Release notification signup',
+                    p_email: email,
+                    p_message: 'Launch notification signup — email: ' + email,
+                    p_site: 'permitpathnav.com'
                 })
-                .then(function(res) { return res.json().then(function(result) {
-                    if (res.ok) {
-                        msgEl.textContent = "You're on the list. We'll email you product updates.";
-                        msgEl.className = 'form-message success';
-                        msgEl.style.color = '#00c853';
-                        form.reset();
-                    } else {
-                        msgEl.textContent = (result && result.error) ? result.error : 'Something went wrong. Try again.';
-                        msgEl.className = 'form-message error';
-                        msgEl.style.color = '#ff5252';
-                    }
-                }); })
-                .catch(function() {
-                    msgEl.textContent = 'Something went wrong. Please try again.';
+                .then(function() {
+                    msgEl.textContent = "You're on the list. We'll email you product updates.";
+                    msgEl.className = 'form-message success';
+                    msgEl.style.color = '#00c853';
+                    form.reset();
+                })
+                .catch(function(err) {
+                    msgEl.textContent = (err && err.message) ? err.message : 'Something went wrong. Please try again.';
                     msgEl.className = 'form-message error';
                     msgEl.style.color = '#ff5252';
                 })
