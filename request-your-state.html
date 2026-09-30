@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title>Help Us Add Your State | Send a Permit | PermitPath</title>
+    <meta name="title" content="Help Us Add Your State | Send a Permit | PermitPath" />
+    <meta name="description" content="Want official permit import in your state? Send PermitPath a PDF or photos of a permit from that state so we can build it." />
+    <meta name="keywords" content="PermitPath, add your state, oversize permit upload, request state import, permit sample" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://permitpathnav.com/request-your-state.html" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://permitpathnav.com/request-your-state.html" />
+    <meta property="og:title" content="Help us add your state | PermitPath" />
+    <meta property="og:description" content="Send a permit PDF or photos so PermitPath can build official import for your state." />
+    <meta property="og:site_name" content="PermitPath" />
+    <meta property="og:image" content="https://permitpathnav.com/images/pppp.png" />
+
+    <link rel="icon" type="image/png" sizes="32x32" href="images/pppp.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="images/pppp.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="images/pppp.png" />
+    <link rel="icon" type="image/png" href="images/pppp.png" />
+
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="index-home.css?v=31" />
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+</head>
+
+<body class="index-page">
+
+    <header class="index-header">
+        <a href="index.html" class="logo-link">
+            <img src="images/websitehead.png" alt="PermitPath - Oversize and Overweight Permit Routing App Logo" class="logo" width="200" height="50" />
+        </a>
+        <div class="menu-container">
+            <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="dropdownMenu" id="menuToggle">
+                <span class="menu-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+            </button>
+            <nav class="dropdown-menu" id="dropdownMenu" aria-label="Main">
+                <a href="index.html">Home</a>
+                <a href="features.html">Features</a>
+                <a href="texas-permit.html">Texas Permits</a>
+                <a href="oversize-loads.html">Oversize Loads</a>
+                <a href="pricing.html">Pricing</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="index-main">
+        <section class="texas-hero" aria-labelledby="expand-title">
+            <div class="index-container">
+                <p class="index-section__eyebrow">Other states</p>
+                <h1 id="expand-title" class="index-section__title">Help us add your <span class="highlight">state</span></h1>
+                <p class="texas-hero__lead">
+                    Official permit import is in Texas today. To add another state, we need a copy of a permit from there so we can build it. Send a PDF or photos. This does not load the permit into the app; it goes to the PermitPath team.
+                </p>
+                <div class="site-form-card">
+                    <form class="contact-form" id="permitSampleForm">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required autocomplete="email" inputmode="email">
+                        </div>
+                        <div class="form-group">
+                            <label for="permitFiles">Permit PDF or photos</label>
+                            <div class="file-picker">
+                                <input type="file" id="permitFiles" name="permitFiles" class="file-picker__input" accept="application/pdf,image/jpeg,image/png,image/webp,image/heic,image/heif,.pdf,.jpg,.jpeg,.png,.webp,.heic,.heif" multiple>
+                                <label for="permitFiles" class="file-picker__btn">Add PDF or photos</label>
+                                <ul class="file-picker__list" id="fileList" hidden></ul>
+                                <p class="file-picker__hint">You can send more than one. You can cover names or other personal details if you want; we need the route pages.</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="note">Note <span class="file-picker__optional">(optional)</span></label>
+                            <textarea id="note" name="note" rows="4" placeholder="Anything we should know"></textarea>
+                        </div>
+                        <button type="submit" class="button">Send</button>
+                        <div class="form-message" id="formMessage"></div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="index-footer">
+        <div class="index-container index-footer__simple">
+            <img src="images/websitehead.png" alt="PermitPath" class="index-footer__logo" width="160" height="40" />
+            <a class="built-by" href="https://seantylerlee.com" target="_blank" rel="noopener noreferrer">
+                <span>Owned solely by</span>
+                <img src="images/stlapps-logo.jpg" alt="STL Apps LLC" width="160" height="36" />
+            </a>
+            <nav class="index-footer__links" aria-label="Legal">
+                <a href="privacy.html">Privacy</a>
+                <a href="terms.html">Terms</a>
+            </nav>
+            <p class="index-footer__copy">© 2026 STL Apps LLC. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="lib/studioInbox.js"></script>
+    <script>
+        (function () {
+            var menuToggle = document.getElementById('menuToggle');
+            var dropdownMenu = document.getElementById('dropdownMenu');
+            if (menuToggle && dropdownMenu) {
+                function setOpen(open) {
+                    dropdownMenu.classList.toggle('active', open);
+                    menuToggle.classList.toggle('active', open);
+                    menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+                }
+                menuToggle.addEventListener('click', function () {
+                    setOpen(!dropdownMenu.classList.contains('active'));
+                });
+                document.addEventListener('click', function (event) {
+                    if (!dropdownMenu.contains(event.target) && !menuToggle.contains(event.target) && dropdownMenu.classList.contains('active')) {
+                        setOpen(false);
+                    }
+                });
+                document.addEventListener('keydown', function (event) {
+                    if (event.key === 'Escape') setOpen(false);
+                });
+            }
+
+            var header = document.querySelector('header');
+            var compact = false;
+            window.addEventListener('scroll', function () {
+                var y = window.scrollY;
+                if (!compact && y > 100) {
+                    compact = true;
+                    header.classList.add('header--compact');
+                } else if (compact && y < 40) {
+                    compact = false;
+                    header.classList.remove('header--compact');
+                }
+            }, { passive: true });
+
+            var MAX_FILES = 8;
+            var MAX_BYTES = 15 * 1024 * 1024;
+            var TYPES = {
+                pdf: "application/pdf",
+                jpg: "image/jpeg",
+                jpeg: "image/jpeg",
+                png: "image/png",
+                webp: "image/webp",
+                heic: "image/heic",
+                heif: "image/heif"
+            };
+            var picked = [];
+            var form = document.getElementById("permitSampleForm");
+            var fileInput = document.getElementById("permitFiles");
+            var fileList = document.getElementById("fileList");
+            var formMessage = document.getElementById("formMessage");
+            var submitButton = form.querySelector("button[type='submit']");
+
+            function showMessage(text, kind) {
+                formMessage.textContent = text || "";
+                formMessage.className = "form-message" + (kind ? " " + kind : "");
+            }
+
+            function fileType(file) {
+                var parts = String(file && file.name || "").split(".");
+                var ext = parts.length > 1 ? parts.pop().toLowerCase() : "";
+                if (TYPES[ext]) return TYPES[ext];
+                var t = String(file && file.type || "").toLowerCase();
+                if (t === "image/jpg") return "image/jpeg";
+                if (t === "application/pdf" || t.indexOf("image/") === 0) {
+                    if (t === "image/jpeg" || t === "image/png" || t === "image/webp" || t === "image/heic" || t === "image/heif" || t === "application/pdf") return t;
+                }
+                return "";
+            }
+
+            function safeName(name, index) {
+                var cleaned = String(name || "permit").replace(/[^A-Za-z0-9._-]+/g, "-").replace(/^-+|-+$/g, "");
+                if (!cleaned) cleaned = "permit";
+                if (cleaned.length > 80) cleaned = cleaned.slice(0, 80);
+                return String(index) + "-" + cleaned;
+            }
+
+            function keyFor(file) {
+                return [file.name, file.size, file.lastModified].join(":");
+            }
+
+            function renderFiles() {
+                if (!picked.length) {
+                    fileList.hidden = true;
+                    fileList.innerHTML = "";
+                    return;
+                }
+                fileList.hidden = false;
+                fileList.innerHTML = picked.map(function (file, index) {
+                    return '<li class="file-picker__item">' +
+                        '<span>' + file.name.replace(/</g, "&lt;") + '</span>' +
+                        '<button type="button" class="file-picker__remove" data-remove="' + index + '">Remove</button>' +
+                        '</li>';
+                }).join("");
+                fileList.querySelectorAll("[data-remove]").forEach(function (btn) {
+                    btn.addEventListener("click", function () {
+                        picked.splice(Number(btn.getAttribute("data-remove")), 1);
+                        renderFiles();
+                    });
+                });
+            }
+
+            function addFiles(list) {
+                var next = picked.slice();
+                var error = "";
+                Array.prototype.forEach.call(list, function (file) {
+                    if (next.length >= MAX_FILES) {
+                        error = "You can send up to 8 files.";
+                        return;
+                    }
+                    if (!fileType(file)) {
+                        error = "Use a PDF or a photo (JPG, PNG, WEBP, or HEIC).";
+                        return;
+                    }
+                    if (file.size > MAX_BYTES) {
+                        error = "Each file needs to be 15 MB or smaller.";
+                        return;
+                    }
+                    var key = keyFor(file);
+                    if (next.some(function (item) { return keyFor(item) === key; })) return;
+                    next.push(file);
+                });
+                picked = next;
+                renderFiles();
+                if (error) showMessage(error, "error");
+                else if (formMessage.classList.contains("error")) showMessage("");
+            }
+
+            fileInput.addEventListener("change", function () {
+                addFiles(fileInput.files || []);
+                fileInput.value = "";
+            });
+
+            function newId() {
+                if (crypto.randomUUID) return crypto.randomUUID();
+                return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+                    var r = Math.random() * 16 | 0;
+                    var v = c === "x" ? r : (r & 0x3 | 0x8);
+                    return v.toString(16);
+                });
+            }
+
+            form.addEventListener("submit", function (e) {
+                e.preventDefault();
+                var email = document.getElementById("email").value.trim();
+                var note = document.getElementById("note").value.trim();
+                if (!email) {
+                    showMessage("Enter your email.", "error");
+                    return;
+                }
+                if (!picked.length) {
+                    showMessage("Add a permit PDF or photo.", "error");
+                    return;
+                }
+                showMessage("Sending…", "pending");
+                submitButton.disabled = true;
+                var folder = newId();
+                var uploads = picked.map(function (file, index) {
+                    var path = folder + "/" + safeName(file.name, index);
+                    var type = fileType(file);
+                    return uploadStudioInboxFile(path, file, type).then(function () {
+                        return {
+                            path: path,
+                            name: file.name,
+                            type: type,
+                            size: file.size
+                        };
+                    });
+                });
+                Promise.all(uploads)
+                    .then(function (files) {
+                        return submitStudioInbox({
+                            p_source: "permit_sample",
+                            p_name: "",
+                            p_email: email,
+                            p_message: note,
+                            p_site: "permitpathnav.com",
+                            p_payload: { files: files }
+                        });
+                    })
+                    .then(function () {
+                        showMessage("Thanks. We received your permit.", "success");
+                        form.reset();
+                        picked = [];
+                        renderFiles();
+                    })
+                    .catch(function (err) {
+                        showMessage((err && err.message) ? err.message : "Something went wrong. Please try again.", "error");
+                    })
+                    .finally(function () {
+                        submitButton.disabled = false;
+                    });
+            });
+        })();
+    </script>
+
+</body>
+</html>
