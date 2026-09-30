@@ -3,170 +3,207 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    
-    <!-- Primary Meta Tags -->
+
     <title>Features - PermitPath | Oversize Routing &amp; Trucker Navigation</title>
     <meta name="title" content="Features - PermitPath | Oversize Routing &amp; Trucker Navigation" />
     <meta name="description" content="PermitPath features for oversize routing and trucker navigation: unlimited permit waypoints, heavy-haul route planning, iOS and Android sharing, and $3.99/month—built for oversize trucking, not car GPS." />
     <meta name="keywords" content="oversize routing features, trucker navigation app, permit routing features, unlimited waypoints, heavy haul GPS, oversize load app, PermitPath features, Permit Path, any state" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://permitpathnav.com/features.html" />
-    
-    <!-- Open Graph / Facebook -->
+
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://permitpathnav.com/features.html" />
     <meta property="og:title" content="Features - PermitPath Oversize Permit Routing App" />
     <meta property="og:description" content="Unlimited waypoints, cross-platform sharing, and specialized tools for oversize permit routing." />
-    
-    <!-- Favicon -->
+    <meta property="og:site_name" content="PermitPath" />
+    <meta property="og:image" content="https://permitpathnav.com/images/pppp.png" />
+
     <link rel="icon" type="image/png" sizes="32x32" href="images/pppp.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="images/pppp.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="images/pppp.png" />
     <link rel="icon" type="image/png" href="images/pppp.png" />
-    
-    <!-- Link to CSS -->
-    <link rel="stylesheet" href="styles.css" />
 
-    <!-- iOS styling -->
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="index-home.css?v=30" />
+
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 </head>
 
-<body class="features-page">
+<body class="index-page">
 
-    <header>
-        <a href="index.html"><img src="images/websitehead.png" alt="PermitPath - Oversize and Overweight Permit Routing App Logo" class="logo" width="200" height="50" /></a>
+    <header class="index-header">
+        <a href="index.html" class="logo-link">
+            <img src="images/websitehead.png" alt="PermitPath - Oversize and Overweight Permit Routing App Logo" class="logo" width="200" height="50" />
+        </a>
         <div class="menu-container">
-            <button class="menu-toggle" aria-label="Toggle menu" id="menuToggle">
+            <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="dropdownMenu" id="menuToggle">
                 <span class="menu-icon">
                     <span></span>
                     <span></span>
                     <span></span>
                 </span>
             </button>
-            <nav class="dropdown-menu" id="dropdownMenu">
+            <nav class="dropdown-menu" id="dropdownMenu" aria-label="Main">
                 <a href="index.html">Home</a>
-                <a href="features.html" class="current">Features</a>
+                <a href="features.html" class="current" aria-current="page">Features</a>
                 <a href="texas-permit.html">Texas Permits</a>
                 <a href="oversize-loads.html">Oversize Loads</a>
                 <a href="pricing.html">Pricing</a>
-                <a href="oversize-routing.html">Oversize Routing</a>
                 <a href="contact.html">Contact</a>
-                <a href="privacy.html">Privacy</a>
-                <a href="terms.html">Terms</a>
             </nav>
         </div>
     </header>
 
-    <section class="info">
-        <h2><strong>PermitPath</strong> - Powerful <span class="highlight">Features</span></h2>
-        <p>
-            Everything you need for successful oversize load routing and permit compliance.
-            <strong>PermitPath</strong> is the premier oversize permit routing app for truck drivers.
-        </p>
-    </section>
+    <main class="index-main">
+        <section class="texas-hero" aria-labelledby="features-title">
+            <div class="index-container">
+                <p class="index-section__eyebrow">Why PermitPath</p>
+                <h1 id="features-title" class="index-section__title">Everything oversize drivers <span class="highlight">actually need</span></h1>
+                <p class="texas-hero__lead">
+                    Build a permit route in any state, navigate it on iPhone, iPad, and Android, and import an official Texas TxPROS route when you have a Texas permit. PermitPath is built for oversize trucking, not passenger-car GPS.
+                </p>
+                <div class="texas-hero__stores download-buttons">
+                    <div class="download-option">
+                        <a href="https://apps.apple.com/us/app/permit-path/id6759459273" class="app-store-button" target="_blank" rel="noopener noreferrer" aria-label="Download on the App Store">
+                            <img src="images/applestore.png" alt="Download on the App Store" width="72" height="60" />
+                        </a>
+                    </div>
+                    <div class="download-option">
+                        <a href="https://play.google.com/store/apps/details?id=com.haulpath.permitpath" class="google-play-button" target="_blank" rel="noopener noreferrer" aria-label="Get it on Google Play">
+                            <img src="images/googleplay.png" alt="Get it on Google Play" width="72" height="60" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    <section class="info">
-        <h2>What PermitPath <span class="highlight">Offers</span></h2>
-        <p>
-            PermitPath provides specialized tools for oversize and overweight permit routing. 
-            Build custom routes with pin drops, navigate in real-time, and manage your routes 
-            with unlimited waypoints—all designed specifically for heavy-haul drivers. Our oversize 
-            permit routing app helps truck drivers plan routes that comply with permit requirements 
-            and avoid costly violations.
-        </p>
-    </section>
+        <section class="index-section" aria-labelledby="offers-title">
+            <div class="index-container">
+                <div class="index-section__head">
+                    <p class="index-section__eyebrow">What you get</p>
+                    <h2 id="offers-title" class="index-section__title">Tools for oversize <span class="highlight">permit routing</span></h2>
+                </div>
+                <div class="index-features-grid index-features-grid--3">
+                    <article class="index-feature-card">
+                        <span class="index-feature-card__icon" aria-hidden="true">∞</span>
+                        <h3 class="index-feature-card__title">Unlimited waypoints</h3>
+                        <p class="index-feature-card__text">Build long permit routes without artificial waypoint caps getting in the way of the paper route.</p>
+                    </article>
+                    <article class="index-feature-card">
+                        <span class="index-feature-card__icon" aria-hidden="true">🗺</span>
+                        <h3 class="index-feature-card__title">Any state</h3>
+                        <p class="index-feature-card__text">Drop the waypoints from your permit yourself and navigate that path wherever you haul.</p>
+                    </article>
+                    <article class="index-feature-card">
+                        <span class="index-feature-card__icon" aria-hidden="true">★</span>
+                        <h3 class="index-feature-card__title">Texas import</h3>
+                        <p class="index-feature-card__text">Upload a Texas PDF or scan the QR for the official TxPROS route from the State of Texas.</p>
+                    </article>
+                    <article class="index-feature-card">
+                        <span class="index-feature-card__icon" aria-hidden="true">↔</span>
+                        <h3 class="index-feature-card__title">iOS &amp; Android</h3>
+                        <p class="index-feature-card__text">Plan on one device and navigate on another. Share the same route between office and truck.</p>
+                    </article>
+                    <article class="index-feature-card">
+                        <span class="index-feature-card__icon" aria-hidden="true">$</span>
+                        <h3 class="index-feature-card__title">$3.99 a month</h3>
+                        <p class="index-feature-card__text">Professional oversize routing tools at a price built for trucking, not passenger-car GPS.</p>
+                    </article>
+                    <article class="index-feature-card">
+                        <span class="index-feature-card__icon" aria-hidden="true">📌</span>
+                        <h3 class="index-feature-card__title">Pin the permit path</h3>
+                        <p class="index-feature-card__text">Custom pin-drop routes so the line in the app matches the route on the permit.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
 
-    <section class="info">
-        <h2>Available now — Texas Permit <span class="highlight">Import</span></h2>
-        <p>
-            Upload a PDF of your Texas oversize permit or scan the QR code in PermitPath.
-            The app imports the official permitted route from the TxPROS system—the route
-            the State of Texas issued—so you can navigate that exact path. This is not AI
-            guessing or rebuilding directions from the paper permit.
-            <a href="texas-permit.html">See how Texas permit import works</a>.
-            Texas import is one feature—not the only way to use PermitPath. In any state you can build the route manually.
-            Also read the
-            <a href="texas-oversize-permits.html">Texas oversize permits guide</a>
-            and the
-            <a href="oversize-loads.html">oversize loads guide</a>.
-        </p>
-    </section>
+        <section class="index-section texas-methods" aria-labelledby="texas-feature-title">
+            <div class="index-container">
+                <div class="index-section__head">
+                    <p class="index-section__eyebrow">Available now</p>
+                    <h2 id="texas-feature-title" class="index-section__title">Texas permit <span class="highlight">import</span></h2>
+                </div>
+                <div class="texas-copy">
+                    <p>
+                        Upload a PDF of your Texas oversize permit or scan the QR code in PermitPath. The app imports the official permitted route from the TxPROS system—the route the State of Texas issued—so you can navigate that exact path. This is not AI guessing or rebuilding directions from the paper permit.
+                    </p>
+                    <p>
+                        Texas import is one feature. In any state you can build the route manually. See
+                        <a href="texas-permit.html">how Texas permit import works</a>,
+                        the <a href="texas-oversize-permits.html">Texas oversize permits guide</a>,
+                        and the <a href="oversize-loads.html">oversize loads guide</a>.
+                    </p>
+                </div>
+            </div>
+        </section>
 
-    <section class="info">
-        <h2>Build routes in <span class="highlight">any state</span></h2>
-        <p>
-            Drop the waypoints from your permit yourself and navigate that path wherever you haul.
-            Manual route building is the core of PermitPath on iOS and Android. Texas PDF or QR import
-            is available when you have a Texas TxPROS permit.
-        </p>
-    </section>
+        <section class="index-section texas-download" aria-labelledby="features-download-title">
+            <div class="index-container">
+                <p class="index-section__eyebrow">Get the app</p>
+                <h2 id="features-download-title" class="index-section__title">Run PermitPath on <span class="highlight">iPhone, iPad, and Android</span></h2>
+                <p class="texas-hero__lead">Available now. See <a href="pricing.html">pricing</a>.</p>
+                <div class="texas-hero__stores download-buttons">
+                    <div class="download-option">
+                        <a href="https://apps.apple.com/us/app/permit-path/id6759459273" class="app-store-button" target="_blank" rel="noopener noreferrer" aria-label="Download on the App Store">
+                            <img src="images/applestore.png" alt="Download on the App Store" width="72" height="60" />
+                        </a>
+                    </div>
+                    <div class="download-option">
+                        <a href="https://play.google.com/store/apps/details?id=com.haulpath.permitpath" class="google-play-button" target="_blank" rel="noopener noreferrer" aria-label="Get it on Google Play">
+                            <img src="images/googleplay.png" alt="Get it on Google Play" width="72" height="60" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 
-    <section class="info">
-        <h2>Unlimited <span class="highlight">Waypoints</span></h2>
-        <p>
-            Unlike other routing apps that limit your waypoints, PermitPath allows you to set 
-            an unlimited number of waypoints on every route. Plan complex multi-stop journeys 
-            without restrictions, giving you complete flexibility for your oversize load routing needs.
-        </p>
-    </section>
-
-    <section class="info">
-        <h2>Lowest <span class="highlight">Cost</span></h2>
-        <p>
-            At just $3.99 per month, PermitPath offers the lowest pricing in the oversize routing 
-            app market. Get professional-grade oversize permit routing tools at an unbeatable price 
-            without sacrificing features or functionality. Compare our pricing to other truck routing 
-            apps and see why PermitPath is the best value for oversize load routing.
-        </p>
-    </section>
-
-    <section class="info">
-        <h2>Cross-Platform <span class="highlight">Sharing</span></h2>
-        <p>
-            Build and share routes seamlessly between iOS and Android devices. Unlike other oversize 
-            permit routing apps that are limited to iOS only, PermitPath works across both platforms, 
-            allowing you to plan on one device and navigate on another, regardless of the operating 
-            system. This cross-platform functionality makes PermitPath the most versatile truck 
-            routing app for oversize permit compliance.
-        </p>
-    </section>
-
-    <footer>
-        <p>© 2026 STL Apps LLC. All Rights Reserved.</p>
+    <footer class="index-footer">
+        <div class="index-container index-footer__simple">
+            <img src="images/websitehead.png" alt="PermitPath" class="index-footer__logo" width="160" height="40" />
+            <a class="built-by" href="https://seantylerlee.com" target="_blank" rel="noopener noreferrer">
+                <span>Owned solely by</span>
+                <img src="images/stlapps-logo.jpg" alt="STL Apps LLC" width="160" height="36" />
+            </a>
+            <nav class="index-footer__links" aria-label="Legal">
+                <a href="privacy.html">Privacy</a>
+                <a href="terms.html">Terms</a>
+            </nav>
+            <p class="index-footer__copy">© 2026 STL Apps LLC. All Rights Reserved.</p>
+        </div>
     </footer>
 
     <script>
-        const menuToggle = document.getElementById('menuToggle');
-        const dropdownMenu = document.getElementById('dropdownMenu');
-
-        menuToggle.addEventListener('click', function() {
-            dropdownMenu.classList.toggle('active');
-            menuToggle.classList.toggle('active');
-        });
-
-        document.addEventListener('click', function(event) {
-            const isClickInsideMenu = dropdownMenu.contains(event.target);
-            const isClickOnToggle = menuToggle.contains(event.target);
-            
-            if (!isClickInsideMenu && !isClickOnToggle && dropdownMenu.classList.contains('active')) {
-                dropdownMenu.classList.remove('active');
-                menuToggle.classList.remove('active');
+        (function () {
+            var menuToggle = document.getElementById('menuToggle');
+            var dropdownMenu = document.getElementById('dropdownMenu');
+            if (!menuToggle || !dropdownMenu) return;
+            function setOpen(open) {
+                dropdownMenu.classList.toggle('active', open);
+                menuToggle.classList.toggle('active', open);
+                menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
             }
-        });
-
-        // Compact top bar when scrolled down, normal when near top (hysteresis avoids glitch)
-        (function() {
+            menuToggle.addEventListener('click', function () {
+                setOpen(!dropdownMenu.classList.contains('active'));
+            });
+            document.addEventListener('click', function (event) {
+                if (!dropdownMenu.contains(event.target) && !menuToggle.contains(event.target) && dropdownMenu.classList.contains('active')) {
+                    setOpen(false);
+                }
+            });
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'Escape') setOpen(false);
+            });
             var header = document.querySelector('header');
-            var scrollDown = 100;
-            var scrollUp = 40;
             var compact = false;
-            window.addEventListener('scroll', function() {
+            window.addEventListener('scroll', function () {
                 var y = window.scrollY;
-                if (!compact && y > scrollDown) {
+                if (!compact && y > 100) {
                     compact = true;
                     header.classList.add('header--compact');
-                } else if (compact && y < scrollUp) {
+                } else if (compact && y < 40) {
                     compact = false;
                     header.classList.remove('header--compact');
                 }
@@ -176,4 +213,3 @@
 
 </body>
 </html>
-

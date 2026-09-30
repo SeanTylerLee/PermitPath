@@ -32,7 +32,7 @@
     <link rel="icon" type="image/png" href="images/pppp.png" />
 
     <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="index-home.css?v=29" />
+    <link rel="stylesheet" href="index-home.css?v=30" />
 
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -78,23 +78,20 @@
             <img src="images/websitehead.png" alt="PermitPath - Oversize and Overweight Permit Routing App Logo" class="logo" width="200" height="50" />
         </a>
         <div class="menu-container">
-            <button class="menu-toggle" aria-label="Toggle menu" id="menuToggle">
+            <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="dropdownMenu" id="menuToggle">
                 <span class="menu-icon">
                     <span></span>
                     <span></span>
                     <span></span>
                 </span>
             </button>
-            <nav class="dropdown-menu" id="dropdownMenu">
+            <nav class="dropdown-menu" id="dropdownMenu" aria-label="Main">
                 <a href="index.html">Home</a>
                 <a href="features.html">Features</a>
-                <a href="texas-permit.html" class="current">Texas Permits</a>
+                <a href="texas-permit.html" class="current" aria-current="page">Texas Permits</a>
                 <a href="oversize-loads.html">Oversize Loads</a>
                 <a href="pricing.html">Pricing</a>
-                <a href="oversize-routing.html">Oversize Routing</a>
                 <a href="contact.html">Contact</a>
-                <a href="privacy.html">Privacy</a>
-                <a href="terms.html">Terms</a>
             </nav>
         </div>
     </header>
@@ -217,6 +214,10 @@
                 <span>Owned solely by</span>
                 <img src="images/stlapps-logo.jpg" alt="STL Apps LLC" width="160" height="36" />
             </a>
+            <nav class="index-footer__links" aria-label="Legal">
+                <a href="privacy.html">Privacy</a>
+                <a href="terms.html">Terms</a>
+            </nav>
             <p class="index-footer__copy">© 2026 STL Apps LLC. All Rights Reserved.</p>
         </div>
     </footer>

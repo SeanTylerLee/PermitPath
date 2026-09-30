@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    
-    <!-- Primary Meta Tags -->
+
     <title>Oversize Routing for Oversize Loads | PermitPath</title>
     <meta name="title" content="Oversize Routing for Oversize Loads | PermitPath" />
     <meta name="description" content="Oversize routing keeps heavy-haul and oversize loads on the permit path. Learn how PermitPath navigates those routes on iOS and Android—build manually in any state, or import a Texas TxPROS permit." />
@@ -17,15 +16,14 @@
     <meta property="og:title" content="Oversize Routing for Oversize Loads | PermitPath" />
     <meta property="og:description" content="Keep oversize loads on the permit route. Texas TxPROS import and custom permit routing on iOS and Android." />
     <meta property="og:image" content="https://permitpathnav.com/images/pppp.png" />
-    
-    <!-- Favicon -->
+
     <link rel="icon" type="image/png" sizes="32x32" href="images/pppp.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="images/pppp.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="images/pppp.png" />
     <link rel="icon" type="image/png" href="images/pppp.png" />
-    
-    <!-- CSS -->
+
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="index-home.css?v=30" />
 
     <script type="application/ld+json">
     {
@@ -52,171 +50,241 @@
     }
     </script>
 </head>
-<body class="oversize-page">
+<body class="index-page">
 
-    <header>
-        <a href="index.html"><img src="images/websitehead.png" alt="PermitPath - Oversize and Overweight Permit Routing App Logo" class="logo" width="200" height="50" /></a>
+    <header class="index-header">
+        <a href="index.html" class="logo-link">
+            <img src="images/websitehead.png" alt="PermitPath - Oversize and Overweight Permit Routing App Logo" class="logo" width="200" height="50" />
+        </a>
         <div class="menu-container">
-            <button class="menu-toggle" aria-label="Toggle menu" id="menuToggle">
+            <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="dropdownMenu" id="menuToggle">
                 <span class="menu-icon">
                     <span></span>
                     <span></span>
                     <span></span>
                 </span>
             </button>
-            <nav class="dropdown-menu" id="dropdownMenu">
+            <nav class="dropdown-menu" id="dropdownMenu" aria-label="Main">
                 <a href="index.html">Home</a>
                 <a href="features.html">Features</a>
                 <a href="texas-permit.html">Texas Permits</a>
                 <a href="oversize-loads.html">Oversize Loads</a>
                 <a href="pricing.html">Pricing</a>
-                <a href="oversize-routing.html" class="current">Oversize Routing</a>
                 <a href="contact.html">Contact</a>
-                <a href="privacy.html">Privacy</a>
-                <a href="terms.html">Terms</a>
             </nav>
         </div>
     </header>
 
-    <section class="hero">
-        <h1>Oversize <span class="highlight">Routing</span> for Oversize Loads</h1>
-        <p>
-            Oversize routing and permit routing is about following the exact path your state permits require.
-            For heavy-haul and oversize loads, the route on the permit is the law—deviating can mean fines,
-            delays, or worse. This guide explains what oversize routing is and how PermitPath helps you stay on
-            your permit-approved route in any state.
-        </p>
-    </section>
+    <main class="index-main">
+        <section class="texas-hero" aria-labelledby="routing-title">
+            <div class="index-container">
+                <p class="guide-crumb"><a href="index.html">Home</a> / Oversize routing</p>
+                <h1 id="routing-title" class="index-section__title">Oversize routing for <span class="highlight">oversize loads</span></h1>
+                <p class="texas-hero__lead">
+                    Oversize routing and permit routing is about following the exact path your state permits require. For heavy-haul and oversize loads, the route on the permit is the law—deviating can mean fines, delays, or worse. This guide explains what oversize routing is and how PermitPath helps you stay on your permit-approved route in any state.
+                </p>
+                <div class="texas-hero__stores download-buttons">
+                    <div class="download-option">
+                        <a href="https://apps.apple.com/us/app/permit-path/id6759459273" class="app-store-button" target="_blank" rel="noopener noreferrer" aria-label="Download on the App Store">
+                            <img src="images/applestore.png" alt="Download on the App Store" width="72" height="60" />
+                        </a>
+                    </div>
+                    <div class="download-option">
+                        <a href="https://play.google.com/store/apps/details?id=com.haulpath.permitpath" class="google-play-button" target="_blank" rel="noopener noreferrer" aria-label="Get it on Google Play">
+                            <img src="images/googleplay.png" alt="Get it on Google Play" width="72" height="60" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    <section class="info">
-        <h2>Any state, plus <span class="highlight">Texas import</span></h2>
-        <p>
-            In any state, build the route yourself in PermitPath by dropping the waypoints from your permit,
-            then navigate that path on iOS or Android. That manual build is the main way most drivers use the app.
-        </p>
-        <p>
-            For <strong>Texas oversize permits</strong>, the Texas Department of Motor Vehicles issues oversize
-            and overweight permits through TxPROS. PermitPath does not issue those permits. After you have one,
-            you can also <a href="texas-permit.html">import the official TxPROS route</a> from the PDF or QR code.
-            Texas import is an extra feature—not a requirement to use PermitPath.
-        </p>
-        <p>
-            Read more in the
-            <a href="oversize-loads.html">oversize loads guide</a> and the
-            <a href="texas-oversize-permits.html">Texas oversize permits guide</a>.
-        </p>
-    </section>
+        <section class="index-section" aria-labelledby="any-state-title">
+            <div class="index-container">
+                <div class="index-section__head">
+                    <p class="index-section__eyebrow">Any state</p>
+                    <h2 id="any-state-title" class="index-section__title">Any state, plus <span class="highlight">Texas import</span></h2>
+                </div>
+                <div class="texas-copy">
+                    <p>
+                        In any state, build the route yourself in PermitPath by dropping the waypoints from your permit, then navigate that path on iOS or Android. That manual build is the main way most drivers use the app.
+                    </p>
+                    <p>
+                        For <strong>Texas oversize permits</strong>, the Texas Department of Motor Vehicles issues oversize and overweight permits through TxPROS. PermitPath does not issue those permits. After you have one, you can also <a href="texas-permit.html">import the official TxPROS route</a> from the PDF or QR code. Texas import is an extra feature—not a requirement to use PermitPath.
+                    </p>
+                    <p>
+                        Read more in the <a href="oversize-loads.html">oversize loads guide</a> and the <a href="texas-oversize-permits.html">Texas oversize permits guide</a>.
+                    </p>
+                </div>
+            </div>
+        </section>
 
-    <section class="info">
-        <h2>What is <span class="highlight">Oversize Routing</span>?</h2>
-        <p>
-            Oversize routing is the process of planning a path for a load that exceeds legal size or weight limits.
-            Instead of just “shortest” or “fastest,” oversize routing must respect bridge limits, lane widths,
-            curfews, construction, and state-by-state rules. The route is usually specified on your oversize or
-            overweight permit, and you are expected to follow that permit routing exactly.
-        </p>
-    </section>
+        <section class="index-section" aria-labelledby="what-routing-title">
+            <div class="index-container">
+                <div class="index-section__head">
+                    <p class="index-section__eyebrow">Definitions</p>
+                    <h2 id="what-routing-title" class="index-section__title">What is <span class="highlight">oversize routing</span>?</h2>
+                </div>
+                <div class="texas-copy">
+                    <p>
+                        Oversize routing is the process of planning a path for a load that exceeds legal size or weight limits. Instead of just “shortest” or “fastest,” oversize routing must respect bridge limits, lane widths, curfews, construction, and state-by-state rules. The route is usually specified on your oversize or overweight permit, and you are expected to follow that permit routing exactly.
+                    </p>
+                </div>
+            </div>
+        </section>
 
-    <section class="info">
-        <h2>What is <span class="highlight">Permit Routing</span>?</h2>
-        <p>
-            Permit routing is the route printed on the state permit itself. States may specify highways, exits,
-            turn-by-turn directions, mile markers, or written instructions like “follow I‑80 WB to Exit 123, then
-            US‑30 WB.” When you are hauling an oversize or overweight load, permit routing becomes your official
-            navigation plan. Your job is to match your real‑world driving to that permit routing.
-        </p>
-    </section>
+        <section class="index-section" aria-labelledby="what-permit-title">
+            <div class="index-container">
+                <div class="index-section__head">
+                    <p class="index-section__eyebrow">The permit</p>
+                    <h2 id="what-permit-title" class="index-section__title">What is <span class="highlight">permit routing</span>?</h2>
+                </div>
+                <div class="texas-copy">
+                    <p>
+                        Permit routing is the route printed on the state permit itself. States may specify highways, exits, turn-by-turn directions, mile markers, or written instructions like “follow I‑80 WB to Exit 123, then US‑30 WB.” When you are hauling an oversize or overweight load, permit routing becomes your official navigation plan. Your job is to match your real‑world driving to that permit routing.
+                    </p>
+                </div>
+            </div>
+        </section>
 
-    <section class="info">
-        <h2>Why Oversize & Permit Routing <span class="highlight">Matters</span></h2>
-        <p>
-            Missing a turn on an oversize permit route can push you onto roads that are too low, too narrow, or
-            not legal for your weight or dimensions. That can lead to:
-        </p>
-        <ul class="requirements-list">
-            <li>Tickets and fines for being off your permit routing</li>
-            <li>Delays while you work with the permit office to correct the route</li>
-            <li>Safety risks around low bridges, tight turns, and restricted roads</li>
-        </ul>
-        <p>
-            A dedicated oversize routing app like PermitPath helps you stay locked onto the permit route from
-            start to finish.
-        </p>
-    </section>
+        <section class="index-section" aria-labelledby="why-matters-title">
+            <div class="index-container">
+                <div class="index-section__head">
+                    <p class="index-section__eyebrow">Why it matters</p>
+                    <h2 id="why-matters-title" class="index-section__title">Stay on the <span class="highlight">permit path</span></h2>
+                </div>
+                <div class="texas-copy">
+                    <p>
+                        Missing a turn on an oversize permit route can push you onto roads that are too low, too narrow, or not legal for your weight or dimensions. That can lead to tickets and fines for being off your permit routing, delays while you work with the permit office to correct the route, and safety risks around low bridges, tight turns, and restricted roads.
+                    </p>
+                    <p>
+                        A dedicated oversize routing app like PermitPath helps you stay locked onto the permit route from start to finish.
+                    </p>
+                </div>
+            </div>
+        </section>
 
-    <section class="info">
-        <h2>How <span class="highlight">PermitPath</span> Helps with Oversize Routing</h2>
-        <p>
-            PermitPath is built specifically for oversize routing and permit routing. Instead of trying to force a
-            car GPS to match your paper permit, you can:
-        </p>
-        <ul class="requirements-list">
-            <li><strong>Pin your start, end, and all permit waypoints</strong> to match the route on your permit</li>
-            <li><strong>Add unlimited waypoints</strong> so every turn or major change is captured</li>
-            <li><strong>Save and edit routes</strong> when you get updated permits or changes</li>
-            <li><strong>Share routes</strong> between iOS and Android, so everyone on the job is on the same path</li>
-        </ul>
-        <p>
-            The goal is simple: your oversize routing in the app should match your permit routing on paper.
-        </p>
-    </section>
+        <section class="index-section texas-methods" aria-labelledby="how-helps-title">
+            <div class="index-container">
+                <div class="index-section__head">
+                    <p class="index-section__eyebrow">In the app</p>
+                    <h2 id="how-helps-title" class="index-section__title">How PermitPath helps with <span class="highlight">oversize routing</span></h2>
+                </div>
+                <div class="texas-methods-grid">
+                    <article class="texas-method">
+                        <p class="texas-method__kicker">Pin the route</p>
+                        <h3>Match the permit</h3>
+                        <p>Pin your start, end, and all permit waypoints so the line in the app matches the route on the permit.</p>
+                    </article>
+                    <article class="texas-method">
+                        <p class="texas-method__kicker">No artificial cap</p>
+                        <h3>Unlimited waypoints</h3>
+                        <p>Add every turn or major change the permit needs. Save and edit the route when the permit changes.</p>
+                    </article>
+                    <article class="texas-method">
+                        <p class="texas-method__kicker">Office and truck</p>
+                        <h3>Share iOS and Android</h3>
+                        <p>Share routes between iOS and Android so everyone on the job is on the same path.</p>
+                    </article>
+                    <article class="texas-method">
+                        <p class="texas-method__kicker">Texas option</p>
+                        <h3>Official TxPROS import</h3>
+                        <p>When you have a Texas TxPROS permit, import the official route from a PDF or QR instead of rebuilding the paper directions.</p>
+                    </article>
+                </div>
+                <div class="texas-copy" style="margin-top: 1.75rem;">
+                    <p>The goal is simple: your oversize routing in the app should match your permit routing on paper.</p>
+                </div>
+            </div>
+        </section>
 
-    <section class="info">
-        <h2>Best Practices for <span class="highlight">Oversize Routing</span></h2>
-        <ul class="requirements-list">
-            <li>Always read the permit first and highlight the official route</li>
-            <li>Enter the same start, end, and major waypoints into PermitPath</li>
-            <li>Double‑check low bridges, weight limits, and curfews before you roll</li>
-            <li>Keep your permit and the app in sync—edit the route if the permit changes</li>
-        </ul>
-    </section>
+        <section class="index-section" aria-labelledby="practices-title">
+            <div class="index-container">
+                <div class="index-section__head">
+                    <p class="index-section__eyebrow">Before you roll</p>
+                    <h2 id="practices-title" class="index-section__title">Best practices for <span class="highlight">oversize routing</span></h2>
+                </div>
+                <div class="texas-copy">
+                    <p>Always read the permit first and highlight the official route. Enter the same start, end, and major waypoints into PermitPath. Double-check low bridges, weight limits, and curfews before you roll. Keep your permit and the app in sync—edit the route if the permit changes.</p>
+                </div>
+            </div>
+        </section>
 
-    <section class="info">
-        <h2>Why drivers choose <span class="highlight">PermitPath</span></h2>
-        <p>
-            PermitPath at permitpathnav.com is built for <strong>oversize load navigation</strong> and
-            <strong>permit-approved truck routes</strong>—not parking permits or passenger-car GPS.
-        </p>
-        <p>
-            Build a route in any state with <strong>unlimited waypoints</strong>, share between
-            <strong>iOS and Android</strong>, and when you have a Texas TxPROS permit, import the official route
-            from a PDF or QR. Pricing is <a href="pricing.html">$3.99 per month</a>.
-        </p>
-        <p>
-            Ready to navigate an oversize load?
-            <a href="index.html">Get PermitPath</a>,
-            <a href="texas-oversize-permits.html">read the Texas oversize permits guide</a>,
-            <a href="oversize-loads.html">see the oversize loads guide</a>,
-            or <a href="features.html">see all features</a>.
-        </p>
-    </section>
+        <section class="index-section texas-download" aria-labelledby="routing-download-title">
+            <div class="index-container">
+                <p class="index-section__eyebrow">Get the app</p>
+                <h2 id="routing-download-title" class="index-section__title">Navigate an oversize load with <span class="highlight">PermitPath</span></h2>
+                <p class="texas-hero__lead">
+                    Available now on iPhone, iPad, and Android for <a href="pricing.html">$3.99 per month</a>.
+                    Also see the <a href="oversize-loads.html">oversize loads guide</a>,
+                    the <a href="texas-oversize-permits.html">Texas oversize permits guide</a>,
+                    and <a href="features.html">all features</a>.
+                </p>
+                <div class="texas-hero__stores download-buttons">
+                    <div class="download-option">
+                        <a href="https://apps.apple.com/us/app/permit-path/id6759459273" class="app-store-button" target="_blank" rel="noopener noreferrer" aria-label="Download on the App Store">
+                            <img src="images/applestore.png" alt="Download on the App Store" width="72" height="60" />
+                        </a>
+                    </div>
+                    <div class="download-option">
+                        <a href="https://play.google.com/store/apps/details?id=com.haulpath.permitpath" class="google-play-button" target="_blank" rel="noopener noreferrer" aria-label="Get it on Google Play">
+                            <img src="images/googleplay.png" alt="Get it on Google Play" width="72" height="60" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 
-    <footer>
-        <p>© 2026 STL Apps LLC. All Rights Reserved.</p>
+    <footer class="index-footer">
+        <div class="index-container index-footer__simple">
+            <img src="images/websitehead.png" alt="PermitPath" class="index-footer__logo" width="160" height="40" />
+            <a class="built-by" href="https://seantylerlee.com" target="_blank" rel="noopener noreferrer">
+                <span>Owned solely by</span>
+                <img src="images/stlapps-logo.jpg" alt="STL Apps LLC" width="160" height="36" />
+            </a>
+            <nav class="index-footer__links" aria-label="Legal">
+                <a href="privacy.html">Privacy</a>
+                <a href="terms.html">Terms</a>
+            </nav>
+            <p class="index-footer__copy">© 2026 STL Apps LLC. All Rights Reserved.</p>
+        </div>
     </footer>
 
     <script>
-        const menuToggle = document.getElementById('menuToggle');
-        const dropdownMenu = document.getElementById('dropdownMenu');
-
-        if (menuToggle && dropdownMenu) {
-            menuToggle.addEventListener('click', function() {
-                dropdownMenu.classList.toggle('active');
-                menuToggle.classList.toggle('active');
+        (function () {
+            var menuToggle = document.getElementById('menuToggle');
+            var dropdownMenu = document.getElementById('dropdownMenu');
+            if (!menuToggle || !dropdownMenu) return;
+            function setOpen(open) {
+                dropdownMenu.classList.toggle('active', open);
+                menuToggle.classList.toggle('active', open);
+                menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+            }
+            menuToggle.addEventListener('click', function () {
+                setOpen(!dropdownMenu.classList.contains('active'));
             });
-
-            document.addEventListener('click', function(event) {
-                const isClickInsideMenu = dropdownMenu.contains(event.target);
-                const isClickOnToggle = menuToggle.contains(event.target);
-                
-                if (!isClickInsideMenu && !isClickOnToggle && dropdownMenu.classList.contains('active')) {
-                    dropdownMenu.classList.remove('active');
-                    menuToggle.classList.remove('active');
+            document.addEventListener('click', function (event) {
+                if (!dropdownMenu.contains(event.target) && !menuToggle.contains(event.target) && dropdownMenu.classList.contains('active')) {
+                    setOpen(false);
                 }
             });
-        }
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'Escape') setOpen(false);
+            });
+            var header = document.querySelector('header');
+            var compact = false;
+            window.addEventListener('scroll', function () {
+                var y = window.scrollY;
+                if (!compact && y > 100) {
+                    compact = true;
+                    header.classList.add('header--compact');
+                } else if (compact && y < 40) {
+                    compact = false;
+                    header.classList.remove('header--compact');
+                }
+            }, { passive: true });
+        })();
     </script>
 
 </body>
 </html>
-
