@@ -72,9 +72,28 @@
                 <div id="fleet-portal" class="fleet-login-shell">
                     <div class="fleet-login-shell__head">
                         <p class="index-section__eyebrow">Company login</p>
-                        <h2 id="login-title" class="index-section__title">Sign in to <span class="highlight">your fleet</span></h2>
-                        <p>Use the email and password Permit Path sent your office.</p>
+                        <h2 id="login-title" class="index-section__title">Fleet <span class="highlight">office login</span></h2>
+                        <p>This is for the company, not a driver account in the app.</p>
                     </div>
+                    <div class="site-form-card">
+                        <form class="contact-form" id="fleetSignupForm" novalidate>
+                            <div class="form-group">
+                                <label for="fleetCompany">Company name</label>
+                                <input type="text" id="fleetCompany" required placeholder="Harper Trucking" />
+                            </div>
+                            <div class="form-group">
+                                <label for="fleetSignupEmail">Office email</label>
+                                <input type="email" id="fleetSignupEmail" required placeholder="office@company.com" />
+                            </div>
+                            <div class="form-group">
+                                <label for="fleetSignupPassword">Password</label>
+                                <input type="password" id="fleetSignupPassword" required minlength="8" placeholder="At least 8 characters" />
+                            </div>
+                            <button type="submit" class="button" id="fleetSignupSubmit">Create fleet account</button>
+                            <div class="form-message" id="fleetSignupMessage" role="status"></div>
+                        </form>
+                    </div>
+                    <p class="fleet-login-shell__hint">Already created a fleet account?</p>
                     <div class="site-form-card">
                         <form class="contact-form" id="fleetLoginForm" novalidate>
                             <div class="form-group">
@@ -89,7 +108,7 @@
                             <div class="form-message" id="fleetLoginMessage" role="status" aria-live="polite"></div>
                         </form>
                     </div>
-                    <p class="fleet-login-shell__hint">Need an account? <a href="contact.html">Contact us</a> with your device count.</p>
+
                 </div>
                 <div>
                     <p class="index-section__eyebrow">What to expect</p>
@@ -128,7 +147,7 @@
         </div>
     </footer>
 
-    <script src="lib/fleet-portal.js?v=3"></script>
+    <script src="lib/fleet-portal.js?v=4"></script>
     <script>
         (function () {
             var menuToggle = document.getElementById('menuToggle');
