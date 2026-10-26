@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title>Fleet Login - PermitPath</title>
+    <meta name="title" content="Fleet Login - PermitPath" />
+    <meta name="description" content="Sign in to your PermitPath fleet account to view codes, invoices, and pay." />
+    <meta name="robots" content="noindex, follow" />
+    <link rel="canonical" href="https://permitpathnav.com/fleet-login.html" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://permitpathnav.com/fleet-login.html" />
+    <meta property="og:title" content="Fleet Login - PermitPath" />
+    <meta property="og:description" content="Sign in to manage fleet codes, invoices, and payment." />
+    <meta property="og:site_name" content="PermitPath" />
+    <meta property="og:image" content="https://permitpathnav.com/images/pppp.png" />
+
+    <link rel="icon" type="image/png" sizes="32x32" href="images/pppp.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="images/pppp.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="images/pppp.png" />
+    <link rel="icon" type="image/png" href="images/pppp.png" />
+
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="index-home.css?v=33" />
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+</head>
+
+<body class="index-page">
+
+    <header class="index-header">
+        <a href="index.html" class="logo-link">
+            <img src="images/websitehead.png" alt="PermitPath - Oversize and Overweight Permit Routing App Logo" class="logo" width="200" height="50" />
+        </a>
+        <div class="menu-container">
+            <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="dropdownMenu" id="menuToggle">
+                <span class="menu-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+            </button>
+            <nav class="dropdown-menu" id="dropdownMenu" aria-label="Main">
+                <a href="index.html">Home</a>
+                <a href="features.html">Features</a>
+                <a href="texas-permit.html">Texas Permits</a>
+                <a href="oversize-loads.html">Oversize Loads</a>
+                <a href="pricing.html">Pricing</a>
+                <a href="fleet-solutions.html">Fleet Solutions</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="index-main">
+        <section class="texas-hero" aria-labelledby="fleet-login-title">
+            <div class="index-container">
+                <div class="fleet-login-shell">
+                    <div class="fleet-login-shell__head">
+                        <p class="index-section__eyebrow">Fleet portal</p>
+                        <h1 id="fleet-login-title" class="index-section__title">Fleet <span class="highlight">login</span></h1>
+                        <p>Sign in with the credentials PermitPath issued for your company to view codes, invoices, and pay.</p>
+                    </div>
+                    <div class="site-form-card">
+                        <form class="contact-form" id="fleetLoginForm" novalidate>
+                            <div class="form-group">
+                                <label for="fleetEmail">Email</label>
+                                <input type="email" id="fleetEmail" name="email" autocomplete="username" required placeholder="you@company.com" />
+                            </div>
+                            <div class="form-group">
+                                <label for="fleetPassword">Password</label>
+                                <input type="password" id="fleetPassword" name="password" autocomplete="current-password" required placeholder="••••••••" />
+                            </div>
+                            <button type="submit" class="button" id="fleetLoginSubmit">Sign in</button>
+                            <div class="form-message" id="fleetLoginMessage" role="status" aria-live="polite"></div>
+                        </form>
+                    </div>
+                    <p class="fleet-login-shell__hint">
+                        Need a fleet account?
+                        <a href="fleet-solutions.html">See Fleet Solutions</a>
+                        or
+                        <a href="contact.html">contact us</a>.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="index-footer">
+        <div class="index-container index-footer__simple">
+            <img src="images/websitehead.png" alt="PermitPath" class="index-footer__logo" width="160" height="40" />
+            <a class="built-by" href="https://seantylerlee.com" target="_blank" rel="noopener noreferrer">
+                <span>Owned solely by</span>
+                <img src="images/stlapps-logo.jpg" alt="STL Apps LLC" width="160" height="36" />
+            </a>
+            <nav class="index-footer__links" aria-label="Legal">
+                <a href="privacy.html">Privacy</a>
+                <a href="terms.html">Terms</a>
+            </nav>
+            <p class="index-footer__copy">© 2026 STL Apps LLC. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        (function () {
+            var menuToggle = document.getElementById('menuToggle');
+            var dropdownMenu = document.getElementById('dropdownMenu');
+            if (menuToggle && dropdownMenu) {
+                function setOpen(open) {
+                    dropdownMenu.classList.toggle('active', open);
+                    menuToggle.classList.toggle('active', open);
+                    menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+                }
+                menuToggle.addEventListener('click', function () {
+                    setOpen(!dropdownMenu.classList.contains('active'));
+                });
+                document.addEventListener('click', function (event) {
+                    if (!dropdownMenu.contains(event.target) && !menuToggle.contains(event.target) && dropdownMenu.classList.contains('active')) {
+                        setOpen(false);
+                    }
+                });
+                document.addEventListener('keydown', function (event) {
+                    if (event.key === 'Escape') setOpen(false);
+                });
+            }
+
+            var header = document.querySelector('header');
+            var compact = false;
+            window.addEventListener('scroll', function () {
+                var y = window.scrollY;
+                if (!compact && y > 100) {
+                    compact = true;
+                    header.classList.add('header--compact');
+                } else if (compact && y < 40) {
+                    compact = false;
+                    header.classList.remove('header--compact');
+                }
+            }, { passive: true });
+
+            var form = document.getElementById('fleetLoginForm');
+            var message = document.getElementById('fleetLoginMessage');
+            var submit = document.getElementById('fleetLoginSubmit');
+            if (!form || !message || !submit) return;
+
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                var email = document.getElementById('fleetEmail');
+                var password = document.getElementById('fleetPassword');
+                if (!email.checkValidity() || !password.checkValidity()) {
+                    form.reportValidity();
+                    return;
+                }
+                submit.disabled = true;
+                message.className = 'form-message pending';
+                message.textContent = 'Checking…';
+                window.setTimeout(function () {
+                    message.className = 'form-message pending';
+                    message.innerHTML = 'Fleet portal sign-in is being finished. If you already have credentials, email <a href="mailto:support@permitpathnav.com?subject=Fleet%20login">support@permitpathnav.com</a> and we will help you in. New fleets can <a href="contact.html">request an account</a>.';
+                    submit.disabled = false;
+                }, 600);
+            });
+        })();
+    </script>
+
+  <script src="lib/studioClicks.js"></script>
+</body>
+</html>
