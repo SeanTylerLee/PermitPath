@@ -1929,6 +1929,48 @@ a.fleet-cta-secondary:hover {
     color: #fff;
 }
 
+.fleet-top {
+  display: grid;
+  grid-template-columns: minmax(260px, 420px) minmax(280px, 1fr);
+  gap: 36px;
+  align-items: start;
+}
+
+.fleet-schedule-wrap {
+  overflow-x: auto;
+  margin: 16px 0;
+}
+
+.fleet-schedule {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 12px;
+}
+
+.fleet-schedule th,
+.fleet-schedule td {
+  text-align: left;
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.fleet-schedule th {
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.fleet-schedule td:last-child,
+.fleet-schedule th:last-child {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 800px) {
+  .fleet-top { grid-template-columns: 1fr; }
+}
+
 .fleet-pricing-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
