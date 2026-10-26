@@ -1984,7 +1984,7 @@ a.fleet-cta-secondary:hover {
 
 .fleet-top {
   display: grid;
-  grid-template-columns: minmax(260px, 720px);
+  grid-template-columns: minmax(260px, 40rem);
   justify-content: center;
   gap: 40px;
 }
@@ -2290,8 +2290,15 @@ a.fleet-cta-secondary:hover {
   margin-top: 14px;
 }
 
+body.fleet-page.index-page::before {
+    background-color: #050b14;
+    background-image:
+        linear-gradient(rgba(0, 0, 0, 0.78), rgba(0, 0, 0, 0.78)),
+        url('images/background.png');
+}
+
 .fleet-login-shell {
-    max-width: 26rem;
+    max-width: 40rem;
     margin: 0 auto;
 }
 
