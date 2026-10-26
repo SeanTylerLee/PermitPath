@@ -1930,11 +1930,125 @@ a.fleet-cta-secondary:hover {
     color: #fff;
 }
 
+body.fleet-page.index-page {
+  background: #050b14;
+}
+
 .fleet-account {
-  background: #07111c;
+  max-width: 720px;
+  margin: 0 auto;
   color: #eef4fb;
-  border-radius: 16px;
-  padding: 28px 24px;
+}
+
+.fleet-account__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.fleet-account__bar img {
+  width: 150px;
+  height: auto;
+}
+
+.fleet-account__card {
+  background: #0c1828;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 28px 24px 22px;
+}
+
+.fleet-kicker {
+  margin: 0 0 6px;
+  color: #7dd3fc;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.fleet-account h1 {
+  margin: 0 0 8px;
+  color: #fff;
+  font-size: 2rem;
+}
+
+.fleet-meta {
+  margin: 0 0 20px;
+  color: rgba(238, 244, 251, 0.72);
+}
+
+.fleet-codes-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.fleet-codes-head h2 {
+  margin: 0;
+  font-size: 1rem;
+  color: #fff;
+}
+
+.fleet-codes-head button,
+.fleet-order button.button {
+  font: inherit;
+}
+
+.fleet-codes-head button {
+  margin-left: 8px;
+  background: transparent;
+  color: #eef4fb;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  padding: 8px 14px;
+  cursor: pointer;
+}
+
+.fleet-order label {
+  display: block;
+  margin-bottom: 12px;
+  color: rgba(238, 244, 251, 0.7);
+  font-size: 13px;
+}
+
+.fleet-order input,
+.fleet-order select {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  background: #07111c;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font: inherit;
+}
+
+.fleet-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin: 8px 0 16px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.fleet-total strong {
+  font-size: 1.6rem;
+  color: #fff;
+}
+
+.fleet-pay-note {
+  min-height: 1.2em;
+  color: #ffb4b4;
+}
+
+.fleet-account {
+  background: transparent;
+  padding: 0;
 }
 
 .fleet-account h2 {
@@ -1971,11 +2085,11 @@ a.fleet-cta-secondary:hover {
 }
 
 #fleetSignOut {
-  margin-top: 16px;
   background: transparent;
-  color: rgba(238, 244, 251, 0.75);
-  border: 0;
-  padding: 0;
+  color: rgba(238, 244, 251, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  padding: 8px 14px;
   cursor: pointer;
 }
 
