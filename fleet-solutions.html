@@ -24,7 +24,7 @@
     <link rel="icon" type="image/png" href="images/pppp.png" />
 
     <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="index-home.css?v=40" />
+    <link rel="stylesheet" href="index-home.css?v=41" />
 
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -85,9 +85,9 @@
                                 <input type="password" id="fleetPassword" name="password" autocomplete="current-password" required placeholder="Password" />
                             </div>
                             <button type="submit" class="button" id="fleetLoginSubmit">Sign in</button>
+                            <button type="button" class="button fleet-signup-btn" id="fleetShowSignup">Sign up</button>
                             <div class="form-message" id="fleetLoginMessage" role="status" aria-live="polite"></div>
                         </form>
-                        <p class="fleet-login-shell__hint"><button type="button" class="fleet-text-btn" id="fleetShowSignup">Sign up</button></p>
                         <div id="fleetSignupNotice" hidden>
                             <p>This is not an individual account. This is for a fleet that wants to purchase Permit Path for its drivers.</p>
                             <button type="button" class="button" id="fleetSignupContinue">Continue</button>
@@ -133,7 +133,7 @@
         </div>
     </footer>
 
-    <script src="lib/fleet-portal.js?v=5"></script>
+    <script src="lib/fleet-portal.js?v=6"></script>
     <script>
         (function () {
             var menuToggle = document.getElementById('menuToggle');
