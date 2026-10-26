@@ -2041,6 +2041,16 @@ body.fleet-page.index-page {
   color: #fff;
 }
 
+.fleet-statement,
+.fleet-legal {
+  margin: 12px 0 0;
+  color: rgba(238, 244, 251, 0.72);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.fleet-legal a { color: #7dd3fc; }
+
 .fleet-pay-note {
   min-height: 1.2em;
   color: #ffb4b4;
