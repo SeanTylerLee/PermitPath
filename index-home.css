@@ -1984,9 +1984,9 @@ a.fleet-cta-secondary:hover {
 
 .fleet-top {
   display: grid;
-  grid-template-columns: minmax(260px, 420px) minmax(280px, 1fr);
-  gap: 36px;
-  align-items: start;
+  grid-template-columns: minmax(260px, 720px);
+  justify-content: center;
+  gap: 40px;
 }
 
 .fleet-schedule-wrap {
