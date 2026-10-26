@@ -24,7 +24,7 @@
     <link rel="icon" type="image/png" href="images/pppp.png" />
 
     <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="index-home.css?v=38" />
+    <link rel="stylesheet" href="index-home.css?v=39" />
 
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -72,11 +72,28 @@
                 <div id="fleet-portal" class="fleet-login-shell">
                     <div class="fleet-login-shell__head">
                         <p class="index-section__eyebrow">Company login</p>
-                        <h2 id="login-title" class="index-section__title">Fleet <span class="highlight">office login</span></h2>
-                        <p>This is for the company, not a driver account in the app.</p>
+                        <h2 id="login-title" class="index-section__title">Fleet <span class="highlight">login</span></h2>
                     </div>
                     <div class="site-form-card">
-                        <form class="contact-form" id="fleetSignupForm" novalidate>
+                        <form class="contact-form" id="fleetLoginForm" novalidate>
+                            <div class="form-group">
+                                <label for="fleetEmail">Email</label>
+                                <input type="email" id="fleetEmail" name="email" autocomplete="username" required placeholder="you@company.com" />
+                            </div>
+                            <div class="form-group">
+                                <label for="fleetPassword">Password</label>
+                                <input type="password" id="fleetPassword" name="password" autocomplete="current-password" required placeholder="Password" />
+                            </div>
+                            <button type="submit" class="button" id="fleetLoginSubmit">Sign in</button>
+                            <div class="form-message" id="fleetLoginMessage" role="status" aria-live="polite"></div>
+                        </form>
+                        <p class="fleet-login-shell__hint"><button type="button" class="fleet-text-btn" id="fleetShowSignup">Sign up</button></p>
+                        <div id="fleetSignupNotice" hidden>
+                            <p>This is not an individual account. This is for a fleet that wants to purchase Permit Path for its drivers.</p>
+                            <button type="button" class="button" id="fleetSignupContinue">Continue</button>
+                            <button type="button" class="fleet-text-btn" id="fleetSignupBack">Back to sign in</button>
+                        </div>
+                        <form class="contact-form" id="fleetSignupForm" hidden novalidate>
                             <div class="form-group">
                                 <label for="fleetCompany">Company name</label>
                                 <input type="text" id="fleetCompany" required placeholder="Harper Trucking" />
@@ -90,22 +107,8 @@
                                 <input type="password" id="fleetSignupPassword" required minlength="8" placeholder="At least 8 characters" />
                             </div>
                             <button type="submit" class="button" id="fleetSignupSubmit">Create fleet account</button>
+                            <button type="button" class="fleet-text-btn" id="fleetSignupCancel">Back to sign in</button>
                             <div class="form-message" id="fleetSignupMessage" role="status"></div>
-                        </form>
-                    </div>
-                    <p class="fleet-login-shell__hint">Already created a fleet account?</p>
-                    <div class="site-form-card">
-                        <form class="contact-form" id="fleetLoginForm" novalidate>
-                            <div class="form-group">
-                                <label for="fleetEmail">Email</label>
-                                <input type="email" id="fleetEmail" name="email" autocomplete="username" required placeholder="you@company.com" />
-                            </div>
-                            <div class="form-group">
-                                <label for="fleetPassword">Password</label>
-                                <input type="password" id="fleetPassword" name="password" autocomplete="current-password" required placeholder="Password" />
-                            </div>
-                            <button type="submit" class="button" id="fleetLoginSubmit">Sign in</button>
-                            <div class="form-message" id="fleetLoginMessage" role="status" aria-live="polite"></div>
                         </form>
                     </div>
 
@@ -147,7 +150,7 @@
         </div>
     </footer>
 
-    <script src="lib/fleet-portal.js?v=4"></script>
+    <script src="lib/fleet-portal.js?v=5"></script>
     <script>
         (function () {
             var menuToggle = document.getElementById('menuToggle');

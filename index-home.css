@@ -2276,6 +2276,20 @@ a.fleet-cta-secondary:hover {
     color: rgba(238, 244, 251, 0.7);
 }
 
+.fleet-text-btn {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+#fleetSignupNotice {
+  margin-top: 14px;
+}
+
 .fleet-login-shell {
     max-width: 26rem;
     margin: 0 auto;
