@@ -2057,6 +2057,13 @@ body.fleet-page.index-page {
   font-weight: 650;
 }
 
+#fleet-card-mount {
+  margin-top: 14px;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
 .fleet-pay-note {
   min-height: 1.2em;
   color: #ffb4b4;
