@@ -2007,6 +2007,31 @@ body.fleet-page.index-page {
   cursor: pointer;
 }
 
+.fleet-explain {
+  max-width: 42rem;
+  margin: 28px auto 0;
+  padding: 22px 24px 8px;
+  text-align: left;
+  background: rgba(12, 24, 40, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+}
+
+.fleet-explain h2 {
+  margin: 0 0 10px;
+  color: #fff;
+  font-size: 1.15rem;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+}
+
+.fleet-explain p {
+  margin: 0 0 14px;
+  color: rgba(238, 244, 251, 0.82);
+  font-size: 0.98rem;
+  line-height: 1.55;
+}
+
 .fleet-hold {
   margin: 0 0 18px;
   padding: 14px 16px;
