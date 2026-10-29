@@ -2292,6 +2292,19 @@ body.fleet-page.index-page {
   line-height: 1.45;
 }
 
+.fleet-code-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.fleet-code-expiry {
+  color: rgba(238, 244, 251, 0.58);
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
 .fleet-code-status {
   flex-shrink: 0;
   text-align: right;
@@ -2307,7 +2320,8 @@ body.fleet-page.index-page {
   color: #7dd3fc;
 }
 
-.fleet-code-status--off {
+.fleet-code-status--off,
+.fleet-code-status--expired {
   color: #fda4af;
 }
 
