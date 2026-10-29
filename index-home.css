@@ -2017,6 +2017,12 @@ body.fleet-page.index-page {
   border-radius: 16px;
 }
 
+.fleet-explain--wide {
+  max-width: 52rem;
+  margin: 0 auto;
+  padding: 28px 28px 16px;
+}
+
 .fleet-explain h2 {
   margin: 0 0 10px;
   color: #fff;
@@ -2025,11 +2031,134 @@ body.fleet-page.index-page {
   letter-spacing: 0.01em;
 }
 
+.fleet-explain--wide h2 {
+  margin-bottom: 1rem;
+  font-size: 1.35rem;
+}
+
+.fleet-explain h3 {
+  margin: 1.15rem 0 0.45rem;
+  color: #7dd3fc;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.fleet-explain h3:first-of-type {
+  margin-top: 0.35rem;
+}
+
 .fleet-explain p {
   margin: 0 0 14px;
   color: rgba(238, 244, 251, 0.82);
   font-size: 0.98rem;
   line-height: 1.55;
+}
+
+.fleet-explain a {
+  color: #7dd3fc;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.fleet-explain a:hover {
+  text-decoration: underline;
+}
+
+.fleet-how {
+  padding-top: 0.25rem;
+  padding-bottom: 0.5rem;
+}
+
+.fleet-account__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#fleetHelpOpen,
+#fleetSignOut {
+  background: transparent;
+  color: rgba(238, 244, 251, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font: inherit;
+}
+
+#fleetHelpOpen:hover,
+#fleetSignOut:hover {
+  border-color: rgba(0, 180, 255, 0.45);
+  color: #fff;
+}
+
+.fleet-help-panel {
+  margin-top: 18px;
+  padding: 22px 22px 16px;
+  border-radius: 18px;
+  background: rgba(12, 24, 40, 0.92);
+  border: 1px solid rgba(0, 180, 255, 0.28);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+}
+
+.fleet-help-panel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.fleet-help-panel__head h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #fff;
+}
+
+.fleet-help-close {
+  background: transparent;
+  color: rgba(238, 244, 251, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font: inherit;
+}
+
+.fleet-help-panel__body h3 {
+  margin: 1.1rem 0 0.4rem;
+  color: #7dd3fc;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.fleet-help-panel__body h3:first-child {
+  margin-top: 0;
+}
+
+.fleet-help-panel__body p,
+.fleet-help-panel__body li {
+  color: rgba(238, 244, 251, 0.82);
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+.fleet-help-panel__body p {
+  margin: 0 0 0.75rem;
+}
+
+.fleet-help-panel__body ol {
+  margin: 0 0 0.85rem;
+  padding-left: 1.25rem;
+}
+
+.fleet-help-panel__body li {
+  margin-bottom: 0.4rem;
+}
+
+.fleet-help-panel__body a {
+  color: #7dd3fc;
+  font-weight: 600;
 }
 
 .fleet-hold {
@@ -2164,14 +2293,7 @@ body.fleet-page.index-page {
   gap: 12px;
 }
 
-#fleetSignOut {
-  background: transparent;
-  color: rgba(238, 244, 251, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 999px;
-  padding: 8px 14px;
-  cursor: pointer;
-}
+
 
 .fleet-top:has(.fleet-account) {
   display: block;
@@ -2383,6 +2505,11 @@ body.fleet-page.index-page {
     margin: 0 auto;
 }
 
+.fleet-steps--4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    max-width: 1100px;
+}
+
 .fleet-step {
     padding: 1.5rem 1.35rem;
     border-radius: 18px;
@@ -2541,11 +2668,22 @@ body.fleet-page.index-page::before {
     text-decoration: underline;
 }
 
+@media (max-width: 1100px) {
+    .fleet-steps--4 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
 @media (max-width: 800px) {
     .fleet-pricing-grid,
     .fleet-steps,
+    .fleet-steps--4,
     .fleet-portal-card {
         grid-template-columns: 1fr;
+    }
+
+    .fleet-explain--wide {
+        padding: 22px 18px 12px;
     }
 }
 
