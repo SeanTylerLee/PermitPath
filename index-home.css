@@ -2510,19 +2510,34 @@ body.fleet-page.index-page {
   color: #ffb4b4;
 }
 
-.fleet-account h2 {
+.fleet-account__card > h2,
+.fleet-buy-panel h2 {
   margin: 0 0 8px;
   color: #fff;
   font-size: 1.6rem;
 }
 
-.fleet-account p {
-  margin: 0 0 14px;
+.fleet-account__intro p,
+.fleet-buy-panel p,
+.fleet-help {
   color: rgba(238, 244, 251, 0.8);
 }
 
-.fleet-codes-panel p {
-  color: #475569;
+.fleet-codes-panel h2,
+.fleet-codes-head h2,
+#fleet-codes-title {
+  margin: 0 0 0.35rem;
+  color: #0b1220;
+  font-size: 1.12rem;
+  font-weight: 800;
+}
+
+.fleet-codes-panel p,
+.fleet-codes-legend {
+  margin: 0;
+  color: #334155;
+  font-size: 0.88rem;
+  line-height: 1.45;
 }
 
 @media (max-width: 640px) {
