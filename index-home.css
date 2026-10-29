@@ -2285,6 +2285,36 @@ body.fleet-page.index-page {
   border-top: 1px solid rgba(255, 255, 255, 0.12);
 }
 
+.fleet-codes-legend {
+  margin: 0 0 10px;
+  color: rgba(238, 244, 251, 0.62);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.fleet-code-status {
+  flex-shrink: 0;
+  text-align: right;
+  font-size: 0.9rem;
+  font-weight: 650;
+}
+
+.fleet-code-status--open {
+  color: #86efac;
+}
+
+.fleet-code-status--used {
+  color: #7dd3fc;
+}
+
+.fleet-code-status--off {
+  color: #fda4af;
+}
+
+.fleet-code-off strong {
+  color: rgba(238, 244, 251, 0.55);
+}
+
 .fleet-pay,
 #fleetPayForm {
   display: flex;
