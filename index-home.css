@@ -426,12 +426,6 @@ header.index-header .logo-link {
     font-size: 0.88rem;
 }
 
-.index-stats__note {
-    margin: 0.55rem 0 0;
-    color: rgba(255, 255, 255, 0.62);
-    font-size: 0.82rem;
-}
-
 .index-stats__value {
     margin: 0 0 0.35rem;
     font-size: clamp(2.35rem, 7vw, 3.15rem);

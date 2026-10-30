@@ -36,7 +36,7 @@
     <link rel="icon" type="image/png" href="images/pppp.png" />
     
     <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="index-home.css?v=34" />
+    <link rel="stylesheet" href="index-home.css?v=35" />
 
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -279,20 +279,19 @@
                     </p>
                     <div class="index-stats__split">
                         <div class="index-stats__item">
-                            <p class="index-stats__value" data-count="0" data-live="android">0</p>
-                            <p class="index-stats__label">Android using it now</p>
+                            <p class="index-stats__value" data-count="220">220</p>
+                            <p class="index-stats__label">Android users to date</p>
                         </div>
                         <div class="index-stats__rule index-stats__rule--v" aria-hidden="true"></div>
                         <div class="index-stats__item">
-                            <p class="index-stats__value" data-count="0" data-live="ios">0</p>
-                            <p class="index-stats__label">iOS using it now</p>
+                            <p class="index-stats__value" data-count="623">623</p>
+                            <p class="index-stats__label">iOS users to date</p>
                         </div>
                     </div>
                     <div class="index-stats__rule" aria-hidden="true"></div>
                     <div class="index-stats__item">
-                        <p class="index-stats__value" data-count="0" data-live="miles">0</p>
+                        <p class="index-stats__value" data-count="370000" data-format="over-k">over 370k</p>
                         <p class="index-stats__label">miles driven with Permit Path</p>
-                        <p class="index-stats__note">Mileage counter reset October 29, 2026.</p>
                     </div>
                 </div>
             </div>
@@ -493,42 +492,6 @@
                     requestAnimationFrame(tick);
                 });
             }
-
-            var liveUrl = 'https://bkgdrfyjppjxwnwntcbc.supabase.co/rest/v1/rpc/permitpath_live_counter';
-            var liveKey = 'sb_publishable_fMbQ-x2q2q5XA_pT4Bpf6w_ZMcbCQen';
-
-            function applyLive(data) {
-                if (!data) return;
-                var map = {
-                    android: Number(data.android_now) || 0,
-                    ios: Number(data.ios_now) || 0,
-                    miles: Number(data.miles) || 0
-                };
-                root.querySelectorAll('[data-live]').forEach(function(el) {
-                    var next = map[el.getAttribute('data-live')];
-                    if (next == null || !isFinite(next)) return;
-                    el.setAttribute('data-count', String(next));
-                    if (played) el.textContent = formatValue(el, next);
-                });
-                if (!played) animate();
-            }
-
-            function pullLive() {
-                fetch(liveUrl, {
-                    method: 'POST',
-                    headers: {
-                        apikey: liveKey,
-                        Authorization: 'Bearer ' + liveKey,
-                        'Content-Type': 'application/json'
-                    },
-                    body: '{}'
-                }).then(function(res) {
-                    return res.ok ? res.json() : null;
-                }).then(applyLive).catch(function() {});
-            }
-
-            pullLive();
-            setInterval(pullLive, 60000);
 
             if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
                 setFinal();
