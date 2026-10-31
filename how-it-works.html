@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta name="referrer" content="origin" />
+    <meta http-equiv="Referrer-Policy" content="origin" />
 
     <title>How It Works - PermitPath | Build Routes, Texas Import, Company Codes</title>
     <meta name="title" content="How It Works - PermitPath | Build Routes, Texas Import, Company Codes" />
@@ -25,7 +26,7 @@
     <link rel="icon" type="image/png" href="images/pppp.png" />
 
     <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="index-home.css?v=57" />
+    <link rel="stylesheet" href="index-home.css?v=58" />
 
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -131,8 +132,11 @@
                         <p>Scan the QR code on the Texas permit with PermitPath. That pulls the same official TxPROS route into the app.</p>
                     </article>
                 </div>
-                <div class="how-video how-video--short" data-video="txpros">
-                    <iframe src="https://www.youtube.com/embed/mjTQ6OAsakI?rel=0" title="How to upload a permit in PermitPath" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                <div class="how-video how-video--short" data-video="txpros" data-youtube="mjTQ6OAsakI">
+                    <button type="button" class="how-video__play" aria-label="Play How to upload a permit in PermitPath">
+                        <img src="https://i.ytimg.com/vi/mjTQ6OAsakI/hqdefault.jpg" alt="" width="480" height="360" />
+                        <span class="how-video__play-icon" aria-hidden="true"></span>
+                    </button>
                 </div>
                 <p class="how-section-lead"><a href="https://www.youtube.com/shorts/mjTQ6OAsakI" target="_blank" rel="noopener">Watch on YouTube</a></p>
             </div>
@@ -222,6 +226,30 @@
                     header.classList.remove('header--compact');
                 }
             }, { passive: true });
+        })();
+    </script>
+    <script>
+        (function () {
+            function mountPlayer(host) {
+                var id = host.getAttribute('data-youtube');
+                if (!id) return;
+                host.innerHTML = '';
+                var iframe = document.createElement('iframe');
+                iframe.src = 'https://www.youtube.com/embed/' + encodeURIComponent(id) +
+                    '?autoplay=1&playsinline=1&rel=0&modestbranding=1&origin=' + encodeURIComponent(window.location.origin);
+                iframe.title = 'How to upload a permit in PermitPath';
+                iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+                iframe.allowFullscreen = true;
+                iframe.setAttribute('referrerpolicy', 'origin');
+                host.appendChild(iframe);
+            }
+            document.querySelectorAll('[data-youtube]').forEach(function (host) {
+                var play = host.querySelector('.how-video__play');
+                if (!play) return;
+                play.addEventListener('click', function () {
+                    mountPlayer(host);
+                });
+            });
         })();
     </script>
 

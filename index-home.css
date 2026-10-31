@@ -3005,6 +3005,46 @@ body.fleet-page.index-page::before {
     aspect-ratio: 9 / 16;
 }
 
+.how-video__play {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    cursor: pointer;
+    background: #000;
+}
+
+.how-video__play img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.how-video__play-icon {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 4.25rem;
+    height: 3rem;
+    margin: -1.5rem 0 0 -2.125rem;
+    border-radius: 0.85rem;
+    background: #ff0000;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.how-video__play-icon::after {
+    content: "";
+    position: absolute;
+    left: 1.55rem;
+    top: 0.7rem;
+    border-style: solid;
+    border-width: 0.8rem 0 0.8rem 1.3rem;
+    border-color: transparent transparent transparent #fff;
+}
+
 .how-video__soon {
     margin: 0;
     height: 100%;
