@@ -37,6 +37,17 @@
     
     <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="index-home.css?v=43" />
+    <script>
+        window.__ppLive = fetch('https://bkgdrfyjppjxwnwntcbc.supabase.co/rest/v1/rpc/permitpath_live_counter', {
+            method: 'POST',
+            headers: {
+                apikey: 'sb_publishable_fMbQ-x2q2q5XA_pT4Bpf6w_ZMcbCQen',
+                Authorization: 'Bearer sb_publishable_fMbQ-x2q2q5XA_pT4Bpf6w_ZMcbCQen',
+                'Content-Type': 'application/json'
+            },
+            body: '{}'
+        }).then(function(res) { return res.ok ? res.json() : null; }).catch(function() { return null; });
+    </script>
 
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -388,6 +399,9 @@
             if (!root) return;
             var nums = root.querySelectorAll('[data-count]');
             var played = false;
+            var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            var liveUrl = 'https://bkgdrfyjppjxwnwntcbc.supabase.co/rest/v1/rpc/permitpath_live_counter';
+            var liveKey = 'sb_publishable_fMbQ-x2q2q5XA_pT4Bpf6w_ZMcbCQen';
 
             function formatValue(el, n) {
                 var mode = el.getAttribute('data-format');
@@ -410,10 +424,14 @@
             function animate() {
                 if (played) return;
                 played = true;
+                if (reduce) {
+                    setFinal();
+                    return;
+                }
                 nums.forEach(function(el) {
                     var target = parseFloat(el.getAttribute('data-count'));
                     var start = performance.now();
-                    var duration = 1300;
+                    var duration = 500;
                     function tick(now) {
                         var t = Math.min(1, (now - start) / duration);
                         var eased = 1 - Math.pow(1 - t, 3);
@@ -424,9 +442,6 @@
                     requestAnimationFrame(tick);
                 });
             }
-
-            var liveUrl = 'https://bkgdrfyjppjxwnwntcbc.supabase.co/rest/v1/rpc/permitpath_live_counter';
-            var liveKey = 'sb_publishable_fMbQ-x2q2q5XA_pT4Bpf6w_ZMcbCQen';
 
             function applyLive(data) {
                 if (!data) return;
@@ -457,30 +472,12 @@
                 }).then(applyLive).catch(function() {});
             }
 
-            pullLive();
-            setInterval(pullLive, 60000);
-
-            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                played = true;
-                setFinal();
-                return;
-            }
-
-            nums.forEach(function(el) { el.textContent = formatValue(el, 0); });
-
-            if ('IntersectionObserver' in window) {
-                var io = new IntersectionObserver(function(entries) {
-                    entries.forEach(function(entry) {
-                        if (entry.isIntersecting) {
-                            animate();
-                            io.disconnect();
-                        }
-                    });
-                }, { threshold: 0.45 });
-                io.observe(root);
+            if (window.__ppLive) {
+                window.__ppLive.then(applyLive);
             } else {
-                animate();
+                pullLive();
             }
+            setInterval(pullLive, 15000);
         })();
 
     </script>
