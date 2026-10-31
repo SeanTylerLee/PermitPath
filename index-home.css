@@ -344,37 +344,15 @@ header.index-header .logo-link {
 }
 
 .index-hero__visual {
-    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: min(100%, 860px);
-    min-height: 28rem;
-    margin: 0.35rem auto 0.5rem;
-}
-
-.index-hero__banner {
-    position: absolute;
-    z-index: 0;
-    width: min(96%, 780px);
-    height: auto;
-    top: 42%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(-12deg);
-    filter:
-        drop-shadow(0 0 18px rgba(255, 214, 0, 0.55))
-        drop-shadow(0 18px 36px rgba(0, 0, 0, 0.45));
-    pointer-events: none;
-    user-select: none;
 }
 
 .index-hero__phone {
-    position: relative;
-    z-index: 1;
     width: min(72%, 480px);
     border-radius: 0;
     box-shadow: none;
-    filter: drop-shadow(0 22px 40px rgba(0, 0, 0, 0.55));
 }
 
 .index-stats {
@@ -1506,17 +1484,8 @@ html {
         grid-column: auto;
     }
 
-    .index-hero__visual {
-        min-height: 22rem;
-    }
-
     .index-hero__phone {
         width: min(78%, 400px);
-    }
-
-    .index-hero__banner {
-        width: min(98%, 640px);
-        transform: translate(-50%, -50%) rotate(-10deg);
     }
 
     .index-trust-bar__grid,
