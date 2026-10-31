@@ -1,7 +1,7 @@
 /* PermitPath homepage — professional layout (index.html only) */
 
 body.index-page {
-    background: #0a1628;
+    background: #050b14;
     color: #eef4fb;
     position: relative;
 }
@@ -18,9 +18,9 @@ body.index-page::before {
     height: 100%;
     z-index: -1;
     pointer-events: none;
-    background-color: #0a1628;
+    background-color: #050b14;
     background-image:
-        linear-gradient(rgba(0, 0, 0, 0.58), rgba(0, 0, 0, 0.58)),
+        linear-gradient(rgba(0, 0, 0, 0.78), rgba(0, 0, 0, 0.78)),
         url('images/background.png');
     background-size: cover;
     background-position: center center;
