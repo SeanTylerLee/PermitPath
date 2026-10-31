@@ -1364,6 +1364,15 @@ body.index-page footer.index-footer {
     margin: 0 auto;
 }
 
+.index-topics .texas-copy {
+    max-width: none;
+    margin: 0.35rem 0 0;
+}
+
+.index-topics .index-upcoming__copy .index-section__title {
+    margin-bottom: 0.85rem;
+}
+
 .texas-copy p {
     margin: 0 0 1rem;
     font-size: 1.05rem;
