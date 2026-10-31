@@ -2992,12 +2992,18 @@ body.fleet-page.index-page::before {
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.how-video iframe {
+.how-video iframe,
+.how-video video {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     border: 0;
+}
+
+.how-video video {
+    object-fit: contain;
+    background: #000;
 }
 
 .how-video--short {
