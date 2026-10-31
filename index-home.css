@@ -1791,7 +1791,7 @@ header.index-header .menu-toggle {
 }
 
 .index-expand {
-    padding-top: 0;
+    padding-top: 1.75rem;
 }
 
 .index-upcoming__card--simple .index-upcoming__grid {
