@@ -36,7 +36,7 @@
     <link rel="icon" type="image/png" href="images/pppp.png" />
     
     <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="index-home.css?v=35" />
+    <link rel="stylesheet" href="index-home.css?v=36" />
 
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -290,8 +290,13 @@
                     </div>
                     <div class="index-stats__rule" aria-hidden="true"></div>
                     <div class="index-stats__item">
-                        <p class="index-stats__value" data-count="748000" data-format="over-k">over 748k</p>
-                        <p class="index-stats__label">miles driven with Permit Path</p>
+                        <p class="index-stats__value" data-count="0" data-live="miles">0</p>
+                        <p class="index-stats__label">miles driven with Permit Path since Oct. 30, 2026</p>
+                    </div>
+                    <div class="index-stats__rule" aria-hidden="true"></div>
+                    <div class="index-stats__item">
+                        <p class="index-stats__value" data-count="0" data-live="permits">0</p>
+                        <p class="index-stats__label">Permits Imported</p>
                     </div>
                 </div>
             </div>
@@ -493,7 +498,43 @@
                 });
             }
 
+            var liveUrl = 'https://bkgdrfyjppjxwnwntcbc.supabase.co/rest/v1/rpc/permitpath_live_counter';
+            var liveKey = 'sb_publishable_fMbQ-x2q2q5XA_pT4Bpf6w_ZMcbCQen';
+
+            function applyLive(data) {
+                if (!data) return;
+                var map = {
+                    miles: Number(data.miles) || 0,
+                    permits: Number(data.permits_imported) || 0
+                };
+                root.querySelectorAll('[data-live]').forEach(function(el) {
+                    var next = map[el.getAttribute('data-live')];
+                    if (next == null || !isFinite(next)) return;
+                    el.setAttribute('data-count', String(next));
+                    if (played) el.textContent = formatValue(el, next);
+                });
+                if (!played) animate();
+            }
+
+            function pullLive() {
+                fetch(liveUrl, {
+                    method: 'POST',
+                    headers: {
+                        apikey: liveKey,
+                        Authorization: 'Bearer ' + liveKey,
+                        'Content-Type': 'application/json'
+                    },
+                    body: '{}'
+                }).then(function(res) {
+                    return res.ok ? res.json() : null;
+                }).then(applyLive).catch(function() {});
+            }
+
+            pullLive();
+            setInterval(pullLive, 60000);
+
             if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                played = true;
                 setFinal();
                 return;
             }
