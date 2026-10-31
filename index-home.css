@@ -3000,6 +3000,11 @@ body.fleet-page.index-page::before {
     border: 0;
 }
 
+.how-video--short {
+    width: min(100%, 360px);
+    aspect-ratio: 9 / 16;
+}
+
 .how-video__soon {
     margin: 0;
     height: 100%;
