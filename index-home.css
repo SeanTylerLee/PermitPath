@@ -2304,6 +2304,100 @@ body.fleet-page.index-page {
   box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
 }
 
+.fleet-renew-pick {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.fleet-renew-pick input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.fleet-renew-pick__box {
+  width: 1.15rem;
+  height: 1.15rem;
+  border-radius: 4px;
+  border: 2px solid #0f172a;
+  background: #fff;
+}
+
+.fleet-renew-pick input:checked + .fleet-renew-pick__box {
+  background: #0b6ea8;
+  border-color: #0b6ea8;
+  box-shadow: inset 0 0 0 3px #fff;
+}
+
+.fleet-renew-pick input:focus-visible + .fleet-renew-pick__box {
+  outline: 2px solid #00b4ff;
+  outline-offset: 2px;
+}
+
+.fleet-renew-pick--empty {
+  width: 1.15rem;
+}
+
+.fleet-renew-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 0 0 0.85rem;
+}
+
+.fleet-renew-count {
+  margin: 0.85rem 0 0;
+  color: rgba(238, 244, 251, 0.82);
+  font-size: 0.92rem;
+}
+
+.fleet-payments {
+  margin: 0.4rem 0 0.2rem;
+}
+
+.fleet-payments h2 {
+  margin: 0 0 0.55rem;
+  color: #fff;
+  font-size: 1.05rem;
+}
+
+.fleet-payment-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.fleet-payment-row {
+  padding: 0.9rem 1rem;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(238, 244, 251, 0.88);
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.fleet-payment-row p {
+  margin: 0;
+}
+
+.fleet-payment-row a {
+  color: #7dd3fc;
+}
+
+.fleet-pay-codes {
+  margin-top: 0.4rem !important;
+  color: rgba(238, 244, 251, 0.72);
+  font-size: 0.84rem;
+}
+
 .fleet-code-row--muted {
   background: #eef2f7;
   border-color: rgba(15, 23, 42, 0.06);
