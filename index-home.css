@@ -2294,14 +2294,72 @@ body.fleet-page.index-page {
 
 .fleet-code-row {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
   padding: 0.9rem 1rem;
   border-radius: 14px;
   background: #fff;
   border: 1px solid rgba(15, 23, 42, 0.08);
   box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.fleet-code-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.fleet-code-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.fleet-code-name {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1 1 180px;
+  min-width: 0;
+  color: #475569;
+  font-size: 0.78rem;
+  font-weight: 650;
+}
+
+.fleet-code-name input {
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 650;
+  color: #0f172a;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(15, 23, 42, 0.16);
+  background: #fff;
+}
+
+.fleet-code-tools button {
+  background: #fff;
+  color: #0f172a;
+  border: 1px solid rgba(15, 23, 42, 0.14);
+  border-radius: 999px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 650;
+}
+
+.fleet-code-tools button:hover {
+  border-color: rgba(0, 120, 200, 0.45);
+  color: #0369a1;
+}
+
+.fleet-code-note {
+  color: #0369a1;
+  font-size: 0.82rem;
+  font-weight: 700;
 }
 
 .fleet-renew-pick {
@@ -2669,8 +2727,7 @@ body.fleet-page.index-page {
     grid-template-columns: 1fr;
   }
 
-  .fleet-code-row {
-    flex-direction: column;
+  .fleet-code-top {
     align-items: flex-start;
   }
 }
