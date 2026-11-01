@@ -2359,7 +2359,13 @@ body.fleet-page.index-page {
 .fleet-code-note {
   color: #0369a1;
   font-size: 0.82rem;
-  font-weight: 700;
+  font-weight: 650;
+  line-height: 1.4;
+}
+
+.fleet-code-note a {
+  color: #0369a1;
+  font-weight: 750;
 }
 
 .fleet-renew-pick {
