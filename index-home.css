@@ -1832,6 +1832,86 @@ body.index-page .index-compare-card {
     margin-top: 1.25rem;
 }
 
+.pricing-plans {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    max-width: 760px;
+    margin: 0 auto 1.75rem;
+    text-align: left;
+}
+
+.pricing-plan {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 1.45rem 1.3rem 1.2rem;
+    border-radius: 18px;
+    background: rgba(12, 26, 45, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+}
+
+.pricing-plan--paid {
+    background: linear-gradient(145deg, rgba(0, 180, 255, 0.16) 0%, rgba(12, 26, 45, 0.92) 46%);
+    border-color: rgba(0, 180, 255, 0.45);
+}
+
+.pricing-plan__name {
+    margin: 0;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #7dd3fc;
+}
+
+.pricing-plan .price-display {
+    justify-content: flex-start;
+    margin: 0.2rem 0 0.85rem;
+}
+
+.pricing-plan .price-amount {
+    font-size: clamp(2.3rem, 5vw, 3rem);
+}
+
+.pricing-plan .price-period {
+    font-size: 1rem;
+}
+
+.pricing-plan__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.pricing-plan__list li {
+    position: relative;
+    margin: 0;
+    padding: 0.55rem 0 0.55rem 1.15rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 0.92rem;
+    line-height: 1.4;
+    color: rgba(238, 244, 251, 0.86);
+}
+
+.pricing-plan__list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.95rem;
+    width: 0.42rem;
+    height: 0.42rem;
+    border-radius: 50%;
+    background: #00b4ff;
+}
+
+@media (max-width: 700px) {
+    .pricing-plans {
+        grid-template-columns: 1fr;
+    }
+}
+
 @media (min-width: 1024px) {
     header.index-header .menu-toggle {
         display: none;
