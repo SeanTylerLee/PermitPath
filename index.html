@@ -234,6 +234,13 @@
                         <p class="index-stats__value" data-count="0" data-live="permits">0</p>
                         <p class="index-stats__label">Permits Imported</p>
                     </div>
+                    <div data-live-item="routes" hidden>
+                        <div class="index-stats__rule" aria-hidden="true"></div>
+                        <div class="index-stats__item">
+                            <p class="index-stats__value" data-count="0" data-live="routes">0</p>
+                            <p class="index-stats__label">Manual routes built</p>
+                        </div>
+                    </div>
                     <p class="index-stats__note">Statistics were reset on Oct. 30, 2026</p>
                 </div>
             </div>
@@ -446,9 +453,13 @@
 
             function applyLive(data) {
                 if (!data) return;
+                var routesItem = root.querySelector('[data-live-item="routes"]');
+                var hasRoutes = data.routes_built != null && data.routes_built !== '';
+                if (routesItem) routesItem.hidden = !hasRoutes;
                 var map = {
                     miles: Number(data.miles) || 0,
-                    permits: Number(data.permits_imported) || 0
+                    permits: Number(data.permits_imported) || 0,
+                    routes: hasRoutes ? (Number(data.routes_built) || 0) : null
                 };
                 root.querySelectorAll('[data-live]').forEach(function(el) {
                     var next = map[el.getAttribute('data-live')];
