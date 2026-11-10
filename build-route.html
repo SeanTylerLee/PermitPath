@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Build a driver route - PermitPath</title>
+    <meta name="robots" content="noindex" />
+    <link rel="icon" type="image/png" href="images/pppp.png" />
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.css" rel="stylesheet" />
+    <link rel="stylesheet" href="build-route.css?v=3" />
+</head>
+<body class="pp-build">
+    <div id="ppGate" class="pp-build-gate"><p id="ppGateMsg">Loading the map…</p></div>
+    <div id="ppApp" class="pp-build-app" hidden>
+        <header class="pp-build-bar">
+            <a class="pp-back" href="fleet-account.html">Fleet</a>
+            <input id="ppName" type="text" maxlength="80" value="Driver route" aria-label="Route name" />
+            <div class="pp-build-search">
+                <input id="ppSearch" type="search" placeholder="Search an address" aria-label="Search an address" />
+                <ul id="ppSearchList" class="pp-search-list" hidden></ul>
+            </div>
+            <button type="button" id="ppSatellite" class="pp-chip">Satellite</button>
+            <button type="button" id="ppClear" class="pp-chip">Clear</button>
+        </header>
+        <div class="pp-map-wrap">
+            <div id="ppMap"></div>
+            <p id="ppHint" class="pp-hint">Click the map, then choose Start, Waypoint, or End. A click here is the same as a long-press on the phone.</p>
+            <div id="ppMenu" class="pp-pin-menu" hidden></div>
+        </div>
+        <footer class="pp-send">
+            <div class="pp-send-copy">
+                <strong id="ppStats">Add a start and an end</strong>
+                <p id="ppNote">The file stores the exact line. The driver opens that file in Permit Path, and the phone follows it. It does not build a new path.</p>
+            </div>
+            <div class="pp-send-actions">
+                <button type="button" id="ppDownload" disabled>Download file</button>
+                <button type="button" id="ppSend" disabled>Send to driver</button>
+            </div>
+        </footer>
+    </div>
+    <script src="lib/build-route.js?v=3"></script>
+</body>
+</html>
