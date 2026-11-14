@@ -327,7 +327,13 @@ body.fleet-dash [hidden] {
   background: #fff;
 }
 
+.fleet-code-name {
+  min-width: 240px;
+}
+
 .fleet-code-name input {
+  width: 100%;
+  min-width: 0;
   font-weight: 650;
 }
 
@@ -346,7 +352,7 @@ body.fleet-dash [hidden] {
 
 .fleet-code-row {
   display: grid;
-  grid-template-columns: 1.4rem minmax(0, 1.1fr) minmax(0, 1.15fr) auto auto minmax(0, 0.9fr) auto;
+  grid-template-columns: 1.4rem minmax(240px, 2.4fr) minmax(140px, 1fr) auto auto minmax(0, 0.8fr) auto;
   align-items: center;
   gap: 0.65rem 0.75rem;
   padding: 0.7rem 0.8rem;
@@ -744,6 +750,7 @@ body.fleet-dash [hidden] {
   .fleet-code-name,
   .fleet-code-main {
     grid-column: 2 / -1;
+    min-width: 0;
   }
 
   .fleet-code-status,
