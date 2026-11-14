@@ -350,7 +350,7 @@ header.index-header .logo-link {
 }
 
 .index-hero__phone {
-    width: min(72%, 480px);
+    width: min(86%, 600px);
     border-radius: 0;
     box-shadow: none;
 }
