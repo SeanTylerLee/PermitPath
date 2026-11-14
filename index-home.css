@@ -1495,21 +1495,12 @@ body.index-page footer.index-footer {
     border: 1px solid rgba(0, 180, 255, 0.22);
 }
 
-.import-state--first {
-    border-color: rgba(74, 222, 128, 0.4);
-    background: linear-gradient(145deg, rgba(0, 180, 255, 0.14) 0%, rgba(12, 26, 45, 0.9) 55%);
-}
-
 .import-state__abbr {
     font-size: 0.72rem;
     font-weight: 800;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: #00b4ff;
-}
-
-.import-state--first .import-state__abbr {
-    color: #4ade80;
 }
 
 .import-state__name {
