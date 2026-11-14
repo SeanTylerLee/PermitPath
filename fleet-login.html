@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="robots" content="noindex" />
-    <meta http-equiv="refresh" content="0; url=fleet-solutions.html" />
+    <meta http-equiv="refresh" content="0; url=fleet-solutions.html#fleet-login" />
     <title>Fleet login - PermitPath</title>
     <script>
-        location.replace("fleet-solutions.html" + location.search + location.hash);
+        var extra = location.search || "";
+        location.replace("fleet-solutions.html" + extra + "#fleet-login");
     </script>
 </head>
 <body>
-    <p><a href="fleet-solutions.html">Continue to Fleet Solutions</a></p>
+    <p><a href="fleet-solutions.html#fleet-login">Continue to Fleet login</a></p>
 </body>
 </html>

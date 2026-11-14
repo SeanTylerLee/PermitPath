@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reset fleet password - PermitPath</title>
+    <meta name="robots" content="noindex" />
+    <link rel="icon" type="image/png" href="images/pppp.png" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="index-home.css?v=64" />
+</head>
+<body class="index-page fleet-page">
+    <header class="index-header fleet-simple-header">
+        <a href="index.html" class="logo-link">
+            <img src="images/websitehead.png" alt="PermitPath" class="logo" width="200" height="50" />
+        </a>
+        <nav class="fleet-simple-nav" aria-label="Fleet">
+            <a href="fleet-solutions.html#fleet-login">Sign in</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
+    <main class="index-main">
+        <section class="index-section" aria-labelledby="reset-title">
+            <div class="index-container fleet-top">
+                <div class="fleet-login-shell">
+                    <div class="fleet-login-shell__head">
+                        <p class="index-section__eyebrow">Company login</p>
+                        <h1 id="reset-title" class="index-section__title">Reset <span class="highlight">password</span></h1>
+                    </div>
+                    <div class="site-form-card">
+                        <form class="contact-form" id="fleetResetForm" novalidate>
+                            <div class="form-group">
+                                <label for="fleetResetPassword">New password</label>
+                                <div class="fleet-pass-wrap">
+                                    <input type="password" id="fleetResetPassword" required minlength="8" autocomplete="new-password" placeholder="At least 8 characters" />
+                                    <button type="button" class="fleet-pass-toggle" data-pass="fleetResetPassword" aria-pressed="false">Show</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="fleetResetPassword2">Confirm password</label>
+                                <input type="password" id="fleetResetPassword2" required minlength="8" autocomplete="new-password" placeholder="Type it again" />
+                            </div>
+                            <button type="submit" class="button" id="fleetResetSubmit">Update password</button>
+                            <div class="form-message" id="fleetResetMessage" role="status" aria-live="polite"></div>
+                        </form>
+                        <p class="fleet-legal"><a href="fleet-solutions.html#fleet-login">Back to fleet login</a></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script src="lib/fleet-portal.js?v=36"></script>
+</body>
+</html>

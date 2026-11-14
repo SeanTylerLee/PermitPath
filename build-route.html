@@ -7,7 +7,7 @@
     <meta name="robots" content="noindex" />
     <link rel="icon" type="image/png" href="images/pppp.png" />
     <link href="https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.css" rel="stylesheet" />
-    <link rel="stylesheet" href="build-route.css?v=3" />
+    <link rel="stylesheet" href="build-route.css?v=4" />
 </head>
 <body class="pp-build">
     <div id="ppGate" class="pp-build-gate"><p id="ppGateMsg">Loading the map…</p></div>
@@ -19,6 +19,7 @@
                 <input id="ppSearch" type="search" placeholder="Search an address" aria-label="Search an address" />
                 <ul id="ppSearchList" class="pp-search-list" hidden></ul>
             </div>
+            <button type="button" id="ppHow" class="pp-chip" aria-expanded="false" aria-controls="ppHowPanel">How to</button>
             <button type="button" id="ppSatellite" class="pp-chip">Satellite</button>
             <button type="button" id="ppClear" class="pp-chip">Clear</button>
         </header>
@@ -26,6 +27,14 @@
             <div id="ppMap"></div>
             <p id="ppHint" class="pp-hint">Click the map, then choose Start, Waypoint, or End. A click here is the same as a long-press on the phone.</p>
             <div id="ppMenu" class="pp-pin-menu" hidden></div>
+            <div id="ppHowPanel" class="pp-how-panel" hidden>
+                <div class="pp-how-video">
+                    <video controls playsinline preload="metadata" poster="https://i.ytimg.com/vi/KrpjbhfIMk0/hqdefault.jpg" title="Fleet Route Build">
+                        <source src="videos/how-fleet-route.mp4" type="video/mp4" />
+                    </video>
+                </div>
+                <p>Drop start, waypoints, and end on the map, then download the file for the driver’s phone. <a href="https://youtu.be/KrpjbhfIMk0" target="_blank" rel="noopener">Watch on YouTube</a></p>
+            </div>
         </div>
         <footer class="pp-send">
             <div class="pp-send-copy">
@@ -38,6 +47,6 @@
             </div>
         </footer>
     </div>
-    <script src="lib/build-route.js?v=3"></script>
+    <script src="lib/build-route.js?v=4"></script>
 </body>
 </html>
