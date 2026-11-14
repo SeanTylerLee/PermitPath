@@ -4,16 +4,9 @@ html,
 body.fleet-dash {
   min-height: 100%;
   margin: 0;
-  background: #07111c;
-  color: #e8eef6;
+  background: #eef2f7;
+  color: #0f172a;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-}
-
-body.fleet-dash {
-  background:
-    radial-gradient(1200px 480px at 8% -10%, rgba(0, 180, 255, 0.12), transparent 55%),
-    radial-gradient(900px 420px at 100% 0%, rgba(14, 116, 144, 0.1), transparent 46%),
-    #07111c;
 }
 
 body.fleet-dash [hidden] {
@@ -23,13 +16,13 @@ body.fleet-dash [hidden] {
 .fleet-account {
   max-width: 1180px;
   margin: 0 auto;
-  padding: 0 1.25rem 2.5rem;
+  padding: 1rem 1.25rem 2.5rem;
 }
 
 .fd-loading {
   margin: 4rem 0;
   text-align: center;
-  color: rgba(232, 238, 246, 0.7);
+  color: #475569;
 }
 
 .fd-top {
@@ -37,9 +30,11 @@ body.fleet-dash [hidden] {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 1rem 0 1.15rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  margin-bottom: 1.25rem;
+  padding: 0.85rem 1rem;
+  margin: 0 0 1.15rem;
+  border-radius: 14px;
+  background: #0b1a2b;
+  color: #eef4fb;
 }
 
 .fd-brand {
@@ -72,7 +67,7 @@ body.fleet-dash [hidden] {
 .fleet-account h1 {
   margin: 0;
   color: #fff;
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   font-weight: 750;
   letter-spacing: -0.02em;
   line-height: 1.2;
@@ -83,7 +78,7 @@ body.fleet-dash [hidden] {
 
 .fd-brand__email {
   margin: 2px 0 0;
-  color: rgba(232, 238, 246, 0.55);
+  color: rgba(238, 244, 251, 0.7);
   font-size: 0.8rem;
 }
 
@@ -106,7 +101,6 @@ body.fleet-dash [hidden] {
   font-size: 0.88rem;
   font-weight: 700;
   white-space: nowrap;
-  box-shadow: 0 8px 20px rgba(0, 136, 204, 0.28);
 }
 
 #fleetBuildRoute:hover {
@@ -116,9 +110,9 @@ body.fleet-dash [hidden] {
 
 #fleetHelpOpen,
 #fleetSignOut {
-  background: rgba(255, 255, 255, 0.04);
-  color: rgba(232, 238, 246, 0.86);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.08);
+  color: #eef4fb;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 10px;
   padding: 0.5rem 0.85rem;
   cursor: pointer;
@@ -129,7 +123,7 @@ body.fleet-dash [hidden] {
 
 #fleetHelpOpen:hover,
 #fleetSignOut:hover {
-  border-color: rgba(0, 180, 255, 0.45);
+  border-color: #7dd3fc;
   color: #fff;
 }
 
@@ -143,13 +137,14 @@ body.fleet-dash [hidden] {
 .fd-kpi {
   padding: 0.95rem 1rem 0.9rem;
   border-radius: 14px;
-  background: rgba(12, 24, 40, 0.72);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #fff;
+  border: 1px solid #dbe3ee;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
 }
 
 .fd-kpi span {
   display: block;
-  color: rgba(232, 238, 246, 0.55);
+  color: #64748b;
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -159,19 +154,24 @@ body.fleet-dash [hidden] {
 .fd-kpi strong {
   display: block;
   margin-top: 0.35rem;
-  color: #fff;
+  color: #0f172a;
   font-size: 1.28rem;
   font-weight: 750;
   letter-spacing: -0.02em;
 }
 
 .fd-kpi--warn {
-  border-color: rgba(251, 113, 133, 0.45);
-  background: rgba(127, 29, 29, 0.22);
+  border-color: #fda4af;
+  background: #fff1f2;
+}
+
+.fd-kpi--warn strong {
+  color: #9f1239;
 }
 
 .fd-kpi--ok {
-  border-color: rgba(74, 222, 128, 0.28);
+  border-color: #86efac;
+  background: #f0fdf4;
 }
 
 .fd-note-row {
@@ -186,8 +186,8 @@ body.fleet-dash [hidden] {
 .fd-note-row p,
 .fleet-board__note {
   margin: 0;
-  color: rgba(232, 238, 246, 0.62);
-  font-size: 0.88rem;
+  color: #475569;
+  font-size: 0.9rem;
   line-height: 1.45;
 }
 
@@ -196,8 +196,8 @@ body.fleet-dash [hidden] {
   align-items: center;
   gap: 0.5rem;
   margin: 0;
-  color: rgba(232, 238, 246, 0.78);
-  font-size: 0.88rem;
+  color: #334155;
+  font-size: 0.9rem;
 }
 
 .fleet-check input {
@@ -212,10 +212,11 @@ body.fleet-dash [hidden] {
 }
 
 .fd-panel {
-  background: rgba(10, 20, 34, 0.86);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #fff;
+  border: 1px solid #dbe3ee;
   border-radius: 16px;
   padding: 1.05rem 1.05rem 0.95rem;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
 }
 
 .fleet-account > .fd-panel {
@@ -224,11 +225,12 @@ body.fleet-dash [hidden] {
 
 .fleet-codes-panel {
   margin: 0;
-  padding: 0;
-  background: transparent;
-  border: 0;
-  box-shadow: none;
-  color: #e8eef6;
+  padding: 1.05rem;
+  background: #fff;
+  border: 1px solid #dbe3ee;
+  border-radius: 16px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  color: #0f172a;
 }
 
 .fleet-codes-head {
@@ -247,8 +249,8 @@ body.fleet-dash [hidden] {
 .fleet-buy-panel h3,
 .fleet-payments h2 {
   margin: 0 0 0.3rem;
-  color: #fff;
-  font-size: 1.02rem;
+  color: #0f172a;
+  font-size: 1.05rem;
   font-weight: 750;
 }
 
@@ -256,8 +258,8 @@ body.fleet-dash [hidden] {
 .fleet-buy-lead,
 .fleet-meta {
   margin: 0;
-  color: rgba(232, 238, 246, 0.58);
-  font-size: 0.84rem;
+  color: #64748b;
+  font-size: 0.86rem;
   line-height: 1.45;
 }
 
@@ -270,9 +272,9 @@ body.fleet-dash [hidden] {
 .fleet-codes-actions button,
 .fleet-code-tools button,
 .fleet-renew-actions .fleet-text-btn {
-  background: rgba(255, 255, 255, 0.04);
-  color: #e8eef6;
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: #fff;
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
   border-radius: 8px;
   padding: 7px 12px;
   cursor: pointer;
@@ -284,8 +286,8 @@ body.fleet-dash [hidden] {
 .fleet-codes-actions button:hover,
 .fleet-code-tools button:hover,
 .fleet-renew-actions .fleet-text-btn:hover {
-  border-color: rgba(0, 180, 255, 0.5);
-  color: #fff;
+  border-color: #0284c7;
+  color: #0369a1;
 }
 
 .fleet-code-controls {
@@ -301,7 +303,7 @@ body.fleet-dash [hidden] {
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
-  color: rgba(232, 238, 246, 0.55);
+  color: #64748b;
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -314,20 +316,19 @@ body.fleet-dash [hidden] {
 .fleet-order input,
 .fleet-order select {
   font: inherit;
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   font-weight: 600;
   letter-spacing: 0;
   text-transform: none;
-  color: #e8eef6;
+  color: #0f172a;
   padding: 8px 10px;
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: #0a1522;
+  border: 1px solid #cbd5e1;
+  background: #fff;
 }
 
 .fleet-code-name input {
   font-weight: 650;
-  color: #fff;
 }
 
 .fd-code-cols {
@@ -350,8 +351,8 @@ body.fleet-dash [hidden] {
   gap: 0.65rem 0.75rem;
   padding: 0.7rem 0.8rem;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
 }
 
 .fleet-code-row[hidden] {
@@ -359,15 +360,16 @@ body.fleet-dash [hidden] {
 }
 
 .fleet-code-row--muted {
-  opacity: 0.62;
+  background: #f1f5f9;
+  color: #475569;
 }
 
 .fleet-code-value {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  font-size: 0.86rem;
+  font-size: 0.88rem;
   font-weight: 750;
   letter-spacing: 0.02em;
-  color: #fff;
+  color: #0f172a;
   word-break: break-all;
 }
 
@@ -381,13 +383,13 @@ body.fleet-dash [hidden] {
 .fleet-code-expiry,
 .fleet-code-claim,
 .fleet-name-state {
-  color: rgba(232, 238, 246, 0.62);
-  font-size: 0.8rem;
+  color: #475569;
+  font-size: 0.82rem;
   font-weight: 600;
 }
 
 .fleet-code-note {
-  color: #7dd3fc;
+  color: #0369a1;
   font-size: 0.76rem;
   font-weight: 650;
   line-height: 1.35;
@@ -451,14 +453,14 @@ body.fleet-dash [hidden] {
   width: 1.05rem;
   height: 1.05rem;
   border-radius: 4px;
-  border: 2px solid rgba(232, 238, 246, 0.7);
-  background: transparent;
+  border: 2px solid #334155;
+  background: #fff;
 }
 
 .fleet-renew-pick input:checked + .fleet-renew-pick__box {
-  background: #0b6ea8;
-  border-color: #0b6ea8;
-  box-shadow: inset 0 0 0 3px #07111c;
+  background: #0284c7;
+  border-color: #0284c7;
+  box-shadow: inset 0 0 0 3px #fff;
 }
 
 .fleet-renew-pick--empty {
@@ -485,17 +487,17 @@ body.fleet-dash [hidden] {
   text-align: left;
   padding: 0.9rem 1rem;
   border-radius: 14px;
-  border: 1px solid rgba(0, 180, 255, 0.32);
-  background: rgba(0, 180, 255, 0.08);
-  color: #fff;
+  border: 1px solid #7dd3fc;
+  background: #e0f2fe;
+  color: #0c4a6e;
   cursor: pointer;
   font: inherit;
 }
 
 .fleet-buy-toggle:hover,
 .fleet-buy-toggle.is-open {
-  background: rgba(0, 180, 255, 0.14);
-  border-color: rgba(0, 180, 255, 0.5);
+  background: #bae6fd;
+  border-color: #38bdf8;
 }
 
 .fleet-buy-toggle > span:first-child {
@@ -504,7 +506,7 @@ body.fleet-dash [hidden] {
 }
 
 .fleet-buy-toggle__hint {
-  color: rgba(232, 238, 246, 0.62);
+  color: #075985;
   font-size: 0.8rem;
 }
 
@@ -512,12 +514,15 @@ body.fleet-dash [hidden] {
   margin-top: 0.65rem;
   padding: 0.95rem;
   border-radius: 14px;
-  background: rgba(0, 0, 0, 0.22);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
 }
 
 .fleet-buy-panel--solo {
   margin-top: 0;
+  background: transparent;
+  border: 0;
+  padding: 0;
 }
 
 .fleet-order__grid {
@@ -528,7 +533,7 @@ body.fleet-dash [hidden] {
 
 .fleet-order label {
   display: block;
-  color: rgba(232, 238, 246, 0.58);
+  color: #475569;
   font-size: 0.78rem;
   font-weight: 650;
 }
@@ -545,13 +550,13 @@ body.fleet-dash [hidden] {
   align-items: baseline;
   margin: 0.85rem 0 0.5rem;
   padding-top: 0.75rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  color: rgba(232, 238, 246, 0.62);
+  border-top: 1px solid #e2e8f0;
+  color: #475569;
 }
 
 .fleet-total strong {
   font-size: 1.4rem;
-  color: #fff;
+  color: #0f172a;
 }
 
 .fleet-rate-note,
@@ -559,13 +564,14 @@ body.fleet-dash [hidden] {
 .fleet-renew-count,
 .fleet-help {
   margin: 0.45rem 0 0;
-  color: rgba(232, 238, 246, 0.58);
-  font-size: 0.8rem;
+  color: #475569;
+  font-size: 0.84rem;
   line-height: 1.45;
 }
 
 .fleet-help a {
-  color: #7dd3fc;
+  color: #0369a1;
+  font-weight: 650;
 }
 
 .fleet-order .button {
@@ -581,12 +587,12 @@ body.fleet-dash [hidden] {
 
 .fleet-pay-note {
   min-height: 1.1em;
-  color: #ffb4b4;
+  color: #be123c;
   font-size: 0.84rem;
 }
 
 .fleet-sent {
-  color: #86efac;
+  color: #166534;
   font-weight: 650;
 }
 
@@ -602,9 +608,9 @@ body.fleet-dash [hidden] {
 .fleet-payment-row {
   padding: 0.75rem 0.8rem;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: rgba(232, 238, 246, 0.86);
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  color: #0f172a;
   font-size: 0.84rem;
   line-height: 1.45;
 }
@@ -614,12 +620,12 @@ body.fleet-dash [hidden] {
 }
 
 .fleet-payment-row a {
-  color: #7dd3fc;
+  color: #0369a1;
 }
 
 .fleet-pay-codes {
   margin-top: 0.35rem !important;
-  color: rgba(232, 238, 246, 0.55);
+  color: #64748b;
   font-size: 0.78rem;
 }
 
@@ -627,7 +633,7 @@ body.fleet-dash [hidden] {
   position: fixed;
   inset: 0;
   z-index: 70;
-  background: rgba(2, 8, 16, 0.55);
+  background: rgba(15, 23, 42, 0.35);
 }
 
 .fleet-help-panel {
@@ -641,9 +647,10 @@ body.fleet-dash [hidden] {
   padding: 1.25rem 1.2rem 1.5rem;
   overflow: auto;
   border-radius: 0;
-  background: #0b1726;
-  border-left: 1px solid rgba(0, 180, 255, 0.28);
-  box-shadow: -24px 0 64px rgba(0, 0, 0, 0.4);
+  background: #fff;
+  border-left: 1px solid #dbe3ee;
+  box-shadow: -18px 0 40px rgba(15, 23, 42, 0.12);
+  color: #0f172a;
 }
 
 .fleet-help-panel__head {
@@ -657,13 +664,13 @@ body.fleet-dash [hidden] {
 .fleet-help-panel__head h2 {
   margin: 0;
   font-size: 1.2rem;
-  color: #fff;
+  color: #0f172a;
 }
 
 .fleet-help-close {
-  background: transparent;
-  color: rgba(232, 238, 246, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: #fff;
+  color: #334155;
+  border: 1px solid #cbd5e1;
   border-radius: 8px;
   padding: 6px 12px;
   cursor: pointer;
@@ -672,7 +679,7 @@ body.fleet-dash [hidden] {
 
 .fleet-help-panel__body h3 {
   margin: 1.05rem 0 0.35rem;
-  color: #7dd3fc;
+  color: #0369a1;
   font-size: 0.95rem;
 }
 
@@ -682,7 +689,7 @@ body.fleet-dash [hidden] {
 
 .fleet-help-panel__body p,
 .fleet-help-panel__body li {
-  color: rgba(232, 238, 246, 0.78);
+  color: #334155;
   font-size: 0.92rem;
   line-height: 1.55;
 }
@@ -697,14 +704,14 @@ body.fleet-dash [hidden] {
 }
 
 .fleet-help-panel__body a {
-  color: #7dd3fc;
+  color: #0369a1;
 }
 
 .fleet-text-btn {
   background: none;
   border: 0;
   padding: 0;
-  color: #7dd3fc;
+  color: #0369a1;
   font: inherit;
   text-decoration: underline;
   cursor: pointer;
@@ -753,7 +760,7 @@ body.fleet-dash [hidden] {
 
 @media (max-width: 720px) {
   .fleet-account {
-    padding: 0 0.9rem 2rem;
+    padding: 0.75rem 0.9rem 2rem;
   }
 
   .fd-top {
