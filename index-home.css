@@ -2222,24 +2222,6 @@ body.fleet-page.index-page {
   font-weight: 650;
 }
 
-.fleet-handoff {
-  display: inline-flex;
-  align-items: center;
-  background: #fff;
-  color: #0f172a;
-  border: 1px solid rgba(15, 23, 42, 0.14);
-  border-radius: 999px;
-  padding: 8px 14px;
-  text-decoration: none;
-  font: inherit;
-  font-weight: 650;
-}
-
-.fleet-handoff:hover {
-  border-color: rgba(0, 120, 200, 0.45);
-  color: #0369a1;
-}
-
 .fleet-rate-note {
   margin: 0 0 0.85rem;
   color: rgba(238, 244, 251, 0.72);
