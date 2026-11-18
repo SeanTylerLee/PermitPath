@@ -21,7 +21,7 @@ body.index-page::before {
     background-color: #050b14;
     background-image:
         linear-gradient(rgba(0, 0, 0, 0.78), rgba(0, 0, 0, 0.78)),
-        url('images/background.png');
+        url('images/background.jpg?v=2');
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
@@ -3470,7 +3470,7 @@ body.fleet-page.index-page::before {
     background-color: #050b14;
     background-image:
         linear-gradient(rgba(0, 0, 0, 0.78), rgba(0, 0, 0, 0.78)),
-        url('images/background.png');
+        url('images/background.jpg?v=2');
 }
 
 .fleet-login-shell {

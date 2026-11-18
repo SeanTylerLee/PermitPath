@@ -54,7 +54,7 @@ body.index-page::before {
     background-image:
         linear-gradient(to bottom, transparent 50%, rgba(13, 27, 42, 0.3) 75%, rgba(13, 27, 42, 1) 100%),
         linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-        url('images/background.png');
+        url('images/background.jpg?v=2');
     background-size: cover, cover, cover;
     background-position: center top, center top, center top;
     background-repeat: no-repeat, no-repeat, no-repeat;
@@ -69,7 +69,7 @@ body.contact-page,
 body.reset-page,
 body.oversize-page {
     background:
-        url('images/background.png') no-repeat center top,
+        url('images/background.jpg?v=2') no-repeat center top,
         radial-gradient(ellipse at center, #1e3a5f 0%, #0d1b2a 60%);
     background-size: cover, auto;
 }
@@ -554,7 +554,7 @@ body.index-page footer {
     min-height: 220vh;
     background-image:
         linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-        url('images/background.png');
+        url('images/background.jpg?v=2');
     background-size: cover;
     background-position: center top;
     background-repeat: no-repeat;
