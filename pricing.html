@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Pricing - PermitPath | Free or $3.99/mo</title>
     <meta name="title" content="Pricing - PermitPath | Free or $3.99/mo" />
-    <meta name="description" content="PermitPath is free with a start pin, an end pin, and up to 4 waypoints. Unlimited waypoints and Texas TxPROS import are $3.99 a month on iOS and Android. Fleet codes are $3.99, or $3.39 at 21 or more." />
+    <meta name="description" content="PermitPath is free with a start pin, an end pin, and up to 4 waypoints. Unlimited waypoints and state permit import are $3.99 a month on iOS and Android. Fleet codes are $3.99, or $3.39 at 21 or more." />
     <meta name="keywords" content="oversize routing app price, trucker navigation cost, permit routing pricing, PermitPath pricing, heavy haul app subscription, Permit Path" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://permitpathnav.com/pricing.html" />
@@ -14,9 +14,9 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://permitpathnav.com/pricing.html" />
     <meta property="og:title" content="Pricing - PermitPath | Free or $3.99/month" />
-    <meta property="og:description" content="Start free with 4 waypoints. Unlimited waypoints and Texas TxPROS import are $3.99 a month. Fleet codes are $3.99, or $3.39 at 21 or more." />
+    <meta property="og:description" content="Start free with 4 waypoints. Unlimited waypoints and state permit import are $3.99 a month. Fleet codes are $3.99, or $3.39 at 21 or more." />
     <meta property="og:site_name" content="PermitPath" />
-    <meta property="og:image" content="https://permitpathnav.com/images/pppp.png" />
+    <meta property="og:image" content="https://permitpathnav.com/images/og-share.jpg" />
 
     <link rel="icon" type="image/png" sizes="32x32" href="images/pppp.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="images/pppp.png" />
@@ -24,7 +24,7 @@
     <link rel="icon" type="image/png" href="images/pppp.png" />
 
     <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="index-home.css?v=71" />
+    <link rel="stylesheet" href="index-home.css?v=73" />
 
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -62,7 +62,7 @@
             <div class="index-container">
                 <p class="index-section__eyebrow">Pricing</p>
                 <h1 id="pricing-title" class="index-section__title">Simple <span class="highlight">pricing</span></h1>
-                <p class="texas-hero__lead">Start free. Unlimited waypoints and Texas import are $3.99 a month, billed by the App Store or Google Play.</p>
+                <p class="texas-hero__lead">Start free. Unlimited waypoints and state permit import are $3.99 a month, billed by the App Store or Google Play.</p>
                 <div class="pricing-plans">
                     <article class="pricing-plan">
                         <h2 class="pricing-plan__name">Free</h2>
@@ -83,7 +83,7 @@
                         </div>
                         <ul class="pricing-plan__list">
                             <li>Unlimited waypoints</li>
-                            <li>Texas TxPROS import from a PDF or QR</li>
+                            <li>Permit import from a PDF or QR in <a href="texas-permit.html">supported states</a></li>
                             <li>Billed by the App Store or Google Play</li>
                         </ul>
                     </article>
@@ -91,12 +91,12 @@
                 <div class="texas-hero__stores download-buttons">
                     <div class="download-option">
                         <a href="https://apps.apple.com/us/app/permit-path/id6759459273" class="app-store-button" target="_blank" rel="noopener noreferrer" aria-label="Download on the App Store">
-                            <img src="images/applestore.png" alt="Download on the App Store" width="72" height="60" />
+                            <img src="images/applestore.png" alt="Download on the App Store" width="188" height="60" />
                         </a>
                     </div>
                     <div class="download-option">
                         <a href="https://play.google.com/store/apps/details?id=com.haulpath.permitpath" class="google-play-button" target="_blank" rel="noopener noreferrer" aria-label="Get it on Google Play">
-                            <img src="images/googleplay.png" alt="Get it on Google Play" width="72" height="60" />
+                            <img src="images/googleplay.png" alt="Get it on Google Play" width="188" height="60" />
                         </a>
                     </div>
                 </div>
@@ -111,7 +111,7 @@
                 </div>
                 <div class="texas-copy">
                     <p>
-                        A company code unlocks one device without an App Store or Google Play subscription. The driver enters it under Settings → Subscription → Company access. That device gets unlimited waypoints and Texas TxPROS import for the paid period.
+                        A company code unlocks one device without an App Store or Google Play subscription. The driver enters it under Settings → Subscription → Company access. That device gets unlimited waypoints and state permit import for the paid period.
                     </p>
                     <p>
                         1–20 codes are <strong>$3.99 per code per month</strong>. 21 or more are <strong>$3.39 per code per month</strong> (15% off), and that rate applies to the whole purchase. Pay ahead for 1 month, 6 months, or 1 year. Charges show as STL Apps LLC.
@@ -137,42 +137,7 @@
         </div>
     </footer>
 
-    <script>
-        (function () {
-            var menuToggle = document.getElementById('menuToggle');
-            var dropdownMenu = document.getElementById('dropdownMenu');
-            if (!menuToggle || !dropdownMenu) return;
-            function setOpen(open) {
-                dropdownMenu.classList.toggle('active', open);
-                menuToggle.classList.toggle('active', open);
-                menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-            }
-            menuToggle.addEventListener('click', function () {
-                setOpen(!dropdownMenu.classList.contains('active'));
-            });
-            document.addEventListener('click', function (event) {
-                if (!dropdownMenu.contains(event.target) && !menuToggle.contains(event.target) && dropdownMenu.classList.contains('active')) {
-                    setOpen(false);
-                }
-            });
-            document.addEventListener('keydown', function (event) {
-                if (event.key === 'Escape') setOpen(false);
-            });
-            var header = document.querySelector('header');
-            var compact = false;
-            window.addEventListener('scroll', function () {
-                var y = window.scrollY;
-                if (!compact && y > 100) {
-                    compact = true;
-                    header.classList.add('header--compact');
-                } else if (compact && y < 40) {
-                    compact = false;
-                    header.classList.remove('header--compact');
-                }
-            }, { passive: true });
-        })();
-    </script>
-
-  <script src="lib/studioClicks.js"></script>
+    <script src="lib/studioClicks.js"></script>
+  <script src="lib/site-nav.js"></script>
 </body>
 </html>

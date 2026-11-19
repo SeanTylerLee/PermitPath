@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Help Us Add Your State | Send a Permit | PermitPath</title>
     <meta name="title" content="Help Us Add Your State | Send a Permit | PermitPath" />
@@ -16,7 +16,7 @@
     <meta property="og:title" content="Help us add your state | PermitPath" />
     <meta property="og:description" content="Send a permit PDF or photos so PermitPath can build official import for your state." />
     <meta property="og:site_name" content="PermitPath" />
-    <meta property="og:image" content="https://permitpathnav.com/images/pppp.png" />
+    <meta property="og:image" content="https://permitpathnav.com/images/og-share.jpg" />
 
     <link rel="icon" type="image/png" sizes="32x32" href="images/pppp.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="images/pppp.png" />
@@ -24,7 +24,7 @@
     <link rel="icon" type="image/png" href="images/pppp.png" />
 
     <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="index-home.css?v=71" />
+    <link rel="stylesheet" href="index-home.css?v=73" />
 
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -110,39 +110,7 @@
     <script src="lib/studioInbox.js"></script>
     <script>
         (function () {
-            var menuToggle = document.getElementById('menuToggle');
-            var dropdownMenu = document.getElementById('dropdownMenu');
-            if (menuToggle && dropdownMenu) {
-                function setOpen(open) {
-                    dropdownMenu.classList.toggle('active', open);
-                    menuToggle.classList.toggle('active', open);
-                    menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-                }
-                menuToggle.addEventListener('click', function () {
-                    setOpen(!dropdownMenu.classList.contains('active'));
-                });
-                document.addEventListener('click', function (event) {
-                    if (!dropdownMenu.contains(event.target) && !menuToggle.contains(event.target) && dropdownMenu.classList.contains('active')) {
-                        setOpen(false);
-                    }
-                });
-                document.addEventListener('keydown', function (event) {
-                    if (event.key === 'Escape') setOpen(false);
-                });
-            }
-
-            var header = document.querySelector('header');
-            var compact = false;
-            window.addEventListener('scroll', function () {
-                var y = window.scrollY;
-                if (!compact && y > 100) {
-                    compact = true;
-                    header.classList.add('header--compact');
-                } else if (compact && y < 40) {
-                    compact = false;
-                    header.classList.remove('header--compact');
-                }
-            }, { passive: true });
+            
 
             var MAX_FILES = 8;
             var MAX_BYTES = 15 * 1024 * 1024;
@@ -306,5 +274,6 @@
     </script>
 
   <script src="lib/studioClicks.js"></script>
+  <script src="lib/site-nav.js"></script>
 </body>
 </html>

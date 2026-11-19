@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Terms of Use - PermitPath</title>
     <meta name="title" content="Terms of Use - PermitPath" />
@@ -16,7 +16,7 @@
     <link rel="icon" type="image/png" href="images/pppp.png" />
 
     <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="index-home.css?v=71" />
+    <link rel="stylesheet" href="index-home.css?v=73" />
 
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -62,7 +62,7 @@
             <div class="index-container">
                 <article class="legal-prose">
                     <p class="last-updated">
-                    <strong>Last Updated: October 3, 2026</strong>
+                    <strong>Last Updated: November 18, 2026</strong>
                     </p>
                     <p>
                     These Terms of Use ("Terms") govern your access to and use of the PermitPath mobile application and related services (collectively, "the App"). PermitPath is owned solely by STL Apps LLC. In these Terms, "we," "us," and "our" mean STL Apps LLC, and "PermitPath" refers to the App and related services operated by STL Apps LLC. By downloading, installing, accessing, or using the App, you agree to be bound by these Terms. If you do not agree to these Terms, you must not use the App.
@@ -243,7 +243,7 @@
 
                     <h2>18. Governing Law and Jurisdiction</h2>
                     <p>
-                    These Terms are governed by and construed in accordance with the laws that apply in the jurisdiction where STL Apps LLC is organized or primarily operates, without regard to conflict of law principles. Any dispute arising out of or relating to these Terms or your use of the App will be brought exclusively in the courts located in that jurisdiction, and you consent to the personal jurisdiction and venue of those courts.
+                    STL Apps LLC is an Oklahoma limited liability company. These Terms are governed by and construed in accordance with the laws of the State of Oklahoma, without regard to conflict of law principles. Any dispute arising out of or relating to these Terms or your use of the App will be brought exclusively in the state or federal courts located in Oklahoma, and you consent to the personal jurisdiction and venue of those courts.
                     </p>
 
                     <h2>19. Severability and Waiver</h2>
@@ -267,7 +267,7 @@
 
                     <h2>21. Contact Us</h2>
                     <p>
-                    If you have questions about these Terms or the App, please contact us using the <a href="contact.html">contact form</a> on our website.
+                    If you have questions about these Terms or the App, email <a href="mailto:support@permitpathnav.com">support@permitpathnav.com</a> or use the <a href="contact.html">contact form</a> on our website.
                     </p>
                 </article>
             </div>
@@ -289,42 +289,7 @@
         </div>
     </footer>
 
-    <script>
-        (function () {
-            var menuToggle = document.getElementById('menuToggle');
-            var dropdownMenu = document.getElementById('dropdownMenu');
-            if (!menuToggle || !dropdownMenu) return;
-            function setOpen(open) {
-                dropdownMenu.classList.toggle('active', open);
-                menuToggle.classList.toggle('active', open);
-                menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-            }
-            menuToggle.addEventListener('click', function () {
-                setOpen(!dropdownMenu.classList.contains('active'));
-            });
-            document.addEventListener('click', function (event) {
-                if (!dropdownMenu.contains(event.target) && !menuToggle.contains(event.target) && dropdownMenu.classList.contains('active')) {
-                    setOpen(false);
-                }
-            });
-            document.addEventListener('keydown', function (event) {
-                if (event.key === 'Escape') setOpen(false);
-            });
-            var headerEl = document.querySelector('header');
-            var compact = false;
-            window.addEventListener('scroll', function () {
-                var y = window.scrollY;
-                if (!compact && y > 100) {
-                    compact = true;
-                    headerEl.classList.add('header--compact');
-                } else if (compact && y < 40) {
-                    compact = false;
-                    headerEl.classList.remove('header--compact');
-                }
-            }, { passive: true });
-        })();
-    </script>
-
-  <script src="lib/studioClicks.js"></script>
+    <script src="lib/studioClicks.js"></script>
+  <script src="lib/site-nav.js"></script>
 </body>
 </html>

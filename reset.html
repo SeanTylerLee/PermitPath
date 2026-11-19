@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Reset password - PermitPath</title>
     <meta name="title" content="Reset password - PermitPath" />
@@ -82,41 +82,6 @@
         <p>© 2026 STL Apps LLC. All Rights Reserved.</p>
         <p style="margin-top:0.5rem;font-size:0.75rem;color:rgba(255,255,255,0.45);text-align:center;">v4</p>
     </footer>
-
-    <script>
-        const menuToggle = document.getElementById('menuToggle');
-        const dropdownMenu = document.getElementById('dropdownMenu');
-
-        menuToggle.addEventListener('click', function() {
-            dropdownMenu.classList.toggle('active');
-            menuToggle.classList.toggle('active');
-        });
-
-        document.addEventListener('click', function(event) {
-            const isClickInsideMenu = dropdownMenu.contains(event.target) || menuToggle.contains(event.target);
-            if (!isClickInsideMenu) {
-                dropdownMenu.classList.remove('active');
-                menuToggle.classList.remove('active');
-            }
-        });
-
-        (function() {
-            var header = document.querySelector('header');
-            var scrollDown = 100;
-            var scrollUp = 40;
-            var compact = false;
-            window.addEventListener('scroll', function() {
-                var y = window.scrollY;
-                if (!compact && y > scrollDown) {
-                    compact = true;
-                    header.classList.add('header--compact');
-                } else if (compact && y < scrollUp) {
-                    compact = false;
-                    header.classList.remove('header--compact');
-                }
-            }, { passive: true });
-        })();
-    </script>
 
     <!--
       ?token_hash → verifyOtp on load; submit → updateUser. Keys: ./lib/supabaseClient.js
@@ -326,5 +291,6 @@
     </script>
 
   <script src="lib/studioClicks.js"></script>
+  <script src="lib/site-nav.js"></script>
 </body>
 </html>

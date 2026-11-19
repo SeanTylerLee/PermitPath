@@ -7,7 +7,7 @@
     <meta name="robots" content="noindex" />
     <link rel="icon" type="image/png" href="images/pppp.png" />
     <link href="https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.css" rel="stylesheet" />
-    <link rel="stylesheet" href="build-route.css?v=4" />
+    <link rel="stylesheet" href="build-route.css?v=5" />
 </head>
 <body class="pp-build">
     <div id="ppGate" class="pp-build-gate"><p id="ppGateMsg">Loading the map…</p></div>
@@ -21,6 +21,7 @@
             </div>
             <button type="button" id="ppHow" class="pp-chip" aria-expanded="false" aria-controls="ppHowPanel">How to</button>
             <button type="button" id="ppSatellite" class="pp-chip">Satellite</button>
+            <button type="button" id="ppUndo" class="pp-chip" title="Undo (Ctrl or Cmd + Z)">Undo</button>
             <button type="button" id="ppClear" class="pp-chip">Clear</button>
         </header>
         <div class="pp-map-wrap">
@@ -39,7 +40,7 @@
         <footer class="pp-send">
             <div class="pp-send-copy">
                 <strong id="ppStats">Add a start and an end</strong>
-                <p id="ppNote">The file stores the exact line. The driver opens that file in Permit Path, and the phone follows it. It does not build a new path.</p>
+                <p id="ppNote">The file stores the exact line. The driver opens that file in PermitPath, and the phone follows it. It does not build a new path.</p>
             </div>
             <div class="pp-send-actions">
                 <button type="button" id="ppDownload" disabled>Download file</button>
@@ -47,6 +48,6 @@
             </div>
         </footer>
     </div>
-    <script src="lib/build-route.js?v=4"></script>
+    <script src="lib/build-route.js?v=5"></script>
 </body>
 </html>

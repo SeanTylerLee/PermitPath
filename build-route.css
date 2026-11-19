@@ -173,6 +173,11 @@
   white-space: nowrap;
 }
 
+.pp-chip:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
 .pp-chip.is-on {
   background: rgba(0, 180, 255, 0.2);
   border-color: rgba(0, 180, 255, 0.6);

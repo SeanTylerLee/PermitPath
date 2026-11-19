@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Privacy Policy - PermitPath</title>
     <meta name="title" content="Privacy Policy - PermitPath" />
@@ -16,7 +16,7 @@
     <link rel="icon" type="image/png" href="images/pppp.png" />
 
     <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="index-home.css?v=71" />
+    <link rel="stylesheet" href="index-home.css?v=73" />
 
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -62,7 +62,7 @@
             <div class="index-container">
                 <article class="legal-prose">
                     <p class="last-updated">
-                    <strong>Last Updated: October 3, 2026</strong>
+                    <strong>Last Updated: November 18, 2026</strong>
                     </p>
                     <p>
                     This Privacy Policy explains how STL Apps LLC ("we", "us", or "our"), the sole owner of PermitPath, handles information when you use the PermitPath mobile application ("the App") and our website. By using the App or our website, you agree to the practices described in this Privacy Policy.
@@ -81,7 +81,7 @@
                     You can use the core features of PermitPath—including map browsing, route planning within free-tier limits, turn-by-turn navigation, local saved routes, and in-app purchases—<strong>without creating an account</strong>.
                     </p>
                     <p>
-                    Creating an account is <strong>optional</strong>. If you sign up or sign in, we process limited account and usage information on our backend so we can support your account, understand product usage, and help manage subscription-related status. Map and routing features also rely on third-party map services that process location and route request data as needed to provide those services.
+                    Creating an account is <strong>optional</strong>. If you sign up or sign in, we process limited account and usage information on our backend so we can support your account, understand product usage, and help manage subscription-related status. Whether or not you sign in, the App sends anonymous activity counts (such as a permit imported or miles driven on a trip) tied to a random install identifier, not to your name or email. Companies that buy fleet codes create a separate fleet account on our website. Map and routing features also rely on third-party map services that process location and route request data as needed to provide those services.
                     </p>
                     <p>
                     We do not sell your personal information, and we do not use your data for third-party advertising.
@@ -141,7 +141,21 @@
                     These events are associated with your account. They help us understand how the product is used, support the service, and see subscription status history. They are not used for third-party advertising.
                     </p>
                     <p>
-                    If you are not signed in, these account-linked usage events are not sent to our servers.
+                    If you are not signed in, these account-linked usage events are not sent to our servers. The anonymous activity described in the next section is sent whether or not you are signed in.
+                    </p>
+
+                    <h3>3a. Anonymous app activity (all users)</h3>
+                    <p>
+                    To count how PermitPath is used and to find problems, the App sends short activity records to our backend whether or not you are signed in. Each record contains:
+                    </p>
+                    <ul>
+                    <li>A random install identifier created on your device (not your name, email, phone number, or advertising ID)</li>
+                    <li>The platform (iOS or Android), the app version, whether paid access is active (store subscription or fleet code), and whether you are signed in</li>
+                    <li>The type of activity, for example: app opened, route built, route shared, permit imported (with the state and whether it came from a PDF or QR code), import failed, navigation started, arrived, left the route, saved route opened, paywall shown, or a review prompt answer</li>
+                    <li>For trips, the number of miles driven</li>
+                    </ul>
+                    <p>
+                    These records do not include GPS points, addresses, permit numbers, or the contents of your permit. We use them in totals, including the public &ldquo;miles driven&rdquo; and &ldquo;permits imported&rdquo; counts on our website. We do not use them for advertising and we do not sell them.
                     </p>
 
                     <h3>4. Location</h3>
@@ -157,7 +171,7 @@
                     Location access is requested for these features. You can deny or later change location permission in your device settings; some features may not work without it.
                     </p>
                     <p>
-                    Route and map requests that include coordinates are processed by Mapbox (and related mapping infrastructure) so maps and directions can be returned. We do not sell location data. We do not intentionally build a long-term GPS track history of your trips on our own servers for advertising purposes. Signed-in usage logs (described above) record activity types and related product metadata, not a full continuous track dump of every GPS point.
+                    Route and map requests that include coordinates are processed by Mapbox (and related mapping infrastructure) so maps and directions can be returned. We do not sell location data. We do not intentionally build a long-term GPS track history of your trips on our own servers for advertising purposes. Signed-in usage logs and anonymous activity records (described above) record activity types, related product metadata, and trip mileage totals, not GPS points or a track of where you drove.
                     </p>
 
                     <h3>5. Routes and content you create</h3>
@@ -181,9 +195,9 @@
                     You can manage or cancel subscriptions in your Apple ID or Google Play account settings. Refunds are handled by Apple or Google under their policies.
                     </p>
 
-                    <h3>7. Website contact forms</h3>
+                    <h3>7. Contact forms and permit samples</h3>
                     <p>
-                    If you contact us through a form on our website, we use the information you choose to provide (such as name, email, and message) only to respond to your inquiry or provide support. If you use the page to send a permit sample so we can add official import for your state, we receive the email you enter, any note you include, and the PDF or photos you upload. We use those files to evaluate and build state support in PermitPath. We do not sell, rent, or trade this information. We retain it only as long as reasonably necessary to do that work, respond, meet legal obligations, or resolve disputes.
+                    If you contact us through a form on our website or a support or permit-sample screen in the App, we use the information you choose to provide (such as name, email, and message) only to respond to your inquiry or provide support. If you use the page to send a permit sample so we can add official import for your state, we receive the email you enter, any note you include, and the PDF or photos you upload. We use those files to evaluate and build state support in PermitPath. We do not sell, rent, or trade this information. We retain it only as long as reasonably necessary to do that work, respond, meet legal obligations, or resolve disputes.
                     </p>
 
                     <h3>8. Terms acceptance</h3>
@@ -191,7 +205,15 @@
                     The Android app asks you to accept the Terms of Use before you can use it. When you tap I accept, we store a copy of that acceptance: that it came from Android, an install identifier created on that device, the app version, the terms version, the highlights and the full terms text you accepted, the time of acceptance, and the IP address seen by our server on that request. If you are signed in, we also store the account identifier and email from that sign-in. If you are not signed in, the record is stored without an email. The same kind of record can hold an Apple acceptance when the Apple app asks you to accept. We keep this record to show that the terms were accepted. We do not use it for advertising, and we do not sell it.
                     </p>
 
-                    <h3>9. What we do not do</h3>
+                    <h3>9. Fleet accounts (companies)</h3>
+                    <p>
+                    Companies can buy device codes on our website. A fleet account stores the company name, the office email, and a password. For each code we store the code, its status and expiry date, any name the office types for its own records (such as a truck number or driver), and, once a driver enters the code in the App, the time it was claimed, the platform (iOS or Android), and an identifier for that device so the code works on one device only. We also keep a record of each fleet payment (amount, number of codes, months, receipt details, and payer email) and may email the office about expiring codes, which the office can turn off on the fleet dashboard.
+                    </p>
+                    <p>
+                    Fleet card payments are processed by Stripe. We do not receive or store full card numbers.
+                    </p>
+
+                    <h3>10. What we do not do</h3>
                     <ul>
                     <li>We do not sell your personal information.</li>
                     <li>We do not use your personal information for third-party advertising networks.</li>
@@ -217,7 +239,8 @@
                     <ul>
                     <li><strong>Apple</strong> and/or <strong>Google</strong> — app distribution, device services, and in-app purchases</li>
                     <li><strong>Mapbox</strong> — maps, location-related map display, and directions/routing APIs. See <a href="https://www.mapbox.com/legal/privacy" target="_blank" rel="noopener noreferrer">Mapbox’s privacy policy</a></li>
-                    <li><strong>Supabase</strong> — optional authentication, account profiles, and signed-in usage events. See <a href="https://supabase.com/privacy" target="_blank" rel="noopener noreferrer">Supabase’s privacy policy</a></li>
+                    <li><strong>Stripe</strong> — card payments for fleet accounts. See <a href="https://stripe.com/privacy" target="_blank" rel="noopener noreferrer">Stripe’s privacy policy</a></li>
+                    <li><strong>Supabase</strong> — optional authentication, account profiles, signed-in usage events, anonymous app activity, fleet accounts, website contact messages, and permit samples. See <a href="https://supabase.com/privacy" target="_blank" rel="noopener noreferrer">Supabase’s privacy policy</a></li>
                     </ul>
                     <p>
                     We do not control how these providers independently operate their services. We configure them to provide the App’s features and do not sell your data to third parties for marketing or advertising.
@@ -228,6 +251,8 @@
                     <li><strong>On-device data:</strong> Remains on your device until you delete it in the App, clear app data, or uninstall the App (subject to how your operating system handles local storage).</li>
                     <li><strong>Account and profile data:</strong> Retained while your account exists, and deleted or de-identified when you delete your account (subject to short-term backups or legal holds if required).</li>
                     <li><strong>Signed-in usage events:</strong> Retained as long as reasonably needed for product analytics, support, and security, or until associated with an account that is deleted.</li>
+                    <li><strong>Anonymous app activity:</strong> Retained as long as reasonably needed for usage totals, product analytics, and finding problems.</li>
+                    <li><strong>Fleet accounts and payments:</strong> Retained while the fleet account exists, and payment records as long as needed for accounting, tax, and legal obligations. To close a fleet account, email support@permitpathnav.com.</li>
                     <li><strong>Website contact messages:</strong> Retained as long as needed to respond and for related legal or operational needs.</li>
                     </ul>
 
@@ -238,7 +263,7 @@
                     <li><strong>Delete account:</strong> If you are signed in, you can delete your account from Settings in the App. This permanently deletes your account on our backend and removes saved routes stored on that device by the App. This cannot be undone. Your Apple or Google subscription is separate—you must cancel it in your store account settings if you no longer want to be billed.</li>
                     <li><strong>Location:</strong> You can allow or deny location permission in system settings.</li>
                     <li><strong>Subscription:</strong> Manage or cancel in your Apple ID or Google Play subscription settings.</li>
-                    <li><strong>Support:</strong> Contact us via our <a href="contact.html">website contact form</a> with privacy or data requests.</li>
+                    <li><strong>Support:</strong> Email <a href="mailto:support@permitpathnav.com">support@permitpathnav.com</a> or use our <a href="contact.html">website contact form</a> with privacy or data requests.</li>
                     </ul>
 
                     <h2>Children's Privacy</h2>
@@ -258,7 +283,7 @@
 
                     <h2>Contact Us</h2>
                     <p>
-                    If you have questions about this Privacy Policy or how we handle information, please contact us using the <a href="contact.html">contact form</a> on our website.
+                    If you have questions about this Privacy Policy or how we handle information, email <a href="mailto:support@permitpathnav.com">support@permitpathnav.com</a> or use the <a href="contact.html">contact form</a> on our website. STL Apps LLC is an Oklahoma limited liability company.
                     </p>
                 </article>
             </div>
@@ -280,42 +305,7 @@
         </div>
     </footer>
 
-    <script>
-        (function () {
-            var menuToggle = document.getElementById('menuToggle');
-            var dropdownMenu = document.getElementById('dropdownMenu');
-            if (!menuToggle || !dropdownMenu) return;
-            function setOpen(open) {
-                dropdownMenu.classList.toggle('active', open);
-                menuToggle.classList.toggle('active', open);
-                menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-            }
-            menuToggle.addEventListener('click', function () {
-                setOpen(!dropdownMenu.classList.contains('active'));
-            });
-            document.addEventListener('click', function (event) {
-                if (!dropdownMenu.contains(event.target) && !menuToggle.contains(event.target) && dropdownMenu.classList.contains('active')) {
-                    setOpen(false);
-                }
-            });
-            document.addEventListener('keydown', function (event) {
-                if (event.key === 'Escape') setOpen(false);
-            });
-            var headerEl = document.querySelector('header');
-            var compact = false;
-            window.addEventListener('scroll', function () {
-                var y = window.scrollY;
-                if (!compact && y > 100) {
-                    compact = true;
-                    headerEl.classList.add('header--compact');
-                } else if (compact && y < 40) {
-                    compact = false;
-                    headerEl.classList.remove('header--compact');
-                }
-            }, { passive: true });
-        })();
-    </script>
-
-  <script src="lib/studioClicks.js"></script>
+    <script src="lib/studioClicks.js"></script>
+  <script src="lib/site-nav.js"></script>
 </body>
 </html>

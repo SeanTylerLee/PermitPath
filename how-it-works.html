@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="referrer" content="origin" />
     <meta http-equiv="Referrer-Policy" content="origin" />
 
@@ -18,7 +18,7 @@
     <meta property="og:title" content="How It Works - PermitPath" />
     <meta property="og:description" content="Build a permit route in any state, import a Texas TxPROS route, or unlock a company device with a fleet code." />
     <meta property="og:site_name" content="PermitPath" />
-    <meta property="og:image" content="https://permitpathnav.com/images/pppp.png" />
+    <meta property="og:image" content="https://permitpathnav.com/images/og-share.jpg" />
 
     <link rel="icon" type="image/png" sizes="32x32" href="images/pppp.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="images/pppp.png" />
@@ -26,7 +26,7 @@
     <link rel="icon" type="image/png" href="images/pppp.png" />
 
     <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="index-home.css?v=71" />
+    <link rel="stylesheet" href="index-home.css?v=73" />
 
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -117,7 +117,7 @@
                     <h2 id="txpros-title" class="index-section__title">Import a Texas <span class="highlight">TxPROS permit</span></h2>
                 </div>
                 <p class="texas-hero__lead how-section-lead">
-                    After TxDMV issues your permit, upload the PDF or scan the QR. PermitPath imports the official TxPROS route. This is not AI guessing or parsing written directions. Texas import is a paid feature. More detail on
+                    After TxDMV issues your permit, upload the PDF or scan the QR. PermitPath imports the official TxPROS route. The line is not AI-guessed or rebuilt from the written directions. Always compare it with your permit before you drive. Permit import is a paid feature, and six more states release in the app on November 20. More detail on
                     <a href="texas-permit.html">Import Permits</a>.
                 </p>
                 <div class="texas-methods-grid">
@@ -164,7 +164,7 @@
                     <article class="fleet-step">
                         <span class="fleet-step__num" aria-hidden="true">3</span>
                         <h3 class="fleet-step__title">Enter the code</h3>
-                        <p class="fleet-step__text">That device unlocks unlimited waypoints for the paid period. If a device is replaced, the office can request a replacement code.</p>
+                        <p class="fleet-step__text">That device unlocks unlimited waypoints and state permit import for the paid period. If a device is replaced, the office can request a replacement code.</p>
                     </article>
                 </div>
                 <div class="how-video how-video--short" data-video="company-code">
@@ -192,42 +192,7 @@
         </div>
     </footer>
 
-    <script>
-        (function () {
-            var menuToggle = document.getElementById('menuToggle');
-            var dropdownMenu = document.getElementById('dropdownMenu');
-            if (!menuToggle || !dropdownMenu) return;
-            function setOpen(open) {
-                dropdownMenu.classList.toggle('active', open);
-                menuToggle.classList.toggle('active', open);
-                menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-            }
-            menuToggle.addEventListener('click', function () {
-                setOpen(!dropdownMenu.classList.contains('active'));
-            });
-            document.addEventListener('click', function (event) {
-                if (!dropdownMenu.contains(event.target) && !menuToggle.contains(event.target) && dropdownMenu.classList.contains('active')) {
-                    setOpen(false);
-                }
-            });
-            document.addEventListener('keydown', function (event) {
-                if (event.key === 'Escape') setOpen(false);
-            });
-            var header = document.querySelector('header');
-            var compact = false;
-            window.addEventListener('scroll', function () {
-                var y = window.scrollY;
-                if (!compact && y > 100) {
-                    compact = true;
-                    header.classList.add('header--compact');
-                } else if (compact && y < 40) {
-                    compact = false;
-                    header.classList.remove('header--compact');
-                }
-            }, { passive: true });
-        })();
-    </script>
-
-  <script src="lib/studioClicks.js"></script>
+    <script src="lib/studioClicks.js"></script>
+  <script src="lib/site-nav.js"></script>
 </body>
 </html>
