@@ -454,6 +454,35 @@ header.index-header .logo-link {
     padding: 1.75rem 0 2.25rem;
 }
 
+.index-stats__since {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: rgba(238, 244, 251, 0.78);
+}
+
+.index-stats__since::before {
+    content: "";
+    width: 1px;
+    height: 0.8rem;
+    background: rgba(0, 180, 255, 0.45);
+}
+
+.index-stats__note {
+    margin: 1.2rem 0 0;
+    font-size: 0.78rem;
+    line-height: 1.5;
+    color: rgba(238, 244, 251, 0.55);
+}
+
+.index-feature-card__text a {
+    color: #7dd3fc;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
 .index-stats__card {
     max-width: 34rem;
     margin: 0 auto;

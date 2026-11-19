@@ -36,7 +36,7 @@
     <link rel="icon" type="image/png" href="images/pppp.png" />
     
     <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="index-home.css?v=73" />
+    <link rel="stylesheet" href="index-home.css?v=74" />
     <script>
         window.__ppLive = fetch('https://bkgdrfyjppjxwnwntcbc.supabase.co/rest/v1/rpc/permitpath_live_counter', {
             method: 'POST',
@@ -231,11 +231,12 @@
 
         <section class="index-section index-stats" aria-labelledby="stats-title">
             <div class="index-container">
-                <h2 id="stats-title" class="visually-hidden">PermitPath usage</h2>
+                <h2 id="stats-title" class="visually-hidden">PermitPath usage since October 30, 2026</h2>
                 <div class="index-stats__card">
                     <p class="index-stats__live">
                         <span class="index-stats__dot" aria-hidden="true"></span>
                         Live
+                        <span class="index-stats__since">Since <time datetime="2026-10-30">Oct 30, 2026</time></span>
                     </p>
                     <div class="index-stats__item">
                         <p class="index-stats__value" data-count="0" data-live="miles">0</p>
@@ -244,7 +245,7 @@
                     <div class="index-stats__rule" aria-hidden="true"></div>
                     <div class="index-stats__item">
                         <p class="index-stats__value" data-count="0" data-live="permits">0</p>
-                        <p class="index-stats__label">Permits Imported</p>
+                        <p class="index-stats__label">permits imported</p>
                     </div>
                     <div data-live-item="routes" hidden>
                         <div class="index-stats__rule" aria-hidden="true"></div>
@@ -253,7 +254,7 @@
                             <p class="index-stats__label">Manual routes built</p>
                         </div>
                     </div>
-
+                    <p class="index-stats__note">Totals from October 30, 2026 to today. Updated every minute.</p>
                 </div>
             </div>
         </section>
