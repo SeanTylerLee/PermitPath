@@ -74,39 +74,6 @@ header.index-header .logo-link {
     z-index: 1;
 }
 
-.index-notice {
-    padding: 1.15rem 0 0;
-}
-
-.index-notice__card {
-    padding: 0.95rem 1.15rem;
-    border-radius: 16px;
-    background: rgba(12, 26, 45, 0.86);
-    border: 1px solid rgba(255, 180, 168, 0.42);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
-    text-align: left;
-}
-
-.index-notice__label {
-    margin: 0 0 0.3rem;
-    font-size: 0.72rem;
-    font-weight: 800;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: #ffb4a8;
-}
-
-.index-notice__text {
-    margin: 0;
-    font-size: 0.98rem;
-    line-height: 1.55;
-    color: rgba(238, 244, 251, 0.92);
-}
-
-.index-notice + .index-hero {
-    padding-top: 1.75rem;
-}
-
 .index-section {
     padding: 4.5rem 0;
     background: transparent;
